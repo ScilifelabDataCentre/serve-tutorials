@@ -1,0 +1,9 @@
+# local package
+-e .
+pydantic
+torch
+tensorflow
+transformers
+tokenizers==0.9.4
+ipywidgets
+
