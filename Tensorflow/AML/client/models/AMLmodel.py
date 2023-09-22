@@ -64,7 +64,7 @@ def construct_model():
     model.add(Dense(num_classes))
     model.add(Activation('softmax'))
 
-    opt = tensorflow.keras.optimizers.Adam(learning_rate=learning_rate, decay=decay)
+    opt = tensorflow.keras.optimizers.Adam(learning_rate=learning_rate, weight_decay=decay)
     # opt = keras.optimizers.SGD(learning_rate=learning_rate, decay=decay)
 
     # Let's train the model using RMSprop
