@@ -10,3 +10,10 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+
+# Data
+**/data/**
+
+# Result files
+**/ploz.png
+**/test_predictions.csv
