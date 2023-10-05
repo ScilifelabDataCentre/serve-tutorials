@@ -60,7 +60,7 @@ Create and activate a python virtual environment
 Upgrade pip and install the required libraries
 
     python3 -m pip install --upgrade pip
-    pip3 install requirements.txt
+    pip3 install -r requirements.txt
 
     # Required for select correct jupyter kernel in vscode
     python3 -m ipykernel install --user --name=.venv01
