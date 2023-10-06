@@ -10,3 +10,9 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+
+# Data
+**/data/**
+
+# Result files
+**/output/*.csv
