@@ -14,5 +14,8 @@ venv.bak/
 # Data
 **/data/**
 
+# Saved models
+**/models/**
+
 # Result files
 **/output/*.csv
