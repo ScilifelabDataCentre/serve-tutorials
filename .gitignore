@@ -24,3 +24,6 @@ venv.bak/
 
 # Result files
 **/output/**
+
+# apptainer images
+*.sif
