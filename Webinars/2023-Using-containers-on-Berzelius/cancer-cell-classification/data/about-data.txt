@@ -1,8 +1,10 @@
 The data can be downloaded here:
+
 https://www.kaggle.com/competitions/cancer-cell-challange/data
 
 It should have the following directory structure:
 
-/data/cancer-cell-challange/OralCancer_DataSet3
+/data
+    train.csv
     /test
     /train
