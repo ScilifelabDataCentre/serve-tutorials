@@ -90,6 +90,11 @@ The solution from the notebook is also implemented as a set of python scripts th
 - train.py
 - test.py
 
+To run model training:
+
+    python3 train.py --model=ConvolutionalClassification --epochs=2
+
+
 ## Creating and testing the docker image locally
 
 

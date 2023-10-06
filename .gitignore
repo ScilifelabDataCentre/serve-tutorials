@@ -1,6 +1,11 @@
 .DS_Store
 .gitkeep
 
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
 # Environments
 .env
 .venv
@@ -18,4 +23,4 @@ venv.bak/
 **/models/**
 
 # Result files
-**/output/*.csv
+**/output/**
