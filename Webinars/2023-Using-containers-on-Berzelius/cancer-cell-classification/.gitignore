@@ -1,0 +1,14 @@
+# Data
+/data/**
+
+# Saved models
+*/models/*
+
+# Result files
+**/output/*
+
+# apptainer images
+*.sif
+
+# keep .gitkeep files
+!/**/.gitkeep

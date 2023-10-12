@@ -1,5 +1,4 @@
 .DS_Store
-.gitkeep
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -16,14 +15,5 @@ ENV/
 env.bak/
 venv.bak/
 
-# Data
-**/data/**
-
-# Saved models
-**/models/**
-
-# Result files
-**/output/**
-
-# apptainer images
-*.sif
+# keep .gitkeep files
+!/**/.gitkeep
