@@ -20,19 +20,17 @@ This webinar and its demos assume that the reader is familiar with Python, machi
 This webinar folder contains the following items:
 - the presentation file presentation.pdf
 - a machine learning problem located in /cancer-cell-classification
+- container demos in the container-demo-* folders including instructions
 
 
 ## Overview of the machine learning problem
 
 The ML problem deals with the classification of oral cancer cells. It is based on the Kaggle challange ["Cancer Cell Challange"](https://www.kaggle.com/competitions/cancer-cell-challange/) and the github repository https://github.com/JoLinden/dl4ia-challenge
 
-The original dataset has been reduced to 10% of the original to speed up downloads and executions.
-
-The cancer-cell-classification directory is structured in 4 parts according to the presentation to demonstrate the different approaches and steps presented.
+The cancer-cell-classification directory is structured into three parts according to the presentation to demonstrate the different approaches and steps presented.
 
 - A Jupyter Lab notebook containing a presentation of the ML problem and an initial solution working on a local machine
 - A set of python scripts for running the ML training locally
-- A set of files that containerize the solution for HPC clusters
 - A dataset located in /cancer-cell-classification/data
 
 
@@ -85,21 +83,15 @@ Before executing the cells, select the kernel from the virtual environment previ
 
 ## Running the python scripts
 
-The solution from the notebook is also implemented as a set of python scripts that train and evaluate the trained model. These scripts can be executed on a local machine to see the solution in action. They form the basis of the next step: containarizing the solution in preparation of running on an HPC such as Berzelius. The python scripts include:
+The solution from the notebook is also implemented as a set of python scripts that train and evaluate the trained model. These scripts can be executed on a local machine to see the solution in action. They form the basis of the next step: containarizing the solution in preparation of running on an HPC such as Berzelius. The main python script of interest includes:
 
 - train.py
-- test.py
 
 To run model training:
 
-    python3 train.py --model=ConvolutionalClassification --epochs=2
+    python3 train.py --epochs=2
 
 
-## Creating and testing the docker image locally
+## Container demo
 
-
-## Moving to the HPC
-
-Instructions for running the container on Berzelius using Apptainer.
-
-
+Now you are ready to containerize the solution and run this on an HPC. For this see the instructions from the /container-demo-2/README.md file
