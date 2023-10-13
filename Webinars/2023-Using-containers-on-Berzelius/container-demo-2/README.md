@@ -48,21 +48,6 @@ cd /proj/<project-name>
 mkdir solution; cd solution
 ```
 
-Clone the source code repository and view the contents.
-Note that we can do this from the login node on the HPC, so we do not consume GPU allotted time.
-```
-git clone https://github.com/ScilifelabDataCentre/serve-tutorials.git
-ls ./serve-tutorials
-```
-
-(TODO? here we could run ML training without container...)
-
-Pull the docker image via Apptainer. This is converted to a singularity (.sif) file
-```
-apptainer pull custom-pytorch.sif docker://ghcr.io/sandstromviktor/custom-pytorch:latest
-ls
-```
-
 Open a new terminal window
 
 Run an interactive session on a compute node and view information about the computing resources
@@ -71,6 +56,16 @@ interactive --gpus=1
 lscpu
 nvidia-smi
 ```
+
+Clone the source code repository and view the contents.
+```
+cd /proj/berzelius-2023-215/solution
+git clone https://github.com/ScilifelabDataCentre/serve-tutorials.git
+ls ./serve-tutorials/Webinars/2023-Using-containers-on-Berzelius/
+```
+
+(TODO? here we could run ML training without container...)
+
 
 In this interactive session, we have access to our project folder
 ```
@@ -83,6 +78,12 @@ ls
 In the original terminal window, view currently open sessions / running jobs
 ```
 squeue -u <username>
+```
+
+Pull the docker image via Apptainer. This is converted to a singularity (.sif) file
+```
+apptainer pull custom-pytorch.sif docker://ghcr.io/sandstromviktor/custom-pytorch:latest
+ls
 ```
 
 Back in the compute terminal window, let us open a shell to the Apptainer
