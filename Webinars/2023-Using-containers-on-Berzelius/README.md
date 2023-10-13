@@ -89,6 +89,7 @@ The solution from the notebook is also implemented as a set of python scripts th
 
 To run model training:
 
+    cd ./02-local-scripts
     python3 train.py --epochs=2
 
 
