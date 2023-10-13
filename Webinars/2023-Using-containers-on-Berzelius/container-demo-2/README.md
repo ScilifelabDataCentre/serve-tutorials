@@ -57,16 +57,6 @@ lscpu
 nvidia-smi
 ```
 
-Clone the source code repository and view the contents.
-```
-cd /proj/berzelius-2023-215/solution
-git clone https://github.com/ScilifelabDataCentre/serve-tutorials.git
-ls ./serve-tutorials/Webinars/2023-Using-containers-on-Berzelius/
-```
-
-(TODO? here we could run ML training without container...)
-
-
 In this interactive session, we have access to our project folder
 ```
 pwd
@@ -75,12 +65,26 @@ cd /proj/<project-name>/solution
 ls
 ```
 
+Clone the source code repository and view the contents.
+```
+git clone https://github.com/ScilifelabDataCentre/serve-tutorials.git
+ls ./serve-tutorials/Webinars/2023-Using-containers-on-Berzelius/
+```
+
 In the original terminal window, view currently open sessions / running jobs
 ```
 squeue -u <username>
 ```
 
-Pull the docker image via Apptainer. This is converted to a singularity (.sif) file
+Attempt to setup the training without using a container and observe that we are not allowed to install the required packages.
+```
+pip3 install ffmpeg
+# output:  error: could not create '/usr/local/lib/python3.6': Permission denied
+```
+
+Note: We *can* create a python virtual environment and install our libraries there. But this requires extra work and is not always guaranteed to work because of underlying OS and libraries.
+
+Pull the docker image via Apptainer. Observe that Apptainer converts the OCI image to a singularity (.sif) file
 ```
 apptainer pull custom-pytorch.sif docker://ghcr.io/sandstromviktor/custom-pytorch:latest
 ls
@@ -92,7 +96,10 @@ pwd
 ls
 apptainer shell --nv custom-pytorch.sif
 # -nv enables nvidia support
+```
 
+Observe that we have access to our project folder from within the image.
+```
 pwd
 ls
 ```
@@ -100,6 +107,11 @@ ls
 Note that the user in the container is now a non-root user. Recall that the user was root when building the image but we are not permitted to run containers as root when run on Berzelius.
 ```
 whoami
+```
+
+Note that we can install libraries in out container (we cannot pip install libraries on the compute node).
+```
+Apptainer> pip3 install toml
 ```
 
 Navigate to the code folder and extract the dataset
@@ -117,6 +129,12 @@ Run model training on Berzelius using the container
 cd ./02-local-scripts
 ls
 python3 train.py --epochs=2
+```
+
+When model training has completed, note that the model was saved to a pytorch archive file and the metrics and training graphs were created.
+```
+ls ./models
+cat ./output/None/metrics.txt
 ```
 
 Finally exit from the compute node so we do not continue to consume GPU resources
