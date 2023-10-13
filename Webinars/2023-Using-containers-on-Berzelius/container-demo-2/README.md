@@ -7,7 +7,7 @@ Demo aims:
 
 ## Demonstrate how to containerize a ML solution
 
-Creating and testing the docker image locally
+These instructions demonstrate how to create a docker image.
 
 1. Show the Dockerfile. Note the lines
     - `FROM pytorch/pytorch:latest`
@@ -26,7 +26,7 @@ Creating and testing the docker image locally
 
 ## Demonstrate how to run ML training using container on HPC
 
-Instructions for running the container on Berzelius using Apptainer.
+These instructions cover how to run the container on Berzelius using Apptainer.
 
 Login to Berzelius
 ```
@@ -64,7 +64,6 @@ In this interactive session, we have access to our project folder
 pwd
 cd /proj/<project-name>/solution
 # cd /proj/berzelius-2023-215/solution
-ls
 ```
 
 Clone the source code repository and view the contents.
@@ -88,8 +87,6 @@ ls
 
 Back in the compute terminal window, let us open a shell to the Apptainer
 ```
-pwd
-ls
 apptainer shell --nv custom-pytorch.sif
 # -nv enables nvidia support
 ```
