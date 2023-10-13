@@ -17,7 +17,7 @@ from torch.utils.data import DataLoader, random_split, WeightedRandomSampler
 from torchvision import transforms
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--model', type=str, required=False)
+parser.add_argument('--model', type=str, default="CNN")
 parser.add_argument('--epochs', type=int, default=20)
 parser.add_argument('--lr', type=float, default=0.001)
 parser.add_argument('--validate_epochs', type=int, default=1)
