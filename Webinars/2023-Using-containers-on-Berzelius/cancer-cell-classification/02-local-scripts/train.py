@@ -32,7 +32,6 @@ device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 print('Using device:', device)
 
 model_path = os.path.join(os.getcwd(), f'models/{opt.model}.pth')
-#data_path = os.path.join(os.getcwd(), 'data')
 data_path = os.path.join( Path(os.getcwd()).parent.absolute(), 'data')
 train_dir = os.path.join(data_path, 'train')
 labels_file = os.path.join(data_path, 'train.csv')

@@ -1,8 +1,8 @@
 # Using containers to simplify ML training on Berzelius and other supercomputers: beginner-friendly introduction
 
-A webinar event October 19. 2023
+A webinar event held on October 19. 2023 by the [SciLifeLab Data Centre](https://www.scilifelab.se/data/)
 
-https://www.scilifelab.se/event/using-containers-berzelius/
+This webinar is part of an event series arranged by the SciLifeLab Data Centre focused on tools for AI/ML research in life sciences.
 
 ## Abstract
 
@@ -27,11 +27,10 @@ This webinar folder contains the following items:
 
 The ML problem deals with the classification of oral cancer cells. It is based on the Kaggle challange ["Cancer Cell Challange"](https://www.kaggle.com/competitions/cancer-cell-challange/) and the github repository https://github.com/JoLinden/dl4ia-challenge
 
-The cancer-cell-classification directory is structured into three parts according to the presentation to demonstrate the different approaches and steps presented.
+The cancer-cell-classification directory is structured into two parts according to the presentation to demonstrate the different approaches and steps presented.
 
 - A Jupyter Lab notebook containing a presentation of the ML problem and an initial solution working on a local machine
 - A set of python scripts for running the ML training locally
-- A dataset located in /cancer-cell-classification/data
 
 
 ## Instructions
@@ -46,12 +45,11 @@ Open the folder /serve-tutorials/Webinars/2023-Using-containers-on-Berzelius/
 
 ## Setup and system requirements
 
-The instructions assume the Linux OS. To get started, create a virtual environment and install the needed libraries from the requirements file. Open a terminal and from the repository root directory, execute:
+The instructions assume the Linux OS but should work also on MacOS and Windows with minor modifications.
+
+To get started, create a virtual environment and install the needed libraries from the requirements file. Open a terminal and from the repository root directory (/serve-tutorials), execute:
 
     cd Webinars/2023-Using-containers-on-Berzelius/cancer-cell-classification
-
-Create and activate a python virtual environment
-
     python3 -m venv .venv01
     source ./.venv01/bin/activate
 
@@ -95,4 +93,4 @@ To run model training:
 
 ## Container demo
 
-Now you are ready to containerize the solution and run this on an HPC. For this see the instructions from the /container-demo-2/README.md file
+Now you are ready to containerize the solution and run this on an HPC. For this see the instructions in the /container-demo-2/README.md file

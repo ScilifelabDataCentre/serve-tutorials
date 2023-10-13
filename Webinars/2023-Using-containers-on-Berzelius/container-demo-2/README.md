@@ -9,10 +9,10 @@ Demo aims:
 
 Creating and testing the docker image locally
 
-1. Show extended Dockerfile. Note lines:
-    USER root
-    requirements.txt
-    installation of needed libraries
+1. Show the Dockerfile. Note the lines
+    - `FROM pytorch/pytorch:latest`
+    - `USER root`
+    - and installation of additional libraries
 
 2. Build docker image using dockerfile
     `docker build -t custom-pytorch .`
@@ -50,9 +50,11 @@ mkdir solution; cd solution
 
 Open a new terminal window
 
-Run an interactive session on a compute node and view information about the computing resources
+Run an interactive session on a compute node
 ```
 interactive --gpus=1
+
+# We can view information about the computing resources using commands such as
 lscpu
 nvidia-smi
 ```
@@ -71,21 +73,15 @@ git clone https://github.com/ScilifelabDataCentre/serve-tutorials.git
 ls ./serve-tutorials/Webinars/2023-Using-containers-on-Berzelius/
 ```
 
-In the original terminal window, view currently open sessions / running jobs
-```
-squeue -u <username>
-```
-
 Attempt to setup the training without using a container and observe that we are not allowed to install the required packages.
 ```
 pip3 install ffmpeg
 # output:  error: could not create '/usr/local/lib/python3.6': Permission denied
 ```
 
-Note: We *can* create a python virtual environment and install our libraries there. But this requires extra work and is not always guaranteed to work because of underlying OS and libraries.
-
 Pull the docker image via Apptainer. Observe that Apptainer converts the OCI image to a singularity (.sif) file
 ```
+apptainer version
 apptainer pull custom-pytorch.sif docker://ghcr.io/sandstromviktor/custom-pytorch:latest
 ls
 ```
@@ -131,10 +127,19 @@ ls
 python3 train.py --epochs=2
 ```
 
+The training will take some time. In the meantime, we can explore how to view currently open sessions / running jobs. In the original terminal window, execute: 
+```
+squeue -u <username>
+```
+
+Note: We *can* create a python virtual environment and install our libraries there. But this requires extra work and is not always guaranteed to work because of underlying OS and libraries.
+
+Using a containerized solution can also improve efficiency in performing work and moving back and forth between the HPC and local work. Changes made in the container can be pushed to an image repository and pulled down to other local machines. 
+
 When model training has completed, note that the model was saved to a pytorch archive file and the metrics and training graphs were created.
 ```
 ls ./models
-cat ./output/None/metrics.txt
+cat ./output/CNN/metrics.txt
 ```
 
 Finally exit from the compute node so we do not continue to consume GPU resources
