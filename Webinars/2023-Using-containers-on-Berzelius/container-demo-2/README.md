@@ -104,7 +104,7 @@ whoami
 
 Note that we can install libraries in out container (we cannot pip install libraries on the compute node).
 ```
-Apptainer> pip3 install toml
+Apptainer> pip3 install ffmpeg
 ```
 
 Navigate to the code folder and extract the dataset
@@ -139,7 +139,8 @@ ls ./models
 cat ./output/CNN/metrics.txt
 ```
 
-Finally exit from the compute node so we do not continue to consume GPU resources
+Finally exit from the container and exit the compute node so we do not continue to consume GPU resources
 ```
+exit
 exit
 ```
