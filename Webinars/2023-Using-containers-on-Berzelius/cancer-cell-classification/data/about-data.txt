@@ -1,8 +1,4 @@
-The data can be downloaded here:
-
-https://www.kaggle.com/competitions/cancer-cell-challange/data
-
-It should have the following directory structure:
+The data folder should have the following directory structure:
 
 /data
     train.csv
