@@ -102,12 +102,12 @@ Note that the user in the container is now a non-root user. Recall that the user
 whoami
 ```
 
-Note that we can install libraries in out container (we cannot pip install libraries on the compute node).
+Note that we can install libraries in our container (we cannot pip install libraries on the compute node).
 ```
 Apptainer> pip3 install ffmpeg
 ```
 
-Navigate to the code folder and extract the dataset
+Navigate to the code folder and extract the dataset (this dataset was copied to Berzelius using scp).
 ```
 cd ./serve-tutorials/Webinars/2023-Using-containers-on-Berzelius/cancer-cell-classification
 
