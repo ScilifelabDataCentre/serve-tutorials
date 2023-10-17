@@ -72,9 +72,12 @@ validation_dataloader = torch.utils.data.DataLoader(valset, batch_size = 64, shu
 test_dataloader = torch.utils.data.DataLoader(testset, batch_size = 64, shuffle = True)
 
 # Use json file with flower categories to classes
-with open( os.path.join(DATA_PATH,'flowers-102/cat-to-name.json'), 'r') as f:
-    cat_to_name = json.load(f)
-class_num = len(cat_to_name)
+#with open( os.path.join(DATA_PATH,'flowers-102/cat-to-name.json'), 'r') as f:
+#    cat_to_name = json.load(f)
+#class_num = len(cat_to_name)
+
+# The number of classes
+class_num = 102
 
 # The CNN model
 # Downloading a pre-trained VGG16 model takes about 1 min
