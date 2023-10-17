@@ -72,6 +72,17 @@ git clone https://github.com/ScilifelabDataCentre/serve-tutorials.git
 ls ./serve-tutorials/Webinars/2023-Using-containers-on-Berzelius/
 ```
 
+Let us see what happens if we attempt to train our model outside of a container. 
+```
+cd ./serve-tutorials/Webinars/2023-Using-containers-on-Berzelius/flowers-classification/02-scripts/
+python3 train.py --epochs=1
+# observe error: "ModuleNotFoundError: No module named 'matplotlib'"
+
+# Attempt to install the missing python library
+pip3 install matplotlib
+# observe error: "PermissionError: [Errno 13] Permission denied"
+```
+
 Attempt to setup the training without using a container and observe that we are not allowed to install the required packages.
 ```
 pip3 install ffmpeg
@@ -107,19 +118,9 @@ Note that we can install libraries in our container (we cannot pip install libra
 Apptainer> pip3 install ffmpeg
 ```
 
-Navigate to the code folder and extract the dataset (this dataset was copied to Berzelius using scp).
+Now we are ready to train our ML model. Navigate to the code folder and run model training on Berzelius using the container:
 ```
-cd ./serve-tutorials/Webinars/2023-Using-containers-on-Berzelius/cancer-cell-classification
-
-# Note that the dataset is not included in the tutorials repository.
-unzip -q /proj/berzelius-2023-215/solution/data.zip -d .
-
-ls ./data
-```
-
-Run model training on Berzelius using the container
-```
-cd ./02-local-scripts
+cd ./serve-tutorials/Webinars/2023-Using-containers-on-Berzelius/flowers-classification/02-scripts/
 ls
 python3 train.py --epochs=2
 ```
@@ -133,14 +134,36 @@ Note: We *can* create a python virtual environment and install our libraries the
 
 Using a containerized solution can also improve efficiency in performing work and moving back and forth between the HPC and local work. Changes made in the container can be pushed to an image repository and pulled down to other local machines. 
 
-When model training has completed, note that the model was saved to a pytorch archive file and the metrics and training graphs were created.
+When model training has completed, it will display the final validation accuracy:
 ```
-ls ./models
-cat ./output/CNN/metrics.txt
+On epoch 10
+  Evaluating model on step 150
+  Epoch: 10/10...  Training Loss: 0.4173 Validation Loss: 0.0695 Validation Accuracy: 70.7812
+  Evaluating model on step 160
+  Epoch: 10/10...  Training Loss: 0.7346 Validation Loss: 0.0548 Validation Accuracy: 75.0846
+Training complete. Training duration 0:04:30.492253
+```
+
+We observe that this sample task took only 4.5 minutes to train for 10 epochs using a single GPU on Berzelius. The same training on a typical CPU notebook will of course vary but took us about 50 minutes for 10 epochs.
+
+Note that the model was saved to a pytorch archive file and the metrics and training graphs were created.
+```
+ls ./models/
+ls ./output/vgg19/
 ```
 
 Finally exit from the container and exit the compute node so we do not continue to consume GPU resources
 ```
 exit
 exit
+```
+
+We should no longer have an open session or compute resources reserved:
+```
+squeue -u <username>
+```
+
+We can now view the remaining GPU hours in our project:
+```
+projinfo
 ```
