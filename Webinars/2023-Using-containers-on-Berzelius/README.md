@@ -10,28 +10,33 @@ A common approach to train machine learning models is to first create a prototyp
 
 ## Learning outcomes and pre-requisities
 
-TODO:
-
 This webinar and its demos assume that the reader is familiar with Python, machine learning, Jupyter Lab notebooks, and the Linux OS. An introduction to docker, containers, and HPC is provided in the presentation.
-
 
 ## Contents
 
 This webinar folder contains the following items:
 - the presentation file presentation.pdf
-- a machine learning problem located in /cancer-cell-classification
+- a machine learning task located in flowers-classification
 - container demos in the container-demo-* folders including instructions
 
 
-## Overview of the machine learning problem
+## Overview of the machine learning task
 
-The ML problem deals with the classification of oral cancer cells. It is based on the Kaggle challange ["Cancer Cell Challange"](https://www.kaggle.com/competitions/cancer-cell-challange/) and the github repository https://github.com/JoLinden/dl4ia-challenge
+The sample ML task is to predict the correct flower category from an image. The flowers are commonly occuring flowers in United Kingdom such as water lily and petunia.
 
-The cancer-cell-classification directory is structured into two parts according to the presentation to demonstrate the different approaches and steps presented.
+For information about the dataset used, see 
+https://www.robots.ox.ac.uk/~vgg/data/flowers/102/
+
+The database was used in:
+
+Nilsback, M-E. and Zisserman, A. Automated flower classification over a large number of classes.
+Proceedings of the Indian Conference on Computer Vision, Graphics and Image Processing (2008) 
+http://www.robots.ox.ac.uk/~vgg/publications/papers/nilsback08.{pdf,ps.gz}.
+
+The flowers-classification directory is structured into two parts according to the presentation to demonstrate the different approaches and steps presented.
 
 - A Jupyter Lab notebook containing a presentation of the ML problem and an initial solution working on a local machine
-- A set of python scripts for running the ML training locally
-
+- A set of python scripts for running the ML training locally and on HPC
 
 ## Instructions
 
@@ -49,7 +54,7 @@ The instructions assume the Linux OS but should work also on MacOS and Windows w
 
 To get started, create a virtual environment and install the needed libraries from the requirements file. Open a terminal and from the repository root directory (/serve-tutorials), execute:
 
-    cd Webinars/2023-Using-containers-on-Berzelius/cancer-cell-classification
+    cd Webinars/2023-Using-containers-on-Berzelius/flowers-classification
     python3 -m venv .venv01
     source ./.venv01/bin/activate
 
@@ -74,11 +79,11 @@ If using GPU CUDA:
 
 ### Running the notebook
 
-The notebook introduces the ML problem and an initial deep learning solution. Open the notebook /cancer-cell-classification/local-solution-notebook.ipynb and either simply read the cells to understand the problem, code and outputs or execute the notebook cells to see the solution in action.
+The notebook introduces the ML problem and an initial deep learning solution. Open the notebook /flowers-classification/local-solution-notebook.ipynb and either simply read the cells to understand the problem, code and outputs or execute the notebook cells to see the solution in action.
 
 Before executing the cells, select the kernel from the virtual environment previously created, i.e.
 
-    "Webinars/2023-Using-containers-on-Berzelius/cancer-cell-classification/cancer-cell-classification/.venv01/bin/python3"
+    "Webinars/2023-Using-containers-on-Berzelius/flowers-classification/.venv01/bin/python3"
 
 
 ## Running the python scripts
@@ -87,9 +92,9 @@ The solution from the notebook is also implemented as a set of python scripts th
 
 - train.py
 
-To run model training:
+To run model training for 2 epochs:
 
-    cd ./02-local-scripts
+    cd ./02-scripts
     python3 train.py --epochs=2
 
 

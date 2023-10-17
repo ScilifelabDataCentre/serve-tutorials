@@ -96,7 +96,7 @@ apptainer pull custom-pytorch.sif docker://ghcr.io/sandstromviktor/custom-pytorc
 ls
 ```
 
-Back in the compute terminal window, let us open a shell to the Apptainer
+Back in the compute terminal window, let us open a shell to the container using Apptainer
 ```
 apptainer shell --nv custom-pytorch.sif
 # -nv enables nvidia support
