@@ -88,7 +88,16 @@ Before executing the cells, select the kernel from the virtual environment previ
 
 ## Running the python scripts
 
-The solution from the notebook is also implemented as a set of python scripts for model training and evaluation. These scripts can be executed on a local machine to see the solution in action. They form the basis of the next step: containarizing the solution in preparation of running on an HPC such as Berzelius. The main python script of interest is *train.py*.
+The solution from the notebook is also implemented as a set of python scripts for model training and evaluation. These scripts can be executed on a local machine to see the solution in action. They form the basis of the next step: containarizing the solution in preparation of running on an HPC such as Berzelius.
+
+To train a model, use *train.py* which takes the following arguments:
+
+* `--epochs` : Number of epochs to train the model, default 5
+* `--lr` : Learning rate, default 0.001
+* `--batch_size` : Number of data points to read in each batch, default 64
+* `--validate_steps` : How frequently validation results should be reported to figures, default 10 (every 10 batch iterations)
+* `--n_cpu` : Number of CPUs used to load data, default 0 (only main process)
+* `--use_all_data` : Whether to use all of the available data during training (default 1, use all data)
 
 For example in order to train the model for 2 epochs, the user should run:
 

@@ -18,12 +18,12 @@ import torchvision.transforms as transforms
 from torchvision import datasets, models, transforms
 
 parser = argparse.ArgumentParser()
-#parser.add_argument('--model', type=str, default="vgg16")
-parser.add_argument('--epochs', type=int, default=2)
+parser.add_argument('--epochs', type=int, default=5)
 parser.add_argument('--lr', type=float, default=0.001)
-parser.add_argument('--validate_steps', type=int, default=10)
 parser.add_argument('--batch_size', type=int, default=64)
+parser.add_argument('--validate_steps', type=int, default=10)
 parser.add_argument('--n_cpu', type=int, default=0)
+parser.add_argument('--use_all_data', type=int, default=1)
 
 opt = parser.parse_args()
 
@@ -56,7 +56,7 @@ test_data_transforms = transforms.Compose ([transforms.Resize (256),
                                              transforms.Normalize ([0.485, 0.456, 0.406],[0.229, 0.224, 0.225])
                                             ])
 
-# Use previously downladed datasets
+# This will use previously downladed datasets if available
 trainset = torchvision.datasets.Flowers102(root=DATA_PATH, split="train",
                                       download=True, transform=train_data_transforms)
 
@@ -66,10 +66,14 @@ valset = torchvision.datasets.Flowers102(root=DATA_PATH, split="val",
 testset = torchvision.datasets.Flowers102(root=DATA_PATH, split="test",
                                       download=True, transform=test_data_transforms)
 
-# Concatenate the datasets into one for custom training-validation split
-dataset = torch.utils.data.ConcatDataset([trainset, valset, testset])
-# TODO: code 70, 30 split
-trainset, valset = torch.utils.data.random_split(dataset, [5732, 2457])
+if opt.use_all_data == True:
+    # Use the entire dataset and split 70-30 for training-validation
+    dataset = torch.utils.data.ConcatDataset([trainset, valset, testset])
+    trainset, valset = torch.utils.data.random_split(dataset, [0.7, 0.3])  #[5732, 2457]
+else:
+    # Use only the train and validations sets and use only 30% of this
+    dataset = torch.utils.data.ConcatDataset([trainset, valset])
+    trainset, valset, testset = torch.utils.data.random_split(dataset, [0.2, 0.1, 0.7])
 
 train_dataloader = torch.utils.data.DataLoader(trainset, batch_size = opt.batch_size, shuffle = True, num_workers = opt.n_cpu)
 validation_dataloader = torch.utils.data.DataLoader(valset, batch_size = opt.batch_size, shuffle = True, num_workers = opt.n_cpu)
@@ -111,6 +115,7 @@ epochs = opt.epochs
 iteration_steps = []
 training_losses = []
 validation_losses = []
+validation_accuracies = []
 
 best_model_state = None
 best_model_metric = 100
@@ -160,6 +165,7 @@ for e in range(epochs):
 
             training_losses.append(running_loss/print_every)
             validation_losses.append(v_loss)
+            validation_accuracies.append(v_accuracy * 100)
 
             if v_loss < best_model_metric:
                 print("  Saving as best model")
@@ -174,11 +180,12 @@ for e in range(epochs):
 
             running_loss = 0
 
+
 print(f"Training complete. Training duration {str(dt.datetime.now() - start)}")
 print("\n")
 
-# load best performing model
-model.load_state_dict(torch.load(model_path))
+# To evaluate the best performing model, then load it:
+#model.load_state_dict(torch.load(model_path))
 
 if not os.path.isdir(f'output/{model_name}'):
     os.makedirs(f'output/{model_name}')
@@ -194,3 +201,12 @@ plt.xlabel('Batch iteration')
 plt.ylabel('Loss')
 plt.legend()
 plt.savefig(f'output/{model_name}/model_losses.png')
+
+plt.figure()
+plt.plot(iteration_steps,
+         validation_accuracies,
+         label='Validation accuracy')
+plt.xlabel('Batch iteration')
+plt.ylabel('Accuracy pct')
+plt.legend()
+plt.savefig(f'output/{model_name}/model_accuracy.png')
