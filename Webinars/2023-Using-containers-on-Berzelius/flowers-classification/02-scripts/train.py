@@ -59,6 +59,8 @@ valset = torchvision.datasets.Flowers102(root=DATA_PATH, split="val",
 testset = torchvision.datasets.Flowers102(root=DATA_PATH, split="test",
                                       download=True, transform=test_data_transforms)
 
+# Note: this approach with concatenation of the dataset is for convenience only.
+# The user would have to adjust the data transforms for this approach to work correctly.
 if opt.use_all_data == 1:
     # Use the entire dataset and split 70-30 for training-validation
     dataset = torch.utils.data.ConcatDataset([trainset, valset, testset])
