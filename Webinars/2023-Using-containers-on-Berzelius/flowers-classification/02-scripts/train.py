@@ -66,14 +66,17 @@ valset = torchvision.datasets.Flowers102(root=DATA_PATH, split="val",
 testset = torchvision.datasets.Flowers102(root=DATA_PATH, split="test",
                                       download=True, transform=test_data_transforms)
 
+# Concatenate the datasets into one for custom training-validation split
+dataset = torch.utils.data.ConcatDataset([trainset, valset, testset])
+# TODO: code 70, 30 split
+trainset, valset = torch.utils.data.random_split(dataset, [5732, 2457])
+
 train_dataloader = torch.utils.data.DataLoader(trainset, batch_size = opt.batch_size, shuffle = True, num_workers = opt.n_cpu)
 validation_dataloader = torch.utils.data.DataLoader(valset, batch_size = opt.batch_size, shuffle = True, num_workers = opt.n_cpu)
-test_dataloader = torch.utils.data.DataLoader(testset, batch_size = opt.batch_size, shuffle = True, num_workers = opt.n_cpu)
 
-print(f"Total number of images: {len(trainset)+len(valset)+len(testset)}")
+print(f"Total number of images: {len(dataset)}")
 print(f"Nr of images in the training set: {len(trainset)}")
 print(f"Nr of images in the validation set: {len(valset)}")
-print(f"Nr of images in the test set: {len(testset)}")
 print("")
 
 # The number of classes
