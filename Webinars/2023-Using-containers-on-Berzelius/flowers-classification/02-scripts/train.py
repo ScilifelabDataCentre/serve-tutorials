@@ -1,21 +1,15 @@
+"""Python script to train a machine learning model using PyTorch."""
+
 import argparse
-import glob
 import os
-import json
 from pathlib import Path
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-import sklearn.metrics as skl_m
 import datetime as dt
+import matplotlib.pyplot as plt
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-import torch.optim as optim 
 import torchvision
-import torchvision.transforms as transforms
-from torchvision import datasets, models, transforms
+from torchvision import models, transforms
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--epochs', type=int, default=5)
@@ -65,7 +59,7 @@ valset = torchvision.datasets.Flowers102(root=DATA_PATH, split="val",
 testset = torchvision.datasets.Flowers102(root=DATA_PATH, split="test",
                                       download=True, transform=test_data_transforms)
 
-if opt.use_all_data == True:
+if opt.use_all_data == 1:
     # Use the entire dataset and split 70-30 for training-validation
     dataset = torch.utils.data.ConcatDataset([trainset, valset, testset])
     trainset, valset = torch.utils.data.random_split(dataset, [0.7, 0.3])  #[5732, 2457]
@@ -89,10 +83,11 @@ class_num = 102
 # Downloading a pre-trained VGG16 model takes about 1 min
 model = models.vgg19(weights="VGG19_Weights.DEFAULT")
 
-# We need to set requires_grad = False to freeze the parameters so that the gradients are not computed in backward() on features layer
+# We set requires_grad = False to freeze the parameters so that the gradients
+# are not computed in backward() on features layer
 for param in model.features.parameters():
     param.requires_grad = False
-    
+
 # update the classifier layer
 classifier = nn.Sequential(
           nn.Linear(in_features=25088, out_features=4096, bias=True),
