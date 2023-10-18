@@ -1,6 +1,0 @@
-The data folder should have the following directory structure:
-
-/data
-    train.csv
-    /test
-    /train
