@@ -13,6 +13,18 @@
 
 ## Show examples of Dockerfile
 1. Create Dockerfile from ubuntu 20.04, run update and install vim.
-2. Copy test.txt.
-3. Build and run container
-4. Show that vim and test.txt are part of the container
+2. Build and run container
+3. Show that vim is a part of the container
+
+## Show examples of prebuild containers by other teams
+1. Show python version on local machine
+2. run `python3` and then `import torch`. Show that it does not work
+3. Start container `docker run --rm -it pytorch/pytorch:latest`
+4. run `python3` and then `import torch`. Show that it does indeed work
+
+## Show pytorch container on berzelius
+1. From login node, start interactive session `interactive --gpus=1`
+2. Pull image from docker hub `apptainer pull pytorch.sif docker://pytorch/pytorch:latest`
+3. Start container `apptainer shell --nv pytorch.sif`
+4. run `python3` and then `import torch`. Show that it does indeed work
+5. after import, run `torch.cuda.is_available()` to check if GPU can be accessed
