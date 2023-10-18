@@ -35,7 +35,6 @@ print('Using device:', device)
 model_name = "vgg19"
 
 model_path = os.path.join(os.getcwd(), f'models/{model_name}.pth')
-#data_path = os.path.join( Path(os.getcwd()).parent.absolute(), 'data')
 DATA_PATH = os.path.join( Path(os.getcwd()).parent.absolute(), 'data')
 
 # Image transformations
@@ -71,9 +70,9 @@ if opt.use_all_data == True:
     dataset = torch.utils.data.ConcatDataset([trainset, valset, testset])
     trainset, valset = torch.utils.data.random_split(dataset, [0.7, 0.3])  #[5732, 2457]
 else:
-    # Use only the train and validations sets and use only 30% of this
+    # Use only the train and validations sets and use only 50% of this
     dataset = torch.utils.data.ConcatDataset([trainset, valset])
-    trainset, valset, testset = torch.utils.data.random_split(dataset, [0.2, 0.1, 0.7])
+    trainset, valset, testset = torch.utils.data.random_split(dataset, [0.3, 0.2, 0.5])
 
 train_dataloader = torch.utils.data.DataLoader(trainset, batch_size = opt.batch_size, shuffle = True, num_workers = opt.n_cpu)
 validation_dataloader = torch.utils.data.DataLoader(valset, batch_size = opt.batch_size, shuffle = True, num_workers = opt.n_cpu)
