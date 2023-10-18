@@ -15,5 +15,8 @@ ENV/
 env.bak/
 venv.bak/
 
+# apptainer images
+*.sif
+
 # keep .gitkeep files
 !/**/.gitkeep

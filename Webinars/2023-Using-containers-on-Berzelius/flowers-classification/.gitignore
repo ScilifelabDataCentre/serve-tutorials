@@ -7,8 +7,5 @@
 # Result files
 **/output/*
 
-# apptainer images
-*.sif
-
 # keep .gitkeep files
 !/**/.gitkeep
