@@ -108,10 +108,9 @@ model = torch.nn.DataParallel(model).to(device)
 
 epochs = opt.epochs
 
-training_losses = np.zeros(epochs)
-training_metrics = np.zeros(epochs)
+iteration_steps = []
+training_losses = []
 validation_losses = []
-validation_metrics = []
 
 best_model_state = None
 best_model_metric = 100
@@ -141,6 +140,7 @@ for e in range(epochs):
 
         if steps % print_every == 0:
             print(f"  Evaluating model on step {steps}")
+            iteration_steps.append(steps)
             model.eval()
             v_lost = 0
             v_accuracy=0
@@ -157,6 +157,9 @@ for e in range(epochs):
 
             v_lost = v_lost / len(validation_dataloader)
             v_accuracy = v_accuracy /len(validation_dataloader)
+
+            training_losses.append(running_loss/print_every)
+            validation_losses.append(v_lost)
 
             if v_lost < best_model_metric:
                 print("  Saving as best model")
@@ -181,25 +184,13 @@ if not os.path.isdir(f'output/{model_name}'):
     os.makedirs(f'output/{model_name}')
 
 plt.figure()
-plt.plot(np.linspace(1, epochs, len(training_losses)),
+plt.plot(iteration_steps,
          training_losses,
          label='Training')
-plt.plot(np.linspace(1, epochs, len(validation_losses)),
+plt.plot(iteration_steps,
          validation_losses,
          label='Validation')
-plt.xlabel('Epochs')
+plt.xlabel('Batch iteration')
 plt.ylabel('Loss')
 plt.legend()
 plt.savefig(f'output/{model_name}/model_losses.png')
-
-plt.figure()
-plt.plot(np.linspace(1, epochs, len(training_metrics)),
-         training_metrics,
-         label='Training')
-plt.plot(np.linspace(1, epochs, len(validation_metrics)),
-         validation_metrics,
-         label='Validation')
-plt.xlabel('Epochs')
-plt.ylabel('MSE')
-plt.legend()
-plt.savefig(f'output/{model_name}/model_metrics.png')
