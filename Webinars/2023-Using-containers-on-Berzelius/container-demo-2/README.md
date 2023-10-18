@@ -40,6 +40,8 @@ View project information
 projinfo
 ```
 
+Open a new terminal window
+
 Navigate to our project folder and create a solution folder
 ```
 cd /proj/<project-name>
@@ -48,11 +50,16 @@ cd /proj/<project-name>
 mkdir solution; cd solution
 ```
 
-Open a new terminal window
-
-Run an interactive session on a compute node
+Clone the source code repository and view the contents.
 ```
-interactive --gpus=1
+git clone https://github.com/ScilifelabDataCentre/serve-tutorials.git
+
+cd ./serve-tutorials/Webinars/2023-Using-containers-on-Berzelius/
+```
+
+Run an interactive session on a compute node. Here we request 2 GPUs with default settings.
+```
+interactive --gpus=2
 
 # We can view information about the computing resources using commands such as
 lscpu
@@ -66,12 +73,6 @@ cd /proj/<project-name>/solution
 # cd /proj/berzelius-2023-215/solution
 ```
 
-Clone the source code repository and view the contents.
-```
-git clone https://github.com/ScilifelabDataCentre/serve-tutorials.git
-ls ./serve-tutorials/Webinars/2023-Using-containers-on-Berzelius/
-```
-
 Let us see what happens if we attempt to train our model outside of a container. 
 ```
 cd ./serve-tutorials/Webinars/2023-Using-containers-on-Berzelius/flowers-classification/02-scripts/
@@ -83,12 +84,6 @@ pip3 install matplotlib
 # observe error: "PermissionError: [Errno 13] Permission denied"
 ```
 
-Attempt to setup the training without using a container and observe that we are not allowed to install the required packages.
-```
-pip3 install ffmpeg
-# output:  error: could not create '/usr/local/lib/python3.6': Permission denied
-```
-
 Pull the docker image via Apptainer. Observe that Apptainer converts the OCI image to a singularity (.sif) file
 ```
 apptainer version
@@ -96,7 +91,7 @@ apptainer pull custom-pytorch.sif docker://ghcr.io/sandstromviktor/custom-pytorc
 ls
 ```
 
-Back in the compute terminal window, let us open a shell to the container using Apptainer
+Open a shell to the container using Apptainer
 ```
 apptainer shell --nv custom-pytorch.sif
 # -nv enables nvidia support
@@ -106,6 +101,11 @@ Observe that we have access to our project folder from within the image.
 ```
 pwd
 ls
+```
+
+We can also check the version of python that is available in the container and note that it may be different than the version of python that is available on the compute node. 
+```
+python3 -V
 ```
 
 Note that the user in the container is now a non-root user. Recall that the user was root when building the image but we are not permitted to run containers as root when run on Berzelius.
@@ -118,30 +118,30 @@ Note that we can install libraries in our container (we cannot pip install libra
 Apptainer> pip3 install ffmpeg
 ```
 
-Now we are ready to train our ML model. Navigate to the code folder and run model training on Berzelius using the container:
+Now we are ready to train our ML model. We should already be in the correct scripts folder, so simple run model training on Berzelius using the container:
 ```
-cd ./serve-tutorials/Webinars/2023-Using-containers-on-Berzelius/flowers-classification/02-scripts/
-ls
-python3 train.py --epochs=2
+python3 train.py --epochs=10 --batch_size=64 --lr=0.0001 --n_cpu=32 --validate_steps=200
+# this training scenario will take about 2 minutes
+# the same training on a typical notebook CPU will take about 1 hour
 ```
 
-The training will take some time. In the meantime, we can explore how to view currently open sessions / running jobs. In the original terminal window, execute: 
+The training will take some time. In the meantime, we can explore how to view currently open sessions / running jobs. In the original terminal window, execute squeue and note the jobid: 
 ```
 squeue -u <username>
 ```
 
-Note: We *can* create a python virtual environment and install our libraries there. But this requires extra work and is not always guaranteed to work because of underlying OS and libraries.
-
-Using a containerized solution can also improve efficiency in performing work and moving back and forth between the HPC and local work. Changes made in the container can be pushed to an image repository and pulled down to other local machines. 
+We can login to the compute node of our training job and monitor the GPU consumption:
+```
+jobsh -j $jobid
+nvidia-smi
+```
 
 When model training has completed, it will display the final validation accuracy:
 ```
 On epoch 10
-  Evaluating model on step 150
-  Epoch: 10/10...  Training Loss: 0.4173 Validation Loss: 0.0695 Validation Accuracy: 70.7812
-  Evaluating model on step 160
-  Epoch: 10/10...  Training Loss: 0.7346 Validation Loss: 0.0548 Validation Accuracy: 75.0846
-Training complete. Training duration 0:04:30.492253
+  Evaluating model on step 900
+  Epoch: 10/10...  Training Loss: 0.1126 Validation Loss: 0.7596 Validation Accuracy: 80.7559
+Training complete. Training duration 0:01:29.179998
 ```
 
 We observe that this sample task took only 4.5 minutes to train for 10 epochs using a single GPU on Berzelius. The same training on a typical CPU notebook will of course vary but took us about 50 minutes for 10 epochs.
@@ -151,6 +151,10 @@ Note that the model was saved to a pytorch archive file and the metrics and trai
 ls ./models/
 ls ./output/vgg19/
 ```
+
+Note: We *can* create a python virtual environment and install our libraries there. But this requires extra work and is not always guaranteed to work because of underlying OS and libraries.
+
+Using a containerized solution can also improve efficiency in performing work and moving back and forth between the HPC and local work. Changes made in the container can be pushed to an image repository and pulled down to other local machines.
 
 Finally exit from the container and exit the compute node so we do not continue to consume GPU resources
 ```
