@@ -142,7 +142,6 @@ for e in range(epochs):
             print(f"  Evaluating model on step {steps}")
             iteration_steps.append(steps)
             model.eval()
-            v_lost = 0
             v_accuracy=0
             for ii, (inputs2,labels2) in enumerate(validation_dataloader):
                 optimizer.zero_grad()
@@ -150,7 +149,7 @@ for e in range(epochs):
                 model.to(device)
                 with torch.no_grad():    
                     outputs = model.forward(inputs2)
-                    v_lost = criterion(outputs,labels2)
+                    v_lost = criterion(outputs,labels2).item()
                     ps = torch.exp(outputs).data
                     equality = (labels2.data == ps.max(1)[1])
                     v_accuracy += equality.type_as(torch.FloatTensor()).mean()
@@ -158,8 +157,8 @@ for e in range(epochs):
             v_lost = v_lost / len(validation_dataloader)
             v_accuracy = v_accuracy /len(validation_dataloader)
 
-            training_losses.append(running_loss.cpu()/print_every)
-            validation_losses.append(v_lost.cpu())
+            training_losses.append(running_loss/print_every)
+            validation_losses.append(v_lost)
 
             if v_lost < best_model_metric:
                 print("  Saving as best model")
