@@ -21,15 +21,15 @@ parser = argparse.ArgumentParser()
 #parser.add_argument('--model', type=str, default="vgg16")
 parser.add_argument('--epochs', type=int, default=2)
 parser.add_argument('--lr', type=float, default=0.001)
-parser.add_argument('--validate_epochs', type=int, default=1)
-parser.add_argument('--batch_size', type=int, default=32)
+parser.add_argument('--validate_steps', type=int, default=10)
+parser.add_argument('--batch_size', type=int, default=64)
 parser.add_argument('--n_cpu', type=int, default=0)
 
 opt = parser.parse_args()
 
 print(opt)
 
-device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print('Using device:', device)
 
 model_name = "vgg19"
@@ -66,15 +66,15 @@ valset = torchvision.datasets.Flowers102(root=DATA_PATH, split="val",
 testset = torchvision.datasets.Flowers102(root=DATA_PATH, split="test",
                                       download=True, transform=test_data_transforms)
 
+train_dataloader = torch.utils.data.DataLoader(trainset, batch_size = opt.batch_size, shuffle = True, num_workers = opt.n_cpu)
+validation_dataloader = torch.utils.data.DataLoader(valset, batch_size = opt.batch_size, shuffle = True, num_workers = opt.n_cpu)
+test_dataloader = torch.utils.data.DataLoader(testset, batch_size = opt.batch_size, shuffle = True, num_workers = opt.n_cpu)
 
-train_dataloader = torch.utils.data.DataLoader(trainset, batch_size = 64, shuffle = True)
-validation_dataloader = torch.utils.data.DataLoader(valset, batch_size = 64, shuffle = True)
-test_dataloader = torch.utils.data.DataLoader(testset, batch_size = 64, shuffle = True)
-
-# Use json file with flower categories to classes
-#with open( os.path.join(DATA_PATH,'flowers-102/cat-to-name.json'), 'r') as f:
-#    cat_to_name = json.load(f)
-#class_num = len(cat_to_name)
+print(f"Total number of images: {len(trainset)+len(valset)+len(testset)}")
+print(f"Nr of images in the training set: {len(trainset)}")
+print(f"Nr of images in the validation set: {len(valset)}")
+print(f"Nr of images in the test set: {len(testset)}")
+print("")
 
 # The number of classes
 class_num = 102
@@ -101,7 +101,7 @@ model.classifier = classifier
 
 # Begin training
 # Use the available GPU or CPU device
-model.to(device)
+model = torch.nn.DataParallel(model).to(device)
 
 epochs = opt.epochs
 
@@ -113,7 +113,7 @@ validation_metrics = []
 best_model_state = None
 best_model_metric = 100
 
-print_every = 10
+print_every = opt.validate_steps
 steps = 0
 start = dt.datetime.now()
 
