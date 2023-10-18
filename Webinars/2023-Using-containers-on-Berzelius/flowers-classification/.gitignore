@@ -1,0 +1,11 @@
+# Data
+/data/**
+
+# Saved models
+*/models/*
+
+# Result files
+**/output/*
+
+# keep .gitkeep files
+!/**/.gitkeep
