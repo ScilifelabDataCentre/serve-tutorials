@@ -144,7 +144,7 @@ On epoch 10
 Training complete. Training duration 0:01:29.179998
 ```
 
-We observe that this sample task took only 4.5 minutes to train for 10 epochs using a single GPU on Berzelius. The same training on a typical CPU notebook will of course vary but took us about 50 minutes for 10 epochs.
+We observe that this sample task takes only about 2 minutes to train for 10 epochs using two GPUs on Berzelius. The same training on a typical CPU notebook will of course vary but took us about one hour.
 
 Note that the model was saved to a pytorch archive file and the metrics and training graphs were created.
 ```
