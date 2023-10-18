@@ -158,8 +158,8 @@ for e in range(epochs):
             v_lost = v_lost / len(validation_dataloader)
             v_accuracy = v_accuracy /len(validation_dataloader)
 
-            training_losses.append(running_loss/print_every)
-            validation_losses.append(v_lost)
+            training_losses.append(running_loss.cpu()/print_every)
+            validation_losses.append(v_lost.cpu())
 
             if v_lost < best_model_metric:
                 print("  Saving as best model")
