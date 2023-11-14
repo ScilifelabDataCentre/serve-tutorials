@@ -22,7 +22,7 @@
 
 - Part 1. Building a user interface for your model
     - Basics and example apps (35 minutes)
-    - Hands-on part (15 minutes)
+    - Hands-on part (20 minutes)
 - Break (10 minutes)
 - Part 2. Packaging your application as a Docker image (demo, 15 minutes)
 - Part 3. Hosting your application on SciLifeLab Serve (demo, 15 minutes)
@@ -30,7 +30,7 @@
 
 ---
 
-## Part 1
+## Part 1: Using Gradio to build a user interface
 
 ---
 
@@ -115,7 +115,7 @@ Gradio supports:
 - etc.
 
 ---
-## Multiple inputs and multiple outputs
+### Multiple inputs and multiple outputs
 
 ```bash
 gradio example_apps/hello2_app.py
@@ -141,7 +141,7 @@ demo.launch(server_name="0.0.0.0", server_port=8080)
 
 ---
 
-## Additional features
+### Additional features
 
 Providing examples
 
@@ -202,6 +202,105 @@ Access through API
 ```python
 demo.launch(server_name="0.0.0.0", server_port=8080, show_api=False)
 ```
+
+----
+
+Inference without clicking the 'submit' button
+
+```python
+demo = gr.Interface(fn=greet, inputs="text", outputs="text", live=True)
+```
+
+---
+
+### Customization of the look of your app
+
+Title, description, reference:
+
+```bash
+gradio example_apps/hello4_app.py
+```
+
+```python [18-20]
+import gradio as gr
+
+def greet(name):
+   return "Hello " + name + "!"
+
+title = "Demo app"
+description = (
+  "<center>"
+  "Text, images, etc. can be added here with HTML or markdown formatting."
+  "</center>"
+)
+ref = "This app is related to the following article: [Article title](#). The code can be found here: [GitHub](#)"
+
+demo = gr.Interface(fn=greet, 
+                    inputs="text", 
+                    outputs="text", 
+                    title=title, 
+                    description=description, 
+                    article=ref)
+
+demo.launch(server_name="0.0.0.0", server_port=8080)
+```
+
+----
+
+Themes: pre-built or make your own
+
+```python
+demo = gr.Interface(fn=greet, inputs="text", outputs="text", theme=gr.themes.Soft())
+```
+
+https://www.gradio.app/guides/theming-guide
+
+----
+
+Gradio Blocks: https://www.gradio.app/docs/blocks
+
+---
+
+### Performance
+
+Built-in queueing system:
+
+```python
+demo.queue().launch(server_name="0.0.0.0", server_port=8080)
+```
+
+- Max number of requests in queue
+- Max number of threads
+- Improved hardware
+
+---
+
+## Time for hands-on work
+
+Option 1: build a Gradio app for our model/function
+
+Option 2: build a Gradio app for your own model/function
+
+---
+
+## Part 2: Packaging your application as a Docker image
+
+---
+
+### Image classification example app
+
+---
+
+## Part 3: Publishing your app on SciLifeLab Serve
+
+---
+
+### SciLifeLab Serve
+
+- https://serve.scilifelab.se/
+- Platform for hosting applications and machine learning models
+- Free to use for life science researchers affiliated with a Swedish research institution and their international collaborators
+- Each app receives 2 vCPU, 4 RAM by default; more can be requested with demonstrated need
 
 ---
 

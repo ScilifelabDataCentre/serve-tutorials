@@ -1,4 +1,4 @@
-# Slides for Building and sharing machine learning demo applications within life sciencess
+# Slides for Building and sharing machine learning demo applications within life sciences
 
 This folder contains slides for Building and sharing machine learning demo applications within life sciences project.
 
