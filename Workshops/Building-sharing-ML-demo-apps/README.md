@@ -220,6 +220,7 @@ COPY requirements.txt $HOME/requirements.txt
 COPY main.py $HOME/main.py
 # copy any other files that are needed for your app with the directory structure as your files expect
 COPY start-script.sh $HOME/start-script.sh
+COPY data/ $HOME/app/data
 
 RUN pip install --no-cache-dir -r requirements.txt \
     && chmod +x start-script.sh \
