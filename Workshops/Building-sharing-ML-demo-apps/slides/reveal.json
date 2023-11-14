@@ -1,0 +1,11 @@
+{
+  "controls": true,
+  "progress": false,
+  "history": true,
+  "center": true,
+  "transition": "none",
+  "slideNumber": "c/t",
+  "showSlideNumber": "all",
+  "width": "100%"
+}
+
