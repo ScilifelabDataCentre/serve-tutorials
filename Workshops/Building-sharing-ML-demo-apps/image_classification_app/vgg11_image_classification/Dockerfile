@@ -31,6 +31,8 @@ RUN chmod +x start-script.sh \
     && chown -R $USER:$USER $HOME \
     && rm -rf /var/lib/apt/lists/*
 
+RUN python3 -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+
 USER $USER
 EXPOSE 8080
 

@@ -5,7 +5,7 @@ from PIL import Image
 from torchvision import transforms
 import torchvision.models as models
 
-checkpoint = torch.load('data/mage_classification_vgg11.pth')
+checkpoint = torch.load('data/image_classification_vgg11.pth')
 model = models.vgg11()
 model.load_state_dict(checkpoint)
 model.eval()

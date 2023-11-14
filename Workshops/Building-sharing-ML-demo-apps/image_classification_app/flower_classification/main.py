@@ -21,4 +21,4 @@ interface = gr.Interface(fn=predict,
              inputs=gr.Image(type="pil"),
              outputs=gr.Label(num_top_classes=3))
 
-interface.launch(server_name="0.0.0.0", server_port=8080, debug=True)
+interface.launch(server_name="0.0.0.0", server_port=8080)
