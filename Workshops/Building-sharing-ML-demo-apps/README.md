@@ -233,7 +233,7 @@ ENTRYPOINT ["./start-script.sh"]
 
 ```
 
-This Dockerfile instructs to start with a base image containing Python version 3.11 (it is going to contain Ubuntu as operating system and components required to run Python), install the required packages listed in *requirements.txt*, copy all the scrupts and other necessary files for the app into the image (copy your own files here as well), and, finally, points to the script to start the app. The Dockerfile also contains information about which user should be running the app and which port it should expose.
+This Dockerfile instructs to start with a base image containing Python version 3.11 (it is going to contain Ubuntu as operating system and components required to run Python), install the required packages listed in *requirements.txt*, copy all the scripts and other necessary files for the app into the image (copy your own files here as well), and, finally, points to the script to start the app. The Dockerfile also contains information about which user should be running the app and which port it should expose.
 
 At this point, you should have the following file structure in your app directory:
 
@@ -241,9 +241,54 @@ At this point, you should have the following file structure in your app director
 ..
 ├── requirements.txt
 ├── main.py
+├── data   
+    └── ... (model and any other static files required)
 ├── ... (any other files your app requires)
 ├── start-script.sh
 └── Dockerfile
+```
+### Adding models to the data folder
+
+The models being used in these examples are publicly available and are listed below. You can chose which model you want to test and run follow the instructions to to download it.
+
+#### Flowers Classification Model
+
+This model has been trained on Scilifelab Serve and instructions on how to do that can be found [here](https://github.com/ScilifelabDataCentre/serve-tutorials/tree/main/Webinars/2023-Using-containers-on-Berzelius/flowers-classification). You can follow the instructions to train the model your self but keep in mind it takes quite a while (~ 4 hours) with limited CPUs. For information about the dataset used, [see](https://www.robots.ox.ac.uk/~vgg/data/flowers/102/).
+
+The app is configured to use the model from the data folder. To download the model to the data folder go into the directory
+
+```bash
+cd flower_classification/data/
+```
+then run the following command to download the model
+```bash
+curl -O -J https://nextcloud.dc.scilifelab.se/s/GSf2g5CAFxBPtMN/download
+```
+
+#### Resnet 18 Image Classification Model
+
+This model has been obtained from the official [Pytorch Model Zoo](https://pytorch.org/serve/model_zoo.html). The models here are packaged as .mar archives to work conveniently with [TorchServe](https://pytorch.org/serve/). We have unpacked the archives and added the .pth files (which can be used to load the model) to nextcloud and can be downloaded as follows.
+
+To download the model to the data folder go into the data directory
+```bash
+cd resnet_image_classification/data/
+```
+then run the following command to download the model
+```bash
+curl -O -J https://nextcloud.dc.scilifelab.se/s/6znJ2FPZPyLKaGa/download
+```
+
+#### VGG 11 Image Classification Model
+
+This model has been obtained from and older verions of the [Pytorch Model Zoo](https://jlin27.github.io/serve-1/model_zoo.html). The models here are packaged as .mar archives to work conveniently with [TorchServe](https://pytorch.org/serve/). We have unpacked the archives and added the .pth files (which can be used to load the model) to nextcloud and can be downloaded as follows.
+
+To download the model to the data folder go into the data directory
+```bash
+cd vgg11_image_classification/data/
+```
+then run the following command to download the model
+```bash
+curl -O -J https://nextcloud.dc.scilifelab.se/s/8FLB6JqJsPBDcWw/download
 ```
 
 ### Build a Docker image
@@ -286,7 +331,16 @@ Next, re-build your image as described above, this time including your DockerHub
 docker build -t <your-dockerhub-username>/<some-name>:<some-tag> .
 ```
 
-Once the image is built and visible on Docker Desktop, pick *"Push to Hub"* among the options for your app image. This should publish your image on *https://hub.docker.com/r/&lt;your-dockerhub-username&gt;/&lt;some-name&gt;:&lt;some-tag&gt;*. For example, our example app image is available on [TO BE ADDED TO BE ADDED TO BE ADDED].Please note that your image should stay available even after your app is published on Serve because it will be fetched with regular intervals.
+Once the image is built and visible on Docker Desktop, pick *"Push to Hub"* among the options for your app image. Alternateively, you can also use the following command from the terminal instead
+
+```bash
+docker push <your-dockerhub-username>/<some-name>:<some-tag>
+```
+keep in mind the you might need to login to you dockerhub user incase you haven't done so already. This can be done as follows
+```bash
+docker login --username=<your-dockerhub-username>
+```
+This should publish your image on *https://hub.docker.com/r/&lt;your-dockerhub-username&gt;/&lt;some-name&gt;:&lt;some-tag&gt;*. For example, our example app image for the flower image classification app is available on `hamzaisaeed/gradio-workshop:flower_classification`. Please note that your image should stay available even after your app is published on Serve because it will be fetched with regular intervals.
 
 ## Step 3. Hosting your application on SciLifeLab Serve
 
