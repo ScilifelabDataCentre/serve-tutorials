@@ -4,6 +4,10 @@
 
 ## Welcome
 
+While people are coming: how are you doing?
+
+QR CODE HERE
+
 ---
 
 ## Who we are
@@ -11,13 +15,33 @@
 - Who we are
 
 ---
+## Who you are
 
-## Target audience of this workshop
+QR here
 
-- Target audience of this workshop
+- Menti:
+    - How are you doing?
+    - What is your research field
+    - Your affiliation/organisation
+    - Do you know about
+        - Python for ML
+        - Python for web development
+        - Gradio
+        - Docker
+        - SciLifeLab Serve
+----
+
+Results here
+
+----
+
+More results here
+
+----
+
+More results here
 
 ---
-
 ## Today's plan
 
 - Part 1. Building a user interface for your model
@@ -65,9 +89,9 @@ import gradio as gr
 def greet(name):
    return "Hello " + name + "!"
 
-interface = gr.Interface(fn=greet, inputs="text", outputs="text")
+demo = gr.Interface(fn=greet, inputs="text", outputs="text")
 
-interface.launch(server_name="0.0.0.0", server_port=8080)
+demo.launch(server_name="0.0.0.0", server_port=8080)
 ```
 
 ---
@@ -94,9 +118,20 @@ def sepia(input_img):
     sepia_img /= sepia_img.max()
     return sepia_img
 
-interface = gr.Interface(fn=sepia, inputs=gr.Image(), outputs="image")
+demo = gr.Interface(fn=sepia, inputs=gr.Image(), outputs=gr.Image())
 
-interface.launch(server_name="0.0.0.0", server_port=8080)
+demo.launch(server_name="0.0.0.0", server_port=8080)
+```
+
+----
+
+Specifying labels for input and output
+
+```python
+demo = gr.Interface(fn=sepia, 
+                    inputs=gr.Image(label="Your image"), 
+                    outputs=gr.Image(label="Sepia filtered image")
+                    )
 ```
 
 ----
@@ -109,7 +144,6 @@ Gradio supports:
 - video 
 - slider
 - dropdown 
-- radio buttons
 - files
 - dataframes
 - etc.
@@ -121,7 +155,7 @@ Gradio supports:
 gradio example_apps/hello2_app.py
 ```
 
-```python [11-12]
+```python [3,7,11-12]
 import gradio as gr
 
 def greet(name, is_morning, temperature_F):
@@ -133,7 +167,7 @@ def greet(name, is_morning, temperature_F):
 demo = gr.Interface(
     fn=greet,
     inputs=["text", "checkbox", gr.Slider(0, 100)],
-    outputs=["text", "number"],
+    outputs=["text", "number"]
 )
 
 demo.launch(server_name="0.0.0.0", server_port=8080)
@@ -170,6 +204,12 @@ demo.launch(server_name="0.0.0.0", server_port=8080)
 
 ----
 
+Custom input and output components
+
+https://www.gradio.app/docs/components
+
+----
+
 Progress bar
 
 ```bash
@@ -196,12 +236,13 @@ demo.queue().launch(server_name="0.0.0.0", server_port=8080)
 Access through API
 
 - Custom Python and JavaScript clients for Gradio
-- REST API endpoint `/predict/api`
 - Can be disabled:
 
 ```python
 demo.launch(server_name="0.0.0.0", server_port=8080, show_api=False)
 ```
+
+- REST API endpoint `/predict/api`
 
 ----
 
@@ -221,7 +262,7 @@ Title, description, reference:
 gradio example_apps/hello4_app.py
 ```
 
-```python [18-20]
+```python [17-20]
 import gradio as gr
 
 def greet(name):

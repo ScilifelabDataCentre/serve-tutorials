@@ -11,6 +11,6 @@ def sepia(input_img):
     sepia_img /= sepia_img.max()
     return sepia_img
 
-demo = gr.Interface(fn=sepia, inputs=gr.Image(), outputs="image")
+demo = gr.Interface(fn=sepia, inputs=gr.Image(label="Your image"), outputs=gr.Image(label="Sepia filtered image"))
 
 demo.launch(server_name="0.0.0.0", server_port=8080)

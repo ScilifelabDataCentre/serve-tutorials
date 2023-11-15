@@ -47,9 +47,9 @@ import gradio as gr
 def greet(name):
    return "Hello " + name + "!"
 
-interface = gr.Interface(fn=greet, inputs="text", outputs="text")
+demo = gr.Interface(fn=greet, inputs="text", outputs="text")
 
-interface.launch(server_name="0.0.0.0", server_port=8080)
+demo.launch(server_name="0.0.0.0", server_port=8080)
 ```
 
 We start by importing the *gradio* package. We define the function that Gradio will use. This simple function takes one input and returns one output.
@@ -78,12 +78,18 @@ def sepia(input_img):
     sepia_img /= sepia_img.max()
     return sepia_img
 
-interface = gr.Interface(fn=sepia, inputs=gr.Image(), outputs="image")
+demo = gr.Interface(fn=sepia, inputs=gr.Image(), outputs="image")
 
-interface.launch(server_name="0.0.0.0", server_port=8080)
+demo.launch(server_name="0.0.0.0", server_port=8080)
 ```
 
-Gradio supports a large number of other input and output types, called *components*. For example, text, textbox, number, image, audio, video, slider, dropdown, radio buttons, files, dataframes, and so on. Different types of inputs and outputs can of course be combined - for example, a user can upload an image and receive a classification score as an output, we give an example of this below.
+Gradio supports [a large number of other input and output types](https://www.gradio.app/docs/components), called *components*. For example, text, textbox, number, image, audio, video, slider, dropdown, radio buttons, files, dataframes, and so on. Different types of inputs and outputs can of course be combined - for example, a user can upload an image and receive a classification score as an output, we give an example of this below.
+
+In order to change the label displayed to the user in the input or output fields, you can simply add a *label* argument to the inputs and outpus, as shown below.
+
+```python
+interface = gr.Interface(fn=sepia, inputs=gr.Image(lable="Your image"), outputs=gr.Image("Sepia filtered image"))
+```
 
 ### Multiple inputs and multiple outputs
 
