@@ -325,11 +325,146 @@ Option 2: build a Gradio app for your own model/function
 
 ---
 
-## Part 2: Packaging your application as a Docker image
+## Part 2: Packaging your application as a Docker Container Image
 
 ---
 
+#### Containers: packages of your application code together with dependencies
+
+---
+
+### Without Containers
+- Clone github repository or get code from an external source
+- Setup Environment and Install, uninstall packages and dependencies
+- Download data
+
+---
+
+### With Containers
+- Standardized, self contained packaged software
+- platform-agnostic (Linux, Mac, Windows)
+- Many different container engines are available. Docker is the most popular and widely used.
+- Other engines: Podman, Apptainer, Enroot, many more...   
+
+---
+
+### Pre requisites for deployment
+
+- To host your app on SciLifeLab Serve, you first need to package it as a Docker image.
+- If you don't have docker, you can install it from https://docs.docker.com/get-docker/.
+
+---
 ### Image classification example app
+- The model we will use in this example is a Flowers Classification Model pytoch model based on the 102 Category Flower Dataset
+- Trained on Scilifelab Serve inside a jupyter lab instance. 
+- You can follow the instructions mentioned in the Readme file in the github repository to train the model your self but keep in mind it takes quite a while (~ 4 hours) with limited CPUs. 
+- For information about the dataset used, [see](https://www.robots.ox.ac.uk/~vgg/data/flowers/102/).
+
+---
+
+### Structure
+The code for the app and the Dockerfile used to build the app is available in the `image_classification_app/` folder inside the [serve-tutorials](https://github.com/ScilifelabDataCentre/serve-tutorials/tree/building-sharing-ML-demo-apps/Workshops/Building-sharing-ML-demo-apps) repository.
+
+
+The directory has the following structure:
+
+```bash
+..
+├── requirements.txt
+├── main.py
+├── data   
+    └── ... (model and any other static files required)
+├── ... (any other files your app requires)
+├── start-script.sh
+└── Dockerfile
+```
+
+---
+
+### Dockerfile
+
+```dockerfile
+# Select base image (can be ubuntu, python, shiny etc)
+FROM python:3.11-slim
+
+# Create user name and home directory variables. 
+# The variables are later used as $USER and $HOME. 
+ENV USER=username
+ENV HOME=/home/$USER
+
+# Add user to system
+RUN useradd -m -u 1000 $USER
+
+# Set working directory (this is where the code should go)
+WORKDIR $HOME
+
+# Update system and install dependencies.
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    build-essential \
+    software-properties-common
+
+# Copy code and start script (this will place the files in home/username/)
+COPY requirements.txt $HOME/requirements.txt
+COPY main.py $HOME/main.py
+# copy any other files that are needed for your app with the directory structure as your files expect
+COPY start-script.sh $HOME/start-script.sh
+COPY data/ $HOME/app/data
+
+RUN pip install --no-cache-dir -r requirements.txt \
+    && chmod +x start-script.sh \
+    && chown -R $USER:$USER $HOME \
+    && rm -rf /var/lib/apt/lists/*
+
+USER $USER
+EXPOSE 8080
+
+ENTRYPOINT ["./start-script.sh"]
+
+```
+---
+
+### Main.py
+
+The main file for the gradio app
+
+```python
+import gradio as gr
+import torch
+from PIL import Image
+from torchvision import transforms
+import torchvision.models as models
+
+model = torch.load('data/flower_model_vgg19.pth')
+model.eval()
+# Download human-readable labels for ImageNet.
+with open('data/flower_dataset_labels.txt', 'r') as f:
+    labels=f.readlines()
+
+def predict(inp):
+  inp = transforms.ToTensor()(inp).unsqueeze(0)
+  with torch.no_grad():
+    prediction = torch.nn.functional.softmax(model(inp)[0], dim=0)
+    confidences = {labels[i]: float(prediction[i]) for i in range(102)}
+  return confidences
+
+interface = gr.Interface(fn=predict,
+             inputs=gr.Image(type="pil"),
+             outputs=gr.Label(num_top_classes=3))
+
+interface.launch(server_name="0.0.0.0", server_port=8080)
+```
+
+---
+
+### Start script
+
+Deplpoyment on Serve requires a script that will be launching your application. Create a file *start-script.sh* and put it in the same directory as your app.
+
+```bash
+#!/bin/bash
+
+python main.py
+```
 
 ---
 
@@ -342,7 +477,7 @@ Option 2: build a Gradio app for your own model/function
 - https://serve.scilifelab.se/
 - Platform for hosting applications and machine learning models
 - Free to use for life science researchers affiliated with a Swedish research institution and their international collaborators
-- Each app receives 2 vCPU, 4 RAM by default; more can be requested with demonstrated need
+- Each app receives 2 vCPU, 4GB RAM by default; more can be requested with demonstrated need
 
 ---
 
