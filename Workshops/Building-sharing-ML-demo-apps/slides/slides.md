@@ -4,42 +4,43 @@
 
 ## Welcome
 
-While people are coming: how are you doing?
+While people are coming in: How are you doing?
 
-QR CODE HERE
+<img data-src="menti_qr.png" height="420" />
+
+or go to menti.com and use code 4350 7076
 
 ---
 
 ## Who we are
 
-- Who we are
+- SciLifeLab -> SciLifeLab Data Centre -> SciLifeLab Serve team
+- Today:
+    - Arnold Kochari
+    - Hamza Imran Saeed
+- serve@scilifelab.se
 
 ---
+
 ## Who you are
 
-QR here
+<img data-src="menti_qr.png" height="420" />
 
-- Menti:
-    - How are you doing?
-    - What is your research field
-    - Your affiliation/organisation
-    - Do you know about
-        - Python for ML
-        - Python for web development
-        - Gradio
-        - Docker
-        - SciLifeLab Serve
-----
+or go to menti.com and use code 4350 7076
 
-Results here
+---
 
-----
+<section data-background-iframe="https://www.mentimeter.com/app/presentation/alhxr8rtvrksuu9ni6egtmkde8zzx7iu/embed" data-background-interactive>
+</section>
 
-More results here
 
-----
+---
 
-More results here
+Find the written tutorial for today here:
+
+<img data-src="tutorial_qr.png" height="420" />
+
+http://bit.ly/47vwato
 
 ---
 ## Today's plan
