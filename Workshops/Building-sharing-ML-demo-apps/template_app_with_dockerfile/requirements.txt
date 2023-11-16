@@ -1,2 +1,2 @@
-gradio==3.5.0
+gradio==3.34.0
 httpx==0.24.1
