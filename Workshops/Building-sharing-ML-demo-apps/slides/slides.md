@@ -1,7 +1,3 @@
-# Building and sharing machine learning demo applications in life sciences: a practical tutorial
-
----
-
 ## Welcome
 
 While people are coming in: How are you doing?
@@ -9,6 +5,10 @@ While people are coming in: How are you doing?
 <img data-src="menti_qr.png" height="420" />
 
 or go to menti.com and use code 4350 7076
+
+---
+
+# Building and sharing machine learning demo applications within life sciences: a practical tutorial
 
 ---
 
@@ -102,7 +102,7 @@ demo.launch(server_name="0.0.0.0", server_port=8080)
 Image input and output:
 
 ```bash
-gradio example_apps/sepia.py
+gradio example_apps/sepia_app.py
 ```
 
 ```python [14]
@@ -243,7 +243,7 @@ Access through API
 demo.launch(server_name="0.0.0.0", server_port=8080, show_api=False)
 ```
 
-- REST API endpoint `/predict/api`
+- REST API endpoint `/api/predict`
 
 ----
 
@@ -319,9 +319,12 @@ demo.queue().launch(server_name="0.0.0.0", server_port=8080)
 
 ## Time for hands-on work
 
-Option 1: build a Gradio app for our model/function
-
-Option 2: build a Gradio app for your own model/function
+- **Option 1:** build a Gradio app for our model/function
+    - The example app/model is in the `hands_on_app/ folder`
+    - Install the packages from `hands_on_app/requirements.txt`
+    - Add a Gradio app to `hands_on_app/main.py`
+    - Make your app fancy!
+- **Option 2:** build a Gradio app for your own model/function
 
 ---
 
@@ -356,7 +359,6 @@ Option 2: build a Gradio app for your own model/function
 ---
 ### Image classification example app
 - The model we will use in this example is a Flowers Classification Model pytoch model based on the 102 Category Flower Dataset
-- Trained on Scilifelab Serve inside a jupyter lab instance. 
 - You can follow the instructions mentioned in the Readme file in the github repository to train the model your self but keep in mind it takes quite a while (~ 4 hours) with limited CPUs. 
 - For information about the dataset used, [see](https://www.robots.ox.ac.uk/~vgg/data/flowers/102/).
 
@@ -468,6 +470,10 @@ python main.py
 
 ---
 
+Demo
+
+---
+
 ## Part 3: Publishing your app on SciLifeLab Serve
 
 ---
@@ -478,6 +484,27 @@ python main.py
 - Platform for hosting applications and machine learning models
 - Free to use for life science researchers affiliated with a Swedish research institution and their international collaborators
 - Each app receives 2 vCPU, 4GB RAM by default; more can be requested with demonstrated need
+
+---
+
+Demo
+
+---
+
+## Time for hands-on work
+
+We are happy to help and answer questions. 
+
+Options:
+- Continue working on your app
+- Try packaging your app as a Docker image
+- Try publishing an app on SciLifeLab Serve
+
+---
+
+## That's it from us. Thank you!
+
+Please fill out the evaluation form you will receive by email.
 
 ---
 

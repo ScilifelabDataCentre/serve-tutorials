@@ -135,7 +135,7 @@ By default the apps created and published with Gradio also provide information o
 demo.launch(server_name="0.0.0.0", server_port=8080, show_api=False)
 ```
 
-A REST API endpoint is also created automatically though it is not described in the user interface in the latest version of Gradio; the REST API endpoint is `/predict/api`.
+A REST API endpoint is also created automatically though it is not described in the user interface in the latest version of Gradio; the REST API endpoint is `/api/predict`.
 
 #### Inference without clicking the 'submit' button
 
@@ -174,12 +174,6 @@ Another parameter that can be used to improve performance is the maximum number 
 Finally, performance will also depend on the hardware on which your app is running.
 
 This is an advanced topic so we refer to [Gradio documentation for more information](https://www.gradio.app/guides/setting-up-a-demo-for-maximum-performance). If you are hosting your Gradio application on SciLifeLab Serve, get in touch with us and we can help you find the best Gradio parameters and hardware to improve performance.
-
-### Image classification example app
-
-Putting together some of the Gradio functionality described above we prepared an example image classification app to demonstrate how you can build apps with complex machine learning models behind. This example is `image_classificastion_app/main.py`. Here, we used.... TO BE WRITTEN TO BE WRITTEN TO BE WRITTEN TO BE WRITTEN. 
-
-You can find other examples of image classification apps in the official Gradio documentation: [example with PyTorch](https://www.gradio.app/guides/image-classification-in-pytorch), [example with TensforFlow](https://www.gradio.app/guides/image-classification-in-tensorflow).
 
 ## Step 2. Packaging your application as a Docker image
 
@@ -260,7 +254,7 @@ The models being used in these examples are publicly available and are listed be
 
 #### Flowers Classification Model
 
-This model has been trained on Scilifelab Serve and instructions on how to do that can be found [here](https://github.com/ScilifelabDataCentre/serve-tutorials/tree/main/Webinars/2023-Using-containers-on-Berzelius/flowers-classification). You can follow the instructions to train the model your self but keep in mind it takes quite a while (~ 4 hours) with limited CPUs. For information about the dataset used, [see](https://www.robots.ox.ac.uk/~vgg/data/flowers/102/).
+For information about how this model was trained can be found [here](https://github.com/ScilifelabDataCentre/serve-tutorials/tree/main/Webinars/2023-Using-containers-on-Berzelius/flowers-classification). You can follow the instructions to train the model your self but keep in mind it takes quite a while (~ 4 hours) with limited CPUs. For information about the dataset used, [see](https://www.robots.ox.ac.uk/~vgg/data/flowers/102/).
 
 The app is configured to use the model from the data folder. To download the model to the data folder go into the directory
 
