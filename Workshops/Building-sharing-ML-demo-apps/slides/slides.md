@@ -322,6 +322,7 @@ demo.queue().launch(server_name="0.0.0.0", server_port=8080)
 - **Option 1:** build a Gradio app for our model/function
     - The example app/model is in the `hands_on_app/ folder`
     - Install the packages from `hands_on_app/requirements.txt`
+    - Download and copy the data to `data/flower_model_vgg19.pth`
     - Add a Gradio app to `hands_on_app/main.py`
     - Make your app fancy!
 - **Option 2:** build a Gradio app for your own model/function

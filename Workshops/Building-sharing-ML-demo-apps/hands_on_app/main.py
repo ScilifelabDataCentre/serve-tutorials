@@ -4,6 +4,9 @@ from PIL import Image
 from torchvision import transforms
 import torchvision.models as models
 
+# Before you start, download and place the trained model to the data folder, it should be available at 'data/flower_model_vgg19.pth'
+# https://nextcloud.dc.scilifelab.se/s/GSf2g5CAFxBPtMN/download
+
 model = torch.load('data/flower_model_vgg19.pth')
 model.eval()
 # Download human-readable labels for ImageNet.
