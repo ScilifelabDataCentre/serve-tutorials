@@ -16,7 +16,7 @@ In this tutorial we use examples from the official [Gradio documentation](https:
 
 ### Preparation
 
-In order to follow this tutorial, make sure that you are running Python 3.8 or later. Clone the repository that we prepared, create a virual environment, and install the [gradio](https://pypi.org/project/gradio/) package.
+In order to follow this tutorial, make sure that you are running Python 3.10 or later. Clone the repository that we prepared, create a virtual environment, and install the [Gradio](https://pypi.org/project/gradio/) package.
 
 ```bash
 python --version
@@ -52,9 +52,9 @@ demo = gr.Interface(fn=greet, inputs="text", outputs="text")
 demo.launch(server_name="0.0.0.0", server_port=8080)
 ```
 
-We start by importing the *gradio* package. We define the function that Gradio will use. This simple function takes one input and returns one output.
+We start by importing the *Gradio* package. We define the function that Gradio will use. This simple function takes one input and returns one output.
 
-Using the *Interface* class we define what the app should look like. We pass the following parameters: *fn* specifies the function that the app should be running, *inputs* specifies what fields the user should be allowed to give as input, *output* specifies what kind of output the function will be showing the user.
+Using the `Interface` class we define what the app should look like. We pass the following parameters: `fn` specifies the function that the app should be running, `inputs` specifies what fields the user should be allowed to give as input, `output` specifies what kind of output the function will be showing the user.
 
 Finally, the launch method instructs to launch the defined app and we specify that we want it to run on port 8080.
 
@@ -62,7 +62,7 @@ This example demonstrates the three basic components that your app will need - t
 
 ### Input and output types
 
-We saw how Gradio can work with text input and output. In the example `example_apps/sepia_app.py` we can see how it can take an image input and provide an image output. We do this by changing the *inputs* and *outputs* parameters in the interface definition.
+We saw how Gradio can work with text input and output. In the example `example_apps/sepia_app.py` we can see how it can take an image input and provide an image output. We do this by changing the `inputs` and `outputs` parameters in the interface definition.
 
 ```python
 import numpy as np
@@ -83,9 +83,9 @@ demo = gr.Interface(fn=sepia, inputs=gr.Image(), outputs="image")
 demo.launch(server_name="0.0.0.0", server_port=8080)
 ```
 
-Gradio supports [a large number of other input and output types](https://www.gradio.app/docs/components), called *components*. For example, text, textbox, number, image, audio, video, slider, dropdown, radio buttons, files, dataframes, and so on. Different types of inputs and outputs can of course be combined - for example, a user can upload an image and receive a classification score as an output, we give an example of this below.
+Gradio supports [a large number of other input and output types](https://www.gradio.app/docs/gradio/introduction), called *components*. For example, text, textbox, number, image, audio, video, slider, dropdown, radio buttons, files, dataframes, and so on. Different types of inputs and outputs can of course be combined - for example, a user can upload an image and receive a classification score as an output, we give an example of this below.
 
-In order to change the label displayed to the user in the input or output fields, you can simply add a *label* argument to the inputs and outpus, as shown below.
+In order to change the label displayed to the user in the input or output fields, you can simply add a `label` argument to the `inputs` and `outputs`, as shown below.
 
 ```python
 interface = gr.Interface(fn=sepia, inputs=gr.Image(lable="Your image"), outputs=gr.Image("Sepia filtered image"))
@@ -113,7 +113,7 @@ demo = gr.Interface(
 demo.launch(server_name="0.0.0.0", server_port=8080)
 ```
 
-Note that the number and the order of input and output parameters in the function *greet* and in the Gradio interface definition match.
+Note that the number and the order of input and output parameters in the function `greet` and in the Gradio interface definition match.
 
 ### Additional features
 
@@ -121,15 +121,15 @@ Now that we looked at the basics let's take a look at some of the ways in which 
 
 #### Providing examples
 
-You might want to provide example inputs for your app so that the users can try it out quickly or know how to prepare their input. This can be done by simply adding an *[examples](https://www.gradio.app/docs/examples)* argument to your interface definition. You can see an example of this in `example_apps/hello3_app.py`.
+You might want to provide example inputs for your app so that the users can try it out quickly or know how to prepare their input. This can be done by simply adding an [`examples`](https://www.gradio.app/main/docs/gradio/examples) argument to your interface definition. You can see an example of this in `example_apps/hello3_app.py`.
 
 #### Progress bar
 
-Gradio provides a [custom progress tracker](https://www.gradio.app/docs/progress) that can be added to your function to show how far the processing has gone. This is demonstrated in the example `example_apps/progress_app.py`.
+Gradio provides a [custom progress tracker](https://www.gradio.app/main/docs/gradio/progress) that can be added to your function to show how far the processing has gone. This is demonstrated in the example `example_apps/progress_app.py`.
 
 #### Access through API
 
-By default the apps created and published with Gradio also provide information on how it can be accessed using an API through custom Python and JavaScript clients. At the bottom of the app there is a link "Use via API" which gives instructions how the app can be accessed using these clients. This can be disabled by setting *show_api* to *False* in the app launch command, as shown below.
+By default the apps created and published with Gradio also provide information on how it can be accessed using an API through custom Python and JavaScript clients. At the bottom of the app there is a link "Use via API" which gives instructions how the app can be accessed using these clients. This can be disabled by setting `show_api` to `False` in the app launch command, as shown below.
 
 ```python
 demo.launch(server_name="0.0.0.0", server_port=8080, show_api=False)
@@ -139,7 +139,7 @@ A REST API endpoint is also created automatically though it is not described in 
 
 #### Inference without clicking the 'submit' button
 
-If you don't want your users to have to click on "Submit" to get a prediction result, you can simply pass variable *live=True* in your interface defition, as shown below. We don't recommend doing this for all apps, however, because for example if your users are typing text you will be unnessarily loading the servers while the text is being typed (since your function execution will be triggered with every typed letter) rather than running an inference once at the end. Performance of your server might become an issue if your app becomes popular so you should keep that in consideration (see more info also below).
+If you don't want your users to have to click on "Submit" to get a prediction result, you can simply pass variable `live=True` in your interface definition, as shown below. We don't recommend doing this for all apps, however, because for example if your users are typing text you will be unnecessarily loading the servers while the text is being typed (since your function execution will be triggered with every typed letter) rather than running an inference once at the end. Performance of your server might become an issue if your app becomes popular so you should keep that in consideration (see more info also below).
 
 ```python
 demo = gr.Interface(fn=greet, inputs="text", outputs="text", live=True)
@@ -147,9 +147,9 @@ demo = gr.Interface(fn=greet, inputs="text", outputs="text", live=True)
 
 ### Customization of the look of your app
 
-You might want to add a title, description, etc. for your app that should be displayed alongside the input and output. These can be specified as parameters of the interface. Some of the options are: title, description, article, thumbnail, CSS (see [the Interface documentation](https://www.gradio.app/docs/interface) for all parameters). In the example `example_apps/hello4_app.py` we added some of these parameters.
+You might want to add a title, description, etc. for your app that should be displayed alongside the input and output. These can be specified as parameters of the interface. Some of the options are: title, description, article, thumbnail, CSS (see [the Interface documentation](https://www.gradio.app/docs/gradio/interface) for all parameters). In the example `example_apps/hello4_app.py` we added some of these parameters.
 
-There are multiple ways to change the visuals of a Gradio app.  One way to customize the look is to use [Gradio themes](https://www.gradio.app/guides/theming-guide). You can use one of the prebuilt themes (e.g. Glass, Monochrome, Soft) with your app or [create your own theme](https://www.gradio.app/guides/theming-guide). The theme can be set by simply specifying the *theme* variable in the interface defition as shown below.
+There are multiple ways to change the visuals of a Gradio app.  One way to customize the look is to use [Gradio themes](https://www.gradio.app/guides/theming-guide). You can use one of the pre built themes (e.g. Glass, Monochrome, Soft) with your app or [create your own theme](https://www.gradio.app/guides/theming-guide). The theme can be set by simply specifying the `theme` variable in the interface definition as shown below.
 
 ```python
 demo = gr.Interface(fn=greet, inputs="text", outputs="text", theme=gr.themes.Soft())
@@ -161,7 +161,7 @@ We do not cover customization of your app further here because there are many po
 
 ### Performance
 
-In case your app becomes popular and you have many users coming to make predictions at the same time we want to make sure we can handle the load. One of the most useful aspects of using Gradio is provides some tools to help with performance out of the box. Specifically, it provides [a queueing system](https://www.gradio.app/guides/setting-up-a-demo-for-maximum-performance) that you can easily set up by adding the *.queue* method before you launch your app.
+In case your app becomes popular and you have many users coming to make predictions at the same time we want to make sure we can handle the load. One of the most useful aspects of using Gradio is provides some tools to help with performance out of the box. Specifically, it provides [a queueing system](https://www.gradio.app/guides/setting-up-a-demo-for-maximum-performance) that you can easily set up by adding the `.queue` method before you launch your app.
 
 ```python
 demo.queue().launch(server_name="0.0.0.0", server_port=8080)
@@ -183,7 +183,7 @@ You will need to have [Docker Desktop](https://www.docker.com/products/docker-de
 
 ### Create start script
 
-One additional component you need is a script that will be launching your application. In our example, the start script is simple. Create a file *start-script.sh* and put it in the same directory as your app.
+One additional component you need is a script that will be launching your application. In our example, the start script is simple. Create a file `start-script.sh` and put it in the same directory as your app.
 
 ```bash
 #!/bin/bash
@@ -234,7 +234,7 @@ ENTRYPOINT ["./start-script.sh"]
 
 ```
 
-This Dockerfile instructs to start with a base image containing Python version 3.11 (it is going to contain Ubuntu as operating system and components required to run Python), install the required packages listed in *requirements.txt*, copy all the scripts and other necessary files for the app into the image (copy your own files here as well), and, finally, points to the script to start the app. The Dockerfile also contains information about which user should be running the app and which port it should expose.
+This Dockerfile instructs to start with a base image containing Python version 3.11 (it is going to contain Ubuntu as operating system and components required to run Python), install the required packages listed in `requirements.txt`, copy all the scripts and other necessary files for the app into the image (copy your own files here as well), and, finally, points to the script to start the app. The Dockerfile also contains information about which user should be running the app and which port it should expose.
 
 At this point, you should have the following file structure in your app directory:
 
@@ -268,7 +268,7 @@ curl -O -J https://nextcloud.dc.scilifelab.se/s/GSf2g5CAFxBPtMN/download
 
 #### Resnet 18 Image Classification Model
 
-This model has been obtained from the official [Pytorch Model Zoo](https://pytorch.org/serve/model_zoo.html). The models here are packaged as .mar archives to work conveniently with [TorchServe](https://pytorch.org/serve/). We have unpacked the archives and added the .pth files (which can be used to load the model) to nextcloud and can be downloaded as follows.
+This model has been obtained from the official [Pytorch Model Zoo](https://pytorch.org/serve/model_zoo.html). The models here are packaged as .mar archives to work conveniently with [TorchServe](https://pytorch.org/serve/). We have unpacked the archives and added the `.pth` files (which can be used to load the model) to Nextcloud and can be downloaded as follows.
 
 To download the model to the data folder go into the data directory
 ```bash
@@ -281,7 +281,7 @@ curl -O -J https://nextcloud.dc.scilifelab.se/s/6znJ2FPZPyLKaGa/download
 
 #### VGG 11 Image Classification Model
 
-This model has been obtained from and older verions of the [Pytorch Model Zoo](https://jlin27.github.io/serve-1/model_zoo.html). The models here are packaged as .mar archives to work conveniently with [TorchServe](https://pytorch.org/serve/). We have unpacked the archives and added the .pth files (which can be used to load the model) to nextcloud and can be downloaded as follows.
+This model has been obtained from and older versions of the [Pytorch Model Zoo](https://jlin27.github.io/serve-1/model_zoo.html). The models here are packaged as .mar archives to work conveniently with [TorchServe](https://pytorch.org/serve/). We have unpacked the archives and added the `.pth` files (which can be used to load the model) to Nextcloud and can be downloaded as follows.
 
 To download the model to the data folder go into the data directory
 ```bash
@@ -332,16 +332,19 @@ Next, re-build your image as described above, this time including your DockerHub
 docker build -t <your-dockerhub-username>/<some-name>:<some-tag> .
 ```
 
-Once the image is built and visible on Docker Desktop, pick *"Push to Hub"* among the options for your app image. Alternateively, you can also use the following command from the terminal instead
+Once the image is built and visible on Docker Desktop, pick *"Push to Hub"* among the options for your app image. Alternatively, you can also use the following command from the terminal instead
 
 ```bash
 docker push <your-dockerhub-username>/<some-name>:<some-tag>
 ```
-keep in mind the you might need to login to you dockerhub user incase you haven't done so already. This can be done as follows
+
+Keep in mind the you might need to login to you DockerHub user in case you haven't done so already. This can be done as follows:
+
 ```bash
 docker login --username=<your-dockerhub-username>
 ```
-This should publish your image on *https://hub.docker.com/r/&lt;your-dockerhub-username&gt;/&lt;some-name&gt;:&lt;some-tag&gt;*. For example, our example app image for the flower image classification app is available on `hamzaisaeed/gradio-workshop:flower_classification`. Please note that your image should stay available even after your app is published on Serve because it will be fetched with regular intervals.
+
+This should publish your image on `https://hub.docker.com/r/&lt;your-dockerhub-username&gt;/&lt;some-name&gt;:&lt;some-tag&gt;`. For example, our example app image for the flower image classification app is available on `hamzaisaeed/gradio-workshop:flower_classification`. Please note that your image should stay available even after your app is published on Serve because it will be fetched with regular intervals.
 
 ## Step 3. Hosting your application on SciLifeLab Serve
 
@@ -351,7 +354,7 @@ If you do not already have a user account on SciLifeLab Serve, [create an accoun
 
 ### Create a project
 
-Every app and model has to be located within a project. Projects that you have created/been granted access to can be found under **[My projects](/projects/)** page.
+Every app and model has to be located within a project. Projects that you have created/been granted access to can be found under **[My projects](https://serve.scilifelab.se/projects/)** page.
 
 You need to be logged in to create a project. To create a project, click on the corresponding button on that page. Choose blank/default project if asked. The name and description of the project are visible only to you and those who you grant access to the project. Once the project is created, you will be taken to the project dashboard where you can create different types of apps.
 
@@ -361,13 +364,13 @@ In order to host an app that we just built click the Create button on the Custom
 
 * **Name:** Name of the app that will be displayed on the Public apps page.
 * **Description:** Provide a brief description of the app, will also be displayed on the Public apps page.
-* **Subdomain:** This is the subdomain that the deployed app will be available at (e.g., a subdomain of r46b61563 would mean that the app would be available at r46b61563.serve.scilifelab.se). If no subdomain name is entered, a random name will be genrated by default. By clicking on New you can specify the custom subdomain name of your choice (provided that it is not already taken). This subdomain will then appear in the Subdomain options and the subdomain will appear in the format 'name-you-chose.serve.scilifelab.se'.
+* **Subdomain:** This is the subdomain that the deployed app will be available at (e.g., a subdomain of r46b61563 would mean that the app would be available at r46b61563.serve.scilifelab.se). If no subdomain name is entered, a random name will be generated by default. By clicking on New you can specify the custom subdomain name of your choice (provided that it is not already taken). This subdomain will then appear in the Subdomain options and the subdomain will appear in the format 'name-you-chose.serve.scilifelab.se'.
 * **Permissions:** The permissions for the app. There are 3 levels of permissions you can choose from:
   - **Private:** The app can only be accessed by the user that created the app (sign in required). Please note that we only allow the permissions to be set to Private temporarily, while you are developing the app. Eventually each app should be published publicly.
   - **Project:** All members of the project where the app is located will be able to access the app (sign in required). Please note that we only allow the permissions to be set to Project temporarily, while you are developing the app. Eventually each app should be published publicly.
   - **Public:** Anyone with the URL can access the app and the app will be displayed under Public apps page.
-* **App Port:** The port that the your app runs on (in case of our template it will be 8080).
-* **DockerHub Image:** Name of the image on DockerHub or full url to the image on a different repository.
+* **App Port:** The port that the your app runs on (in case of our template it will be `8080`).
+* **DockerHub Image:** Name of the image on DockerHub or full URL to the image on a different repository.
 
 You can leave the other fields as default.
 
