@@ -4,11 +4,13 @@ While people are coming in: How are you doing?
 
 <img data-src="menti_qr.png" height="420" />
 
-or go to menti.com and use code 4350 7076
+<!-- TODO: Update link -->
+
+or go to [menti.com](https://menti.com/) and use code XXXX XXXX
 
 ---
 
-# Building and sharing machine learning demo applications within life sciences: a practical tutorial
+## Building and sharing machine learning demo applications within life sciences: a practical tutorial
 
 ---
 
@@ -17,7 +19,8 @@ or go to menti.com and use code 4350 7076
 - SciLifeLab -> SciLifeLab Data Centre -> SciLifeLab Serve team
 - Today:
     - Arnold Kochari
-    - Hamza Imran Saeed
+    - Johan Alfredéen
+    - Nikita Churikov
 - serve@scilifelab.se
 
 ---
@@ -26,9 +29,13 @@ or go to menti.com and use code 4350 7076
 
 <img data-src="menti_qr.png" height="420" />
 
-or go to menti.com and use code 4350 7076
+<!-- TODO: Update link -->
+
+or go to menti.com and use code XXXX XXXX
 
 ---
+
+<!-- TODO: Update link -->
 
 <section data-background-iframe="https://www.mentimeter.com/app/presentation/alhxr8rtvrksuu9ni6egtmkde8zzx7iu/embed" data-background-interactive>
 </section>
@@ -40,10 +47,12 @@ Find the written tutorial for today here:
 
 <img data-src="tutorial_qr.png" height="420" />
 
-http://bit.ly/47vwato
+[bit.ly/47vwato](http://bit.ly/47vwato)
 
 ---
 ## Today's plan
+
+<!-- TODO: This slide could be made less intimidating -->
 
 - Part 1. Building a user interface for your model
     - Basics and example apps (35 minutes)
@@ -320,7 +329,7 @@ demo.queue().launch(server_name="0.0.0.0", server_port=8080)
 ## Time for hands-on work
 
 - **Option 1:** build a Gradio app for our model/function
-    - The example app/model is in the `hands_on_app/ folder`
+    - The example app/model is in the `hands_on_app/folder`
     - Install the packages from `hands_on_app/requirements.txt`
     - Download and copy the data to `data/flower_model_vgg19.pth`
     - Add a Gradio app to `hands_on_app/main.py`
@@ -338,16 +347,16 @@ demo.queue().launch(server_name="0.0.0.0", server_port=8080)
 ---
 
 ### Without Containers
-- Clone github repository or get code from an external source
-- Setup Environment and Install, uninstall packages and dependencies
-- Download data
+- Clone GitHub repository or get code from an external source;
+- Setup Environment and Install, uninstall packages and dependencies;
+- Download data;
 
 ---
 
 ### With Containers
-- Standardized, self contained packaged software
-- platform-agnostic (Linux, Mac, Windows)
-- Many different container engines are available. Docker is the most popular and widely used.
+- Standardized, self contained packaged software;
+- Platform-agnostic (Linux, Mac, Windows);
+- Many different container engines are available. Docker is the most popular and widely used;
 - Other engines: Podman, Apptainer, Enroot, many more...   
 
 ---
@@ -355,13 +364,14 @@ demo.queue().launch(server_name="0.0.0.0", server_port=8080)
 ### Pre requisites for deployment
 
 - To host your app on SciLifeLab Serve, you first need to package it as a Docker image.
-- If you don't have docker, you can install it from https://docs.docker.com/get-docker/.
+- If you don't have docker, you can install it from [docs.docker.com/get-docker](https://docs.docker.com/get-docker/).
 
 ---
 ### Image classification example app
-- The model we will use in this example is a Flowers Classification Model pytoch model based on the 102 Category Flower Dataset
-- You can follow the instructions mentioned in the Readme file in the github repository to train the model your self but keep in mind it takes quite a while (~ 4 hours) with limited CPUs. 
-- For information about the dataset used, [see](https://www.robots.ox.ac.uk/~vgg/data/flowers/102/).
+- The model we will use in this example is a [Flowers Classification Model PyToch model](https://github.com/ScilifelabDataCentre/serve-tutorials/tree/main/Webinars/2023-Using-containers-on-Berzelius/flowers-classification) based on the [102 Category Flower Dataset](https://www.robots.ox.ac.uk/~vgg/data/flowers/102/);
+- You can follow the instructions mentioned in the [README](https://github.com/ScilifelabDataCentre/serve-tutorials/tree/main/Workshops/Building-sharing-ML-demo-apps) file in the GitHub repository to train the model your self but keep in mind it takes quite a while (~ 4 hours) with limited CPUs. 
+
+<!-- TODO: Link can add qr code to menti for the link to GitHub. -->
 
 ---
 
@@ -428,7 +438,7 @@ ENTRYPOINT ["./start-script.sh"]
 
 ### Main.py
 
-The main file for the gradio app
+The main file for the Gradio app
 
 ```python
 import gradio as gr
@@ -461,7 +471,7 @@ interface.launch(server_name="0.0.0.0", server_port=8080)
 
 ### Start script
 
-Deplpoyment on Serve requires a script that will be launching your application. Create a file *start-script.sh* and put it in the same directory as your app.
+Deployment on Serve requires a script that will be launching your application. Create a file *start-script.sh* and put it in the same directory as your app.
 
 ```bash
 #!/bin/bash
@@ -481,10 +491,10 @@ Demo
 
 ### SciLifeLab Serve
 
-- https://serve.scilifelab.se/
-- Platform for hosting applications and machine learning models
-- Free to use for life science researchers affiliated with a Swedish research institution and their international collaborators
-- Each app receives 2 vCPU, 4GB RAM by default; more can be requested with demonstrated need
+- https://serve.scilifelab.se/;
+- Platform for hosting applications and machine learning models;
+- Free to use for life science researchers affiliated with a Swedish research institution and their international collaborators;
+- Each app receives 2 vCPU, 4GB RAM by default; more can be requested with demonstrated need.
 
 ---
 
