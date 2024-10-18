@@ -16,7 +16,7 @@ In this tutorial we use examples from the official [Gradio documentation](https:
 
 ### Preparation
 
-In order to follow this tutorial, make sure that you are running Python 3.10 or later. Clone the repository that we prepared, create a virtual environment, and install the [Gradio](https://pypi.org/project/gradio/) package.
+In order to follow this tutorial, make sure that you are running Python 3.10 or later.
 
 ```bash
 python --version
@@ -24,6 +24,7 @@ git clone https://github.com/ScilifelabDataCentre/serve-tutorials
 cd serve-tutorials/Workshops/Building-sharing-ML-demo-apps/
 python -m venv .venv
 source .venv/bin/activate
+pip install --upgrade pip
 pip install gradio
 ```
 
@@ -37,7 +38,7 @@ We start with the basic case where the user provides custom input in a text fiel
 gradio example_apps/hello_app.py
 ```
 
-Once it is running you should see that it is available under http://0.0.0.0:8080. Navigate to this link in your browser and try out the app.
+Once it is running you should see that it is available under http://localhost:7860 (or see what Gradio tells you in the terminal window, it should say "Running on local URL: ..."). Navigate to this link in your browser and try out the app.
 
 Let's take a closer look at what the code in this file does.
 
@@ -49,14 +50,14 @@ def greet(name):
 
 demo = gr.Interface(fn=greet, inputs="text", outputs="text")
 
-demo.launch(server_name="0.0.0.0", server_port=8080)
+demo.launch(server_name="0.0.0.0", server_port=7860)
 ```
 
 We start by importing the *Gradio* package. We define the function that Gradio will use. This simple function takes one input and returns one output.
 
 Using the `Interface` class we define what the app should look like. We pass the following parameters: `fn` specifies the function that the app should be running, `inputs` specifies what fields the user should be allowed to give as input, `output` specifies what kind of output the function will be showing the user.
 
-Finally, the launch method instructs to launch the defined app and we specify that we want it to run on port 8080.
+Finally, the launch method instructs to launch the defined app. By default your app will run on port 7860 (can be changed if you wish).
 
 This example demonstrates the three basic components that your app will need - the function that the app will be based on, the interface definition, and the launch command. We will now build on this simplest case to add more complex scenarios and customize the app.
 
@@ -80,7 +81,7 @@ def sepia(input_img):
 
 demo = gr.Interface(fn=sepia, inputs=gr.Image(), outputs="image")
 
-demo.launch(server_name="0.0.0.0", server_port=8080)
+demo.launch(server_name="0.0.0.0", server_port=7860)
 ```
 
 Gradio supports [a large number of other input and output types](https://www.gradio.app/docs/gradio/introduction), called *components*. For example, text, textbox, number, image, audio, video, slider, dropdown, radio buttons, files, dataframes, and so on. Different types of inputs and outputs can of course be combined - for example, a user can upload an image and receive a classification score as an output, we give an example of this below.
@@ -110,7 +111,7 @@ demo = gr.Interface(
     outputs=["text", "number"],
 )
 
-demo.launch(server_name="0.0.0.0", server_port=8080)
+demo.launch(server_name="0.0.0.0", server_port=7860)
 ```
 
 Note that the number and the order of input and output parameters in the function `greet` and in the Gradio interface definition match.
@@ -132,7 +133,7 @@ Gradio provides a [custom progress tracker](https://www.gradio.app/main/docs/gra
 By default the apps created and published with Gradio also provide information on how it can be accessed using an API through custom Python and JavaScript clients. At the bottom of the app there is a link "Use via API" which gives instructions how the app can be accessed using these clients. This can be disabled by setting `show_api` to `False` in the app launch command, as shown below.
 
 ```python
-demo.launch(server_name="0.0.0.0", server_port=8080, show_api=False)
+demo.launch(server_name="0.0.0.0", server_port=7860, show_api=False)
 ```
 
 A REST API endpoint is also created automatically though it is not described in the user interface in the latest version of Gradio; the REST API endpoint is `/api/predict`.
@@ -161,17 +162,16 @@ We do not cover customization of your app further here because there are many po
 
 ### Performance
 
-In case your app becomes popular and you have many users coming to make predictions at the same time we want to make sure we can handle the load. One of the most useful aspects of using Gradio is provides some tools to help with performance out of the box. Specifically, it provides [a queueing system](https://www.gradio.app/guides/setting-up-a-demo-for-maximum-performance) that you can easily set up by adding the `.queue` method before you launch your app.
+In case your app becomes popular and you have many users coming to make predictions at the same time we want to make sure we can handle the load. One of the most useful aspects of using Gradio is provides some tools to help with performance out of the box. Specifically, it provides a queueing system that is included by default in all Gradio apps. You can also customize it by adding `app.queue()` with your own parameters before you launch your app, see [the documentation on the Gradio queueing system for more details](https://www.gradio.app/guides/setting-up-a-demo-for-maximum-performance).
 
 ```python
-demo.queue().launch(server_name="0.0.0.0", server_port=8080)
+demo.queue()  # <-- In case you want to customize your queue parameters, you can do it here
+demo.launch(server_name="0.0.0.0", server_port=7860)
 ```
 
 With queueing enabled each prediction request from the users will be put in a queue. When a worker becomes free, the first available request is passed into the worker for inference. When the inference is complete, the queue sends the prediction back to the particular Gradio user who called that prediction. It is also possible to set the maximum number of requests that are allowed to join the queue.
 
-Another parameter that can be used to improve performance is the maximum number of worker threads in the Gradio server that can be processing requests at once.
-
-Finally, performance will also depend on the hardware on which your app is running.
+Another parameter that can be used to improve performance is the hardware on which your app is running (i.e. where your app is hosted).
 
 This is an advanced topic so we refer to [Gradio documentation for more information](https://www.gradio.app/guides/setting-up-a-demo-for-maximum-performance). If you are hosting your Gradio application on SciLifeLab Serve, get in touch with us and we can help you find the best Gradio parameters and hardware to improve performance.
 
@@ -228,7 +228,7 @@ RUN pip install --no-cache-dir -r requirements.txt \
     && rm -rf /var/lib/apt/lists/*
 
 USER $USER
-EXPOSE 8080
+EXPOSE 7860
 
 ENTRYPOINT ["./start-script.sh"]
 
@@ -315,10 +315,10 @@ docker image ls
 In order to test that the image you just built works you need to run a container from this image. To do that, run the following command in the Terminal.
 
 ```bash
-docker run --rm -it -p 8080:8080 <some-name>:<some-tag>
+docker run --rm -it -p 7860:7860 <some-name>:<some-tag>
 ```
 
-If everything went well, you should now be able to navigate to `http://localhost:8080` in your browser and see and interact with your app.
+If everything went well, you should now be able to navigate to `http://localhost:7860` in your browser and see and interact with your app.
 
 ### Publish your Docker image
 
@@ -369,7 +369,7 @@ In order to host an app that we just built click the Create button on the Custom
   - **Private:** The app can only be accessed by the user that created the app (sign in required). Please note that we only allow the permissions to be set to Private temporarily, while you are developing the app. Eventually each app should be published publicly.
   - **Project:** All members of the project where the app is located will be able to access the app (sign in required). Please note that we only allow the permissions to be set to Project temporarily, while you are developing the app. Eventually each app should be published publicly.
   - **Public:** Anyone with the URL can access the app and the app will be displayed under Public apps page.
-* **App Port:** The port that the your app runs on (in case of our template it will be `8080`).
+* **App Port:** The port that the your app runs on (in case of our template it will be `7860`).
 * **DockerHub Image:** Name of the image on DockerHub or full URL to the image on a different repository.
 
 You can leave the other fields as default.

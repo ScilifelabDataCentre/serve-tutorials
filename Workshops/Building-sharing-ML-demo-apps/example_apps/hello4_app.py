@@ -19,4 +19,4 @@ demo = gr.Interface(fn=greet,
                     description=description, 
                     article=ref)
 
-demo.launch(server_name="0.0.0.0", server_port=8080)
+demo.launch(server_name="0.0.0.0", server_port=7860)

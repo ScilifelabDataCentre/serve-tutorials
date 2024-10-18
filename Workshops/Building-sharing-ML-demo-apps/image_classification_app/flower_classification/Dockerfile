@@ -33,6 +33,6 @@ RUN chmod +x start-script.sh \
 RUN python3 -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 
 USER $USER
-EXPOSE 8080
+EXPOSE 7860
 
 ENTRYPOINT ["./start-script.sh"]

@@ -89,7 +89,7 @@ To run this app:
 gradio example_apps/hello_app.py
 ```
 
-Navigate to http://0.0.0.0:8080
+Navigate to http://0.0.0.0:7860
 
 App code:
 
@@ -101,7 +101,7 @@ def greet(name):
 
 demo = gr.Interface(fn=greet, inputs="text", outputs="text")
 
-demo.launch(server_name="0.0.0.0", server_port=8080)
+demo.launch(server_name="0.0.0.0", server_port=7860)
 ```
 
 ---
@@ -130,7 +130,7 @@ def sepia(input_img):
 
 demo = gr.Interface(fn=sepia, inputs=gr.Image(), outputs=gr.Image())
 
-demo.launch(server_name="0.0.0.0", server_port=8080)
+demo.launch(server_name="0.0.0.0", server_port=7860)
 ```
 
 ----
@@ -180,7 +180,7 @@ demo = gr.Interface(
     outputs=["text", "number"]
 )
 
-demo.launch(server_name="0.0.0.0", server_port=8080)
+demo.launch(server_name="0.0.0.0", server_port=7860)
 ```
 
 ---
@@ -209,7 +209,7 @@ demo = gr.Interface(
     examples=[["David", True, 55], ["Ash", False, 70]]
 )
 
-demo.launch(server_name="0.0.0.0", server_port=8080)
+demo.launch(server_name="0.0.0.0", server_port=7860)
 ```
 
 ----
@@ -239,7 +239,7 @@ def my_function(x, progress=gr.Progress()):
 
 demo = gr.Interface(fn=my_function, inputs=gr.Textbox(), outputs=gr.Textbox())
 
-demo.queue().launch(server_name="0.0.0.0", server_port=8080)
+demo.queue().launch(server_name="0.0.0.0", server_port=7860)
 ```
 ----
 
@@ -249,7 +249,7 @@ Access through API
 - Can be disabled:
 
 ```python
-demo.launch(server_name="0.0.0.0", server_port=8080, show_api=False)
+demo.launch(server_name="0.0.0.0", server_port=7860, show_api=False)
 ```
 
 - REST API endpoint `/api/predict`
@@ -293,7 +293,7 @@ demo = gr.Interface(fn=greet,
                     description=description, 
                     article=ref)
 
-demo.launch(server_name="0.0.0.0", server_port=8080)
+demo.launch(server_name="0.0.0.0", server_port=7860)
 ```
 
 ----
@@ -317,7 +317,7 @@ Gradio Blocks: https://www.gradio.app/docs/blocks
 Built-in queueing system:
 
 ```python
-demo.queue().launch(server_name="0.0.0.0", server_port=8080)
+demo.queue().launch(server_name="0.0.0.0", server_port=7860)
 ```
 
 - Max number of requests in queue
@@ -429,7 +429,7 @@ RUN pip install --no-cache-dir -r requirements.txt \
     && rm -rf /var/lib/apt/lists/*
 
 USER $USER
-EXPOSE 8080
+EXPOSE 7860
 
 ENTRYPOINT ["./start-script.sh"]
 
@@ -464,7 +464,7 @@ interface = gr.Interface(fn=predict,
              inputs=gr.Image(type="pil"),
              outputs=gr.Label(num_top_classes=3))
 
-interface.launch(server_name="0.0.0.0", server_port=8080)
+interface.launch(server_name="0.0.0.0", server_port=7860)
 ```
 
 ---

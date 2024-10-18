@@ -10,4 +10,4 @@ def my_function(x, progress=gr.Progress()):
 
 demo = gr.Interface(fn=my_function, inputs=gr.Textbox(), outputs=gr.Textbox())
 
-demo.queue().launch(server_name="0.0.0.0", server_port=8080)
+demo.launch(server_name="0.0.0.0", server_port=8080)

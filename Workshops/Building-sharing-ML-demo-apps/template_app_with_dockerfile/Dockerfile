@@ -22,7 +22,7 @@ COPY requirements.txt $HOME/app/requirements.txt
 COPY main.py $HOME/app/main.py
 # copy any other files that are needed for your app with the directory structure as your files expect
 COPY start-script.sh $HOME/app/start-script.sh
-COPY data/ $HOME/app/data
+#COPY data/ $HOME/app/data #uncomment if you are uploading data
 
 RUN pip install --no-cache-dir -r requirements.txt \
     && chmod +x start-script.sh \
@@ -32,6 +32,6 @@ RUN pip install --no-cache-dir -r requirements.txt \
 RUN python3 -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 
 USER $USER
-EXPOSE 8080
+EXPOSE 7680
 
 ENTRYPOINT ["./start-script.sh"]
