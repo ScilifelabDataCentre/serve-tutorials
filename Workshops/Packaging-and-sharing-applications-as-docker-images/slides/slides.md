@@ -198,68 +198,6 @@ ENTRYPOINT ["./start-script.sh"]
 
 ---
 
-### Customization of the look of your app
-
-Title, description, reference:
-
-```bash
-gradio example_apps/hello4_app.py
-```
-
-```python [17-20]
-import gradio as gr
-
-def greet(name):
-   return "Hello " + name + "!"
-
-title = "Demo app"
-description = (
-  "<center>"
-  "Text, images, etc. can be added here with HTML or markdown formatting."
-  "</center>"
-)
-ref = "This app is related to the following article: [Article title](#). The code can be found here: [GitHub](#)"
-
-demo = gr.Interface(fn=greet, 
-                    inputs="text", 
-                    outputs="text", 
-                    title=title, 
-                    description=description, 
-                    article=ref)
-
-demo.launch(server_name="0.0.0.0", server_port=7860)
-```
-
----
-
-Themes: pre-built or make your own
-
-```python
-demo = gr.Interface(fn=greet, inputs="text", outputs="text", theme=gr.themes.Soft())
-```
-
-https://www.gradio.app/guides/theming-guide
-
-----
-
-Gradio Blocks: https://www.gradio.app/docs/blocks
-
----
-
-### Performance
-
-Built-in queueing system:
-
-```python
-demo.queue().launch(server_name="0.0.0.0", server_port=7860)
-```
-
-- Max number of requests in queue
-- Max number of threads
-- Improved hardware
-
----
-
 ## Time for hands-on work
 
 - **Option 1:** build a Gradio app for our model/function
@@ -273,25 +211,6 @@ demo.queue().launch(server_name="0.0.0.0", server_port=7860)
 ---
 
 ## Part 2: Packaging your application as a Docker Container Image
-
----
-
-#### Containers: packages of your application code together with dependencies
-
----
-
-### Without Containers
-- Clone GitHub repository or get code from an external source;
-- Setup Environment and Install, uninstall packages and dependencies;
-- Download data;
-
----
-
-### With Containers
-- Standardized, self contained packaged software;
-- Platform-agnostic (Linux, Mac, Windows);
-- Many different container engines are available. Docker is the most popular and widely used;
-- Other engines: Podman, Apptainer, Enroot, many more...   
 
 ---
 
