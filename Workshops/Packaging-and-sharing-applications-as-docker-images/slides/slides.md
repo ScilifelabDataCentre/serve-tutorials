@@ -20,6 +20,7 @@ or go to [menti.com](https://menti.com/) and use code XXXX XXXX
 - Today:
     - Johan Alfredéen
     - Hamza Imran Saeed
+    - Nikita Churikov
 - serve@scilifelab.se
 
 ---

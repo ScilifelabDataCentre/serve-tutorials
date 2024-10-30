@@ -193,7 +193,94 @@ Keep in mind the you might need to login to you DockerHub user in case you haven
 docker login --username=<your-dockerhub-username>
 ```
 
-This should publish your image on `https://hub.docker.com/r/&lt;your-dockerhub-username&gt;/&lt;some-name&gt;:&lt;some-tag&gt;`. For example, our example app image for the flower image classification app is available on `hamzaisaeed/gradio-workshop:flower_classification`. Please note that your image should stay available even after your app is published on Serve because it will be fetched with regular intervals.
+This should publish your image on `https://hub.docker.com/r/<your-dockerhub-username>/<some-name>:<some-tag>`. For example, our example app image for the flower image classification app is available on `hamzaisaeed/gradio-workshop:flower_classification`. Please note that your image should stay available even after your app is published on Serve because it will be fetched with regular intervals.
+
+## Step 2. Packaging a shiny application as a Docker Container Image to deploy on Scilifelab Serve
+
+In this section we will download code for a shiny application, add a Dockerfile and build a Docker container. This section assumes that you have git installed on your system.
+
+In your terminal, run the follow command
+
+```bash
+git clone https://github.com/ScilifelabDataCentre/shiny-adhd-medication-sweden.git
+```
+
+then, run the command
+
+```bash
+cd shiny-adhd-medication-sweden
+```
+
+In this folder, we will have the Shiny app code in a file called `app.R` and this file as well as the app's dependencies (e.g., associated data) are located in the folder called `app`. Make sure that your app runs as it should with this structure (for example, if you run it using RStudio). Here is the file structure that we assume:
+
+```bash
+..
+└── app/
+│   ├── app.R
+│   └── socialstyrelsen_2022-02-18.csv
+```
+Docker images are built from sets of instructions given in a so-called Dockerfile. Create a file called Dockerfile (the name of the file should be exactly 'Dockerfile' and it should not have any file extension) using any text editor you have and insert the code below or simply download this example. Place this file in the parent folder of the folder `app`, so inside the `shiny-adhd-medication-sweden` folder.
+
+```bash
+FROM rocker/shiny:latest
+
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y git libxml2-dev libmagick++-dev && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Command to install standard R packages from CRAN; enter the list of required packages for your app here
+RUN Rscript -e 'install.packages(c("shiny","tidyverse","BiocManager"), dependencies = TRUE)'
+
+# Command to install packages from Bioconductor; enter the list of required Bioconductor packages for your app here
+RUN Rscript -e 'BiocManager::install(c("Biostrings"),ask = F)'
+
+RUN rm -rf /srv/shiny-server/*
+COPY /app/ /srv/shiny-server/
+
+USER shiny
+
+EXPOSE 3838
+
+CMD ["/usr/bin/shiny-server"]
+```
+Here is what your file structure should look like after you create the new files.
+
+```bash
+..
+├── app/
+│   ├── app.R
+│   └── socialstyrelsen_2022-02-18.csv
+└── Dockerfile
+```
+
+Let us look at how you can customize the Dockerfile for your own app. In this example two packages were installed from the standard R packages: `shiny` and `tidyverse`. This was done in the line `RUN Rscript -e 'install.packages(c("shiny","tidyverse"))'`. Add your own packages here as needed by your app. In addition, one package was installed from `Bioconductor` - `Biostrings`. This was done in the line `RUN Rscript -e 'BiocManager::install(c("Biostrings"),ask = F)'`. Add your Bioconductor packages here.
+
+The folder app and its contents are copied into the image in the line `COPY /app/* /srv/shiny-server/`. If you use a different folder name, change the folder names in this line and lines below. If some of the dependecies of the app are located in different folders these other folders should be copied into the image separately.
+
+You can see our example app with these files in this GitHub repository.
+
+### Build a Docker image
+Ensure that Docker Desktop is running. Open Terminal (or Windows Terminal) and navigate to the folder where your app files and the Dockerfile are located.
+```bash
+cd path/to/your/folder
+```
+
+Run the Docker command to build your image as shown below. Replace your-image-name with your own image name. Note that the dot at the end of the command is important. Please note that building the image may take a while.
+```bash
+docker build --platform linux/amd64 -t your-image-name:your-image-tag .
+```
+Once the process is complete, your newly created image should appear on Docker Desktop under the Images. Alternatively, run the following command in the Terminal to inspect images on your computer. You should see your image in the list.
+```bash
+docker image ls
+```
+In order to test that the image you just built works you need to run a container from this image. To do that, run the following command in the Terminal.
+```bash
+docker run --rm -p 3838:3838 your-image-name:your-image-tag
+```
+
+If everything went as it should, you should now be able to navigate to http://localhost:3838/ in your browser and see and interact with your Shiny app.
 
 ## Step 3. Hosting your application on SciLifeLab Serve
 
@@ -209,17 +296,19 @@ You need to be logged in to create a project. To create a project, click on the 
 
 ### Create an app
 
-In order to host an app that we just built click the Create button on the Custom app card. Then enter the following information in the form:
+In order to host an app that we just built click the Create button on the Shiny app card. Then enter the following information in the form:
 
 * **Name:** Name of the app that will be displayed on the Public apps page.
-* **Description:** Provide a brief description of the app, will also be displayed on the Public apps page.
-* **Subdomain:** This is the subdomain that the deployed app will be available at (e.g., a subdomain of r46b61563 would mean that the app would be available at r46b61563.serve.scilifelab.se). If no subdomain name is entered, a random name will be generated by default. By clicking on New you can specify the custom subdomain name of your choice (provided that it is not already taken). This subdomain will then appear in the Subdomain options and the subdomain will appear in the format 'name-you-chose.serve.scilifelab.se'.
-* **Permissions:** The permissions for the app. There are 3 levels of permissions you can choose from:
-  - **Private:** The app can only be accessed by the user that created the app (sign in required). Please note that we only allow the permissions to be set to Private temporarily, while you are developing the app. Eventually each app should be published publicly.
-  - **Project:** All members of the project where the app is located will be able to access the app (sign in required). Please note that we only allow the permissions to be set to Project temporarily, while you are developing the app. Eventually each app should be published publicly.
-  - **Public:** Anyone with the URL can access the app and the app will be displayed under Public apps page.
-* **App Port:** The port that the your app runs on (in case of our template it will be `7860`).
-* **DockerHub Image:** Name of the image on DockerHub or full URL to the image on a different repository.
+* **Description:** Provide a description of the app, will also be displayed on the Public apps page. This functions as an abstract describing your application.
+* **Subdomain:** This is the subdomain that the deployed app will be available at (e.g., a subdomain of 'my-cool-app' would mean that the app will be available at my-cool-app.serve.scilifelab.se). If no subdomain name is entered, a random name will be generated by default. By typing in the input box you can specify the custom subdomain name of your choice.
+* **Permissions:** The permissions for the project. There are four levels of permissions for an app:
+    - **Private:** The app can only be accessed by the user that created the app (sign in required). Please note that we only allow the permissions to be set to Private temporarily, while you are developing the app. Eventually each app should be published publicly.
+    - **Project:** All members of the project where the app is located will be able to access the app (sign in required). Please note that we only allow the permissions to be set to Project temporarily, while you are developing the app. Eventually each app should be published publicly.
+    - **Link:** Anyone with the URL can access the app but this URL will not be publicly listed anywhere by us (this option is best in case you want to share the app with certain people but not with everyone yet).
+    - **Public:** Anyone with the URL can access the app and the app will be displayed under Public apps page.
+* **Hardware:** Amount of CPU and RAM dedicated to your app. By default there is only one option that is sufficient for most users; get in touch with us if your app needs more hardware resources.
+* **Port:** The port that the Shiny server runs on (usually 3838). Note that we only allow ports in the range 3000-9999.
+* **Image:** Your username, image name and tag on DockerHub (your-dockerhub-username/your-image-name:your-image-tag) or full url to the image on a different repository. Note that each version of your app should have a unique tag. Once an image with a certain tag has been deployed once it will no longer be possible to change this version without a new tag.
 
 You can leave the other fields as default.
 
