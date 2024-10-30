@@ -69,55 +69,161 @@ Find the written tutorial for today here:
 
 ### What is a Docker?
 
-- Open-source tool
-- OS-level virtualization to deliver software in packages called containers
-- Simplifies development and deployment processes
+- Virtualization software
+- Simplifies development and deployment of application
+- Packages application with all dependencies into a container
 - Ensures reproducibility and scalability
-- Facilitates collaboration by sharing environments
+- Facilitates collaboration by sharing applications and their running environments
 
 ---
 
 #### Containers: packages of your application code together with dependencies
 
 ---
-### Containers in software development
 
-- Portability:
-  - Consistent behavior across different environments
-  - Eliminates “it works on my machine” issues
-- Efficiency:
-  - Uses fewer resources than traditional VMs
-  - Faster startup times and better resource utilization
-- Isolation:
-  - Independent running environments
-  - Prevents conflicts between applications and dependencies
-- CI/CD Simplification:
-  - Consistent environment for testing and deployment
-  - Accelerates development cycles and improves software quality
-- Extensive Ecosystem:
-  - Access to a vast repository of pre-built images on Docker Hub
-  - Quick deployment of a wide range of applications and services
+### Development process before containers
+
+<div>
+<ul>
+<li>Each developer needs to install and configure all services directly on their local machine</li>
+<img style="float: right; width: 30%; height: 30%;" src="assets/images/installation.png">
+<li>Installing process different for each OS (Windows, Mac, Linux)</li>
+<li>Many installation steps, things can go wrong</li>
+<li>Complex apps with multiple services cause more issues</li>
+</ul>
+</div>
+
 
 ---
 
-### Without Containers
-- Clone GitHub repository or get code from an external source;
-- Setup Environment and Install, uninstall packages and dependencies;
+### Complex Applications
+
+![image info](./assets/images/microservices.png)<!-- .element height="50%" width="50%" -->
+
+
+---
+
+### Containers solve this issue
+
+<div>
+<ul>
+<img style="float: right; width: 40%; height: 40%;" src="assets/images/postgres-environment.png">
+<li> Service packaged as an isolated environment</li>
+<li>Postgres packaged with all dependencies and configs</li>
+<li>Start service as Docker container</li>
+<li>Same command for all OS and services</li>
+<li>Standardizes process of running services on local dev enironment</li>
+<li>Run different versions of same app running on local environment</li>
+</ul>
+</div>
+
+![image info](./assets/images/postgres-install.png)<!-- .element height="20%" width="20%" -->
+
+---
+
+### Deployment process before containers
+
+- Development team produces software and provides installation instructions
+- Operations team installs and configures apps and dependencies
+- Setup Environment and Install, uninstall packages and dependencies on the server; error prone
 - Download data;
+- Dependency conflicts
+- Complex process, miscommunication
+
 
 ---
 
 ### With Containers
 - Standardized, self contained packaged software;
+- Includes code as well as dependencies and env configurations
 - Platform-agnostic (Linux, Mac, Windows);
-- Many different container engines are available. Docker is the most popular and widely used;
-- Other engines: Podman, Apptainer, Enroot, many more...   
+- Less room for errors   
 
 ---
 
-### Container repositories
+### Containers in software development
 
-- What are Container Repositories?
+<ul style="font-size: 35px;">
+    <li>Portability:
+        <ul>
+            <li>Consistent behavior across different environments</li>
+            <li>Eliminates “it works on my machine” issues</li>
+        </ul>
+    </li>
+    <li>Efficiency:
+        <ul>
+            <li>Uses fewer resources than traditional VMs</li>
+            <li>Faster startup times and better resource utilization</li>
+        </ul>
+    </li>
+    <li>Isolation:
+        <ul>
+            <li>Independent running environments</li>
+            <li>Prevents conflicts between applications and dependencies</li>
+        </ul>
+    </li>
+    <li>CI/CD Simplification:
+        <ul>
+            <li>Consistent environment for testing and deployment</li>
+            <li>Accelerates development cycles and improves software quality</li>
+        </ul>
+    </li>
+    <li>Extensive Ecosystem:
+        <ul>
+            <li>Access to a vast repository of pre-built images on Docker Hub</li>
+            <li>Quick deployment of a wide range of applications and services</li>
+        </ul>
+    </li>
+</ul>
+
+
+---
+
+### Docker Container vs Docker Images
+
+<table style="font-size: 30px;">
+    <tr>
+        <th>Aspect</th>
+        <th>Docker Images</th>
+        <th>Docker Containers</th>
+    </tr>
+    <tr>
+    <td>Definition</td>
+        <td>Read-only templates that define the environment and include the application code, libraries, dependencies, and tools needed to run an application.</td>
+        <td>Runnable instances of Docker images that provide an isolated environment for applications.</td>
+    </tr>
+    <tr>
+        <td>Creation</td>
+        <td>Built using a Dockerfile with the <code>docker build</code> command.</td>
+        <td>Created from images using the <code>docker run</code> or <code>docker create</code> command.</td>
+    </tr>
+    <tr>
+        <td>State</td>
+        <td>Immutable (read-only).</td>
+        <td>Mutable (read-write).</td>
+    </tr>
+    <tr>
+        <td>Purpose</td>
+        <td>Serve as a blueprint for creating containers.</td>
+        <td>Run applications in a consistent and isolated environment.</td>
+    </tr>
+    <tr>
+    <td>Storage</td>
+    <td>Can be stored locally or in a Docker registry (e.g., Docker Hub).</td>
+    <td>Exist on the host machine where they are run.</td>
+    </tr>
+</table>
+<br>
+<ul style="font-size: 30px;float: left;">
+<li>Multiple containers from one image</td>
+</ul>
+
+
+---
+
+### Container Registries
+
+- What are Container Registries?
     - Storage locations for Docker images.
     - Enable sharing and distribution of images.
 - Types of Repositories:
@@ -139,8 +245,33 @@ Find the written tutorial for today here:
 - Automated Builds: Automatically build images from GitHub or Bitbucket repositories
 - Official Images: Curated and maintained, ensuring high quality and security
 
+---
+
+### Docker Image Versioning
+
+`docker pull {name}:{tag}`  = Pull image from a registry
+
+- **Purpose**: Ensures consistent and reliable deployments by tracking changes and updates to Docker images.
+- **Importance**: Helps manage dependencies, rollbacks, and updates effectively.
+- **Tags**: Labels assigned to images to differentiate versions.
+  - Example: `ubuntu:22.04`, `myapp:v1.0.0`
+- **Use Specific Tags**: Avoid using `latest` tag for production.
+  - Example: `docker pull ubuntu:22.04` instead of `docker pull ubuntu:latest`
+- **Implement a Versioning Strategy**: Use semantic versioning (e.g., `major.minor.patch`) or date-based versioning (e.g., `YYYY-MM-DD`).
 
 ---
+
+### Docker basic commands
+
+- **`docker images`** : Lists all Docker images on the local machine
+- **`docker ps`** : Lists all currently running containers
+- **`docker pull {name}:{tag}`**: Pull image from a registry
+- **`docker run {name}:{tag}`**: Download image from a registry and run container
+- **`docker build -t {name}:{tag} .`**: Builds a Docker image from a Dockerfile in the current directory
+
+
+---
+
 ### Writing a Dockerfile
 
 To build a Docker image, you need to create a Dockerfile. It is a plain text file with instructions and arguments. Here is the description of the instructions we're going to use in our next example:
@@ -193,24 +324,17 @@ USER $USER
 EXPOSE 7860
 
 ENTRYPOINT ["./start-script.sh"]
-
 ```
+---
+
+### Time for hands-on work
+
+- **Option 1:** 
+- **Option 2:**
 
 ---
 
-## Time for hands-on work
-
-- **Option 1:** build a Gradio app for our model/function
-    - The example app/model is in the `hands_on_app/folder`
-    - Install the packages from `hands_on_app/requirements.txt`
-    - Download and copy the data to `data/flower_model_vgg19.pth`
-    - Add a Gradio app to `hands_on_app/main.py`
-    - Make your app fancy!
-- **Option 2:** build a Gradio app for your own model/function
-
----
-
-## Part 2: Packaging your application as a Docker Container Image
+## Part 2: Packaging application as a Docker Container Image to deploy on Scilifelab Serve
 
 ---
 
@@ -218,119 +342,6 @@ ENTRYPOINT ["./start-script.sh"]
 
 - To host your app on SciLifeLab Serve, you first need to package it as a Docker image.
 - If you don't have docker, you can install it from [docs.docker.com/get-docker](https://docs.docker.com/get-docker/).
-
----
-### Image classification example app
-- The model we will use in this example is a [Flowers Classification Model PyToch model](https://github.com/ScilifelabDataCentre/serve-tutorials/tree/main/Webinars/2023-Using-containers-on-Berzelius/flowers-classification) based on the [102 Category Flower Dataset](https://www.robots.ox.ac.uk/~vgg/data/flowers/102/);
-- You can follow the instructions mentioned in the [README](https://github.com/ScilifelabDataCentre/serve-tutorials/tree/main/Workshops/Building-sharing-ML-demo-apps) file in the GitHub repository to train the model your self but keep in mind it takes quite a while (~ 4 hours) with limited CPUs. 
-
-<!-- TODO: Link can add qr code to menti for the link to GitHub. -->
-
----
-
-### Structure
-The code for the app and the Dockerfile used to build the app is available in the `image_classification_app/` folder inside the [serve-tutorials](https://github.com/ScilifelabDataCentre/serve-tutorials/tree/building-sharing-ML-demo-apps/Workshops/Building-sharing-ML-demo-apps) repository.
-
-
-The directory has the following structure:
-
-```bash
-..
-├── requirements.txt
-├── main.py
-├── data   
-    └── ... (model and any other static files required)
-├── ... (any other files your app requires)
-├── start-script.sh
-└── Dockerfile
-```
-
----
-
-### Dockerfile
-
-```dockerfile
-# Select base image (can be ubuntu, python, shiny etc)
-FROM python:3.11-slim
-
-# Create user name and home directory variables. 
-# The variables are later used as $USER and $HOME. 
-ENV USER=username
-ENV HOME=/home/$USER
-
-# Add user to system
-RUN useradd -m -u 1000 $USER
-
-# Set working directory (this is where the code should go)
-WORKDIR $HOME
-
-# Update system and install dependencies.
-RUN apt-get update && apt-get install --no-install-recommends -y \
-    build-essential \
-    software-properties-common
-
-# Copy code and start script (this will place the files in home/username/)
-COPY requirements.txt $HOME/requirements.txt
-COPY main.py $HOME/main.py
-# copy any other files that are needed for your app with the directory structure as your files expect
-COPY start-script.sh $HOME/start-script.sh
-COPY data/ $HOME/app/data
-
-RUN pip install --no-cache-dir -r requirements.txt \
-    && chmod +x start-script.sh \
-    && chown -R $USER:$USER $HOME \
-    && rm -rf /var/lib/apt/lists/*
-
-USER $USER
-EXPOSE 7860
-
-ENTRYPOINT ["./start-script.sh"]
-
-```
----
-
-### Main.py
-
-The main file for the Gradio app
-
-```python
-import gradio as gr
-import torch
-from PIL import Image
-from torchvision import transforms
-import torchvision.models as models
-
-model = torch.load('data/flower_model_vgg19.pth')
-model.eval()
-# Download human-readable labels for ImageNet.
-with open('data/flower_dataset_labels.txt', 'r') as f:
-    labels=f.readlines()
-
-def predict(inp):
-  inp = transforms.ToTensor()(inp).unsqueeze(0)
-  with torch.no_grad():
-    prediction = torch.nn.functional.softmax(model(inp)[0], dim=0)
-    confidences = {labels[i]: float(prediction[i]) for i in range(102)}
-  return confidences
-
-interface = gr.Interface(fn=predict,
-             inputs=gr.Image(type="pil"),
-             outputs=gr.Label(num_top_classes=3))
-
-interface.launch(server_name="0.0.0.0", server_port=7860)
-```
-
----
-
-### Start script
-
-Deployment on Serve requires a script that will be launching your application. Create a file *start-script.sh* and put it in the same directory as your app.
-
-```bash
-#!/bin/bash
-
-python main.py
-```
 
 ---
 
