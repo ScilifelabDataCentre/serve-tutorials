@@ -2,10 +2,13 @@
 hide:
   - navigation
 ---
-# Packaging and sharing data science applications as docker container images
+# Packaging and sharing data science applications as docker container images: Hands-on
+
+!!! info
+        If you have already installed Docker desktop and have tried basic docker commands, you can start at Step 1.
 
 This workshop will introduce Docker containers and how you can use them to package applications. By the end of this workshop, we hope you will know how to use Docker on your local machine, package applications with their dependencies, upload the packaged apps to Dockerhub as images. During the workshop we will start with a short talk introducing containers and docker. We will go over the basic commands that you can use to build and run docker containers and expose ports to your local machine.
-The we will show an example of a shiny application, prepare it for deployment by packaging it as a docker container and make it available on the web with a URL. The target audience of this tutorial are researchers who build applications and tools from different frameworks and want to know about packaging them.
+Then, we will show an example of a shiny application, prepare it for deployment by packaging it as a docker container and make it available on the web with a URL. The target audience of this tutorial are researchers who build applications and tools from different frameworks and want to know about packaging them.
 
 ## Step 0. Downloading Docker or Docker Desktop
 
@@ -42,20 +45,15 @@ This command downloads a test image and runs it in a container. If successful, y
 
 By following these steps, you should have Docker Desktop installed and running on your system. If you have any questions or run into issues, feel free to ask!
 
+## Basic Docker commands
 
-## Step 1. Building a basic image and publishing to dockerhub
-
-In this section we will go through some basic docker commands, build a docker image and then publish it to dockerhub.
-
-### Basic Docker commands
-
-You have already seen alot of these commands but just to refresh here are a few docker commands
+You have already seen some of these commands but just to refresh, here are the basic docker commands
 
 #### Starting and Stopping
 
-* [`docker start`](https://docs.docker.com/engine/reference/commandline/start) starts a container so it is running.
+* [`docker start`](https://docs.docker.com/engine/reference/commandline/start) starts a container.
 * [`docker stop`](https://docs.docker.com/engine/reference/commandline/stop) stops a running container.
-* [`docker restart`](https://docs.docker.com/engine/reference/commandline/restart) stops and starts a container.
+* [`docker restart`](https://docs.docker.com/engine/reference/commandline/restart) stops and re-starts a container.
 
 #### Info
 
@@ -71,34 +69,9 @@ You have already seen alot of these commands but just to refresh here are a few 
 * [`docker run`](https://docs.docker.com/engine/reference/commandline/run) creates and starts a container in one operation.
 * [`docker rm`](https://docs.docker.com/engine/reference/commandline/rm) deletes a container.
 
-### Build a Docker image
+## Step 1. Building a basic image and publishing to dockerhub
 
-Ensure that Docker Desktop is running. Open Terminal (or Windows Terminal) and navigate to the folder where your app files and the Dockerfile are located.
-
-```bash
-cd path/to/your/folder
-```
-
-Run the Docker command to build your image as shown below. Note that the dot at the end of the command is important. Please note that building the image may take a while.
-
-```bash
-docker build -t <some-name>:<some-tag> .
-```
-Replace `<some-name>:<some-tag>` with the name of the app and some tag to identify this particular version. For instance `my-web-app:v2`. 
-Once the process is complete, run the following command in the Terminal. You should see your image in the list.
-
-```bash
-docker image ls
-```
-
-In order to test that the image you just built works you need to run a container from this image. To do that, run the following command in the Terminal.
-
-```bash
-docker run --rm -it -p <local-port>:<container-port> <some-name>:<some-tag>
-```
-
-If everything went well, you should now be able to navigate to `http://localhost:<local-port>` in your browser and see and interact with your app.
-
+In this section we will build a docker image and then publish it to dockerhub.
 
 ### Basic Python app
 
@@ -143,33 +116,64 @@ EXPOSE 5000
 CMD ["python", "app.py"]
 ```
 
-Once all of these files are created, run the following command to build a docker container
-```bash
-docker build -t flask-web-app .
-```
-!!! info "Pro tip"
-    It is a good idea to use your repository name when building and tagging images as this makes it possible to push to your repository.
-    Using versioning is very helpful as well.
-    As an example, the command above could be written as:
-    ```
-    docker build -t <your-dockerhub-repository>/flask-web-app:v1.0.0 .
-    ```
-After building the image you can then run it with the following command
+Once all of these files are created, we can move onto building the docker image. 
+
+### Build your Docker Image
+
+Ensure that Docker Desktop is running. Open Terminal and navigate to the folder where your app files and the Dockerfile are located.
 
 ```bash
-docker run -p 5000:5000 flask-web-app
+cd path/to/your/folder
 ```
 
-Once it is running you should see that it is available under <a href="http://localhost:5000" target="_blank">http://localhost:5000</a> (or see what Flask tells you in the terminal window, it should say "Running on URL: ..."). Navigate to this link in your browser and try out the app.
+Run the Docker command to build your image as shown below. Note that the dot at the end of the command is important. Please note that building the image may take a while.
 
-!!! info "Pro tip"
-    It is often useful to run the container in detached mode so that it can run in the background.
-    As an example, the command above could be written as:
+```bash
+docker build --platform linux/amd64 -t <some-name>:<some-tag> .
+```
+Replace `<some-name>:<some-tag>` with the name of the app and some tag to identify this particular version. For instance `my-web-app:v2`. 
+Once the process is complete, run the following command in the Terminal. You should see your image in the list.
+
+```bash
+docker image ls
+```
+
+In order to test that the image you just built works you need to run a container from this image. To do that, run the following command in the Terminal.
+
+```bash
+docker run -p <local-port>:<container-port> <some-name>:<some-tag>
+```
+
+If everything went well, you should now be able to navigate to `http://localhost:<local-port>` in your browser and see and interact with your app.
+
+??? "Click to see exact commands"
+    Run the following command to build the docker container
+    ```bash
+    docker build --platform linux/amd64 -t flask-web-app .
     ```
-    docker run -d -p 5000:5000 flask-web-app
+    !!! info "Pro tip"
+        It is a good idea to use your repository name when building and tagging images as this makes it possible to push to your repository.
+        Using versioning is very helpful as well.
+        As an example, the command above could be written as:
+        ```
+        docker build --platform linux/amd64 -t <your-dockerhub-repository>/flask-web-app:v1.0.0 .
+        ```
+    After building the image you can then run it with the following command
+
+    ```bash
+    docker run -p 5000:5000 flask-web-app
     ```
 
-### Publish your Docker image
+    Once it is running you should see that it is available under <a href="http://localhost:5000" target="_blank">http://localhost:5000</a> (or see what Flask tells you in the terminal window, it should say "Running on URL: ..."). Navigate to this link in your browser and try out the app.
+
+    !!! info "Pro tip"
+        It is often useful to run the container in detached mode so that it can run in the background.
+        As an example, the command above could be written as:
+        ```bash
+        docker run -d -p 5000:5000 flask-web-app
+        ```
+
+### Publish your Docker Image
 
 You have now built and tested an image for your app on your computer. In order to be able to host this image on SciLifeLab Serve it needs to be published in a so-called image registry. Below, we show how to publish your image on [DockerHub](https://hub.docker.com) as an example but you can choose any public image registry (for example, on GitHub).
 
@@ -193,7 +197,7 @@ Keep in mind the you might need to login to you DockerHub user in case you haven
 docker login --username=<your-dockerhub-username>
 ```
 
-This should publish your image on `https://hub.docker.com/r/<your-dockerhub-username>/<some-name>:<some-tag>`. For example, our example app image for the flower image classification app is available on `hamzaisaeed/gradio-workshop:flower_classification`. Please note that your image should stay available even after your app is published on Serve because it will be fetched with regular intervals.
+This should publish your image on `https://hub.docker.com/r/<your-dockerhub-username>/<some-name>:<some-tag>`. For example, our example app image for the flask web app is available at `scilifelabdatacentre/workshop-flask-web-app:v1.0.0`. Please note, if you create an image to publish on Scilifelab Serve, your image should stay available even after your app is published on Serve because it will be fetched with regular intervals.
 
 ## Step 2. Packaging a shiny application as a Docker Container Image to deploy on Scilifelab Serve
 
@@ -202,7 +206,7 @@ In this section we will download code for a shiny application, add a Dockerfile 
 In your terminal, run the follow command
 
 ```bash
-git clone https://github.com/ScilifelabDataCentre/shiny-adhd-medication-sweden.git
+git clone https://github.com/ScilifelabDataCentre/shiny-adhd-medication-sweden.git -b container workshop
 ```
 
 then, run the command
@@ -259,17 +263,17 @@ Let us look at how you can customize the Dockerfile for your own app. In this ex
 
 The folder app and its contents are copied into the image in the line `COPY /app/* /srv/shiny-server/`. If you use a different folder name, change the folder names in this line and lines below. If some of the dependecies of the app are located in different folders these other folders should be copied into the image separately.
 
-You can see our example app with these files in this GitHub repository.
+You can see our example app with these files in this <a href="https://github.com/ScilifelabDataCentre/shiny-adhd-medication-sweden" target="_blank">GitHub</a> repository.
 
-### Build a Docker image
+### Build your Docker image
 Ensure that Docker Desktop is running. Open Terminal (or Windows Terminal) and navigate to the folder where your app files and the Dockerfile are located.
 ```bash
 cd path/to/your/folder
 ```
 
-Run the Docker command to build your image as shown below. Replace your-image-name with your own image name. Note that the dot at the end of the command is important. Please note that building the image may take a while.
+Run the Docker command to build your image as shown below. Replace <your-image-name> with your own image name. Note that the dot at the end of the command is important. Please note that building the image may take a while.
 ```bash
-docker build --platform linux/amd64 -t your-image-name:your-image-tag .
+docker build --platform linux/amd64 -t <your-image-name>:<your-image-tag> .
 ```
 Once the process is complete, your newly created image should appear on Docker Desktop under the Images. Alternatively, run the following command in the Terminal to inspect images on your computer. You should see your image in the list.
 ```bash
@@ -277,10 +281,37 @@ docker image ls
 ```
 In order to test that the image you just built works you need to run a container from this image. To do that, run the following command in the Terminal.
 ```bash
-docker run --rm -p 3838:3838 your-image-name:your-image-tag
+docker run --rm -p <local-port>:<container-port> <your-image-name>:<your-image-tag>
 ```
 
-If everything went as it should, you should now be able to navigate to http://localhost:3838/ in your browser and see and interact with your Shiny app.
+If everything went as it should, you should now be able to navigate to `http://localhost:<local-port>` in your browser and see and interact with your Shiny app.
+
+??? "Click to see exact commands"
+    Run the following command to build the docker container
+    ```bash
+    docker build --platform linux/amd64 -t adhd-shiny-app .
+    ```
+    !!! info "Pro tip"
+        It is a good idea to use your repository name when building and tagging images as this makes it possible to push to your repository.
+        Using versioning is very helpful as well.
+        As an example, the command above could be written as:
+        ```
+        docker build --platform linux/amd64 -t <your-dockerhub-repository>/adhd-shiny-app:v1.0.0 .
+        ```
+    After building the image you can then run it with the following command
+
+    ```bash
+    docker run -p 3838:3838 <your-dockerhub-repository>/adhd-shiny-app
+    ```
+
+    Once it is running you should see that it is available under <a href="http://localhost:3838" target="_blank">http://localhost:3838</a> (or see what the container tells you in the terminal window, it should say "Starting listener on: ..."). Navigate to this link in your browser and try out the app.
+
+    !!! info "Pro tip"
+        It is often useful to run the container in detached mode so that it can run in the background.
+        As an example, the command above could be written as:
+        ```bash
+        docker run -d -p 3838:3838 <your-dockerhub-repository>/adhd-shiny-app
+        ```
 
 ## Step 3. Hosting your application on SciLifeLab Serve
 

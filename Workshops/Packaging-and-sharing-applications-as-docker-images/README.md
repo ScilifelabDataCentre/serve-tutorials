@@ -202,7 +202,7 @@ In this section we will download code for a shiny application, add a Dockerfile 
 In your terminal, run the follow command
 
 ```bash
-git clone https://github.com/ScilifelabDataCentre/shiny-adhd-medication-sweden.git
+git clone https://github.com/ScilifelabDataCentre/shiny-adhd-medication-sweden.git -b container-workshop
 ```
 
 then, run the command
@@ -314,6 +314,6 @@ You can leave the other fields as default.
 
 ## Congratulations!
 
-Congratulations, you just built and started hosting your first machine learning demo application!
+Congratulations, you just built a dockerized shiny application and hosted it on ScilifeLab Serve!
 
 Feel free to get in touch with the SciLifeLab Serve team with questions: serve@scilifelab.se.

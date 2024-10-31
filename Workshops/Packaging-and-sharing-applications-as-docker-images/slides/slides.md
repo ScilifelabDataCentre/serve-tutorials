@@ -55,20 +55,20 @@ Find the written tutorial for today here:
 <!-- TODO: This slide could be made less intimidating -->
 
 - Part 1. Introduction to Docker Containers
-    - Basics and example apps (35 minutes)
-    - Hands-on part (20 minutes)
+    - Basics and example commands (25 minutes)
+    - Hands-on part (30 minutes)
 - Break (10 minutes)
-- Part 2. Packaging your application as a Docker image (demo, 15 minutes)
+- Part 2. Packaging a shiny application as a Docker Image (demo, 15 minutes)
 - Part 3. Hosting your application on SciLifeLab Serve (demo, 15 minutes)
 - More hands-on + Q&A, wrap-up (remaining time)
 
 ---
 
-## Part 1: Introdcution to Docker Containers
+## Part 1: Introduction to Docker Containers
 
 ---
 
-### What is a Docker?
+### What is Docker?
 
 - Virtualization software
 - Simplifies development and deployment of application
@@ -82,14 +82,14 @@ Find the written tutorial for today here:
 
 ---
 
-### Development process before containers
+### Collaborative process before containers
 
 <div>
 <ul>
-<li>Each developer needs to install and configure all services directly on their local machine</li>
-<img style="float: right; width: 30%; height: 30%;" src="assets/images/installation.png">
+<li>Each scientist needs to install tool directly on their local machine</li>
 <li>Installing process different for each OS (Windows, Mac, Linux)</li>
 <li>Many installation steps, things can go wrong</li>
+<li>Download Data</li>
 <li>Complex apps with multiple services cause more issues</li>
 </ul>
 </div>
@@ -108,17 +108,14 @@ Find the written tutorial for today here:
 
 <div>
 <ul>
-<img style="float: right; width: 40%; height: 40%;" src="assets/images/postgres-environment.png">
-<li> Service packaged as an isolated environment</li>
-<li>Postgres packaged with all dependencies and configs</li>
+<li>Application packaged as an isolated environment</li>
+<li>App packaged with all dependencies and configs</li>
 <li>Start service as Docker container</li>
 <li>Same command for all OS and services</li>
-<li>Standardizes process of running services on local dev enironment</li>
-<li>Run different versions of same app running on local environment</li>
+<li>Standardizes process of running services on local enironment</li>
+<li>Run different versions of same app</li>
 </ul>
 </div>
-
-![image info](./assets/images/postgres-install.png)<!-- .element height="20%" width="20%" -->
 
 ---
 
@@ -330,8 +327,7 @@ ENTRYPOINT ["./start-script.sh"]
 
 ### Time for hands-on work
 
-- **Option 1:** 
-- **Option 2:**
+The hands-on guide is available at [docker-workshop.serve.scilifelab.se](https://docker-workshop.serve.scilifelab.se)
 
 ---
 
