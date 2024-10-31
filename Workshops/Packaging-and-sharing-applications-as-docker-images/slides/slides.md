@@ -4,9 +4,9 @@ While people are coming in: How are you doing?
 
 <img data-src="menti_qr.png" height="420" />
 
-<!-- TODO: Update link -->
+<div style='position: relative; padding-bottom: 56.25%; padding-top: 35px; height: 0; overflow: hidden;'><iframe sandbox='allow-scripts allow-same-origin allow-presentation' allowfullscreen='true' allowtransparency='true' frameborder='0' height='315' src='https://www.mentimeter.com/app/presentation/n/alkw2z5dj2ur7ersxdiid42g73qo5b7k/embed' style='position: absolute; top: 0; left: 0; width: 100%; height: 100%;' width='420'></iframe></div>
 
-or go to [menti.com](https://menti.com/) and use code XXXX XXXX
+or go to [menti.com](https://menti.com/) and use code 4560 7682
 
 ---
 
@@ -29,9 +29,9 @@ or go to [menti.com](https://menti.com/) and use code XXXX XXXX
 
 <img data-src="menti_qr.png" height="420" />
 
-<!-- TODO: Update link -->
+<div style='position: relative; padding-bottom: 56.25%; padding-top: 35px; height: 0; overflow: hidden;'><iframe sandbox='allow-scripts allow-same-origin allow-presentation' allowfullscreen='true' allowtransparency='true' frameborder='0' height='315' src='https://www.mentimeter.com/app/presentation/n/alkw2z5dj2ur7ersxdiid42g73qo5b7k/embed' style='position: absolute; top: 0; left: 0; width: 100%; height: 100%;' width='420'></iframe></div>
 
-or go to menti.com and use code XXXX XXXX
+or go to menti.com and use code 4560 7682
 
 ---
 
