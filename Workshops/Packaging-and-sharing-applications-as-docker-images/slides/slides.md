@@ -376,7 +376,9 @@ Options:
 
 ## That's it from us. Thank you!
 
-Please fill out the evaluation form you will receive by email.
+Any questions?
+
+Feel free to get in touch with the SciLifeLab Serve team with questions: serve@scilifelab.se
 
 ---
 
