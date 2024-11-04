@@ -4,8 +4,8 @@ hide:
 ---
 # Packaging and sharing data science applications as docker container images: Getting Started
 
-This workshop will introduce Docker containers and how you can use them to package applications. By the end of this workshop, we hope you will know how to use Docker on your local machine, package applications with their dependencies, upload the packaged apps to Dockerhub as images. During the workshop we will start with a short talk introducing containers and docker. We will go over the basic commands that you can use to build and run docker containers and expose ports to your local machine.
-Then, we will show an example of a shiny application, prepare it for deployment by packaging it as a docker container and make it available on the web with a URL. The target audience of this tutorial are researchers who build applications and tools from different frameworks and want to know about packaging them.
+This workshop will introduce Docker containers and how you can use them to package applications. By the end of this workshop, we hope you will know how to use Docker on your local machine, package applications with their dependencies, upload the packaged apps to Dockerhub as images.
+Then, we will show an example of a shiny application, prepare it for deployment by packaging it as a docker container and make it available on the web with a URL using Scilifelab Serve. The target audience of this tutorial are researchers who build applications and tools from different frameworks and want to know about packaging them.
 
 ## Step 0. Downloading Docker or Docker Desktop
 
@@ -14,7 +14,7 @@ Docker Desktop is the all-in-one package to build images and run containers.
 ### Steps to Install Docker Desktop
 
 1. **Download Docker Desktop Installer**  
-Visit the Docker Desktop [download page](https://www.docker.com/products/docker-desktop/) and download the installer for your operating system.
+Visit the Docker Desktop <a href="https://www.docker.com/products/docker-desktop/" target="_blank">download page</a> and download the installer for your operating system.
 
 2. **Run the Installer**  
 
@@ -44,27 +44,65 @@ By following these steps, you should have Docker Desktop installed and running o
 
 ## Basic Docker commands
 
-You have already seen some of these commands but just to refresh, here are the basic docker commands
-
-#### Starting and Stopping
-
-* [`docker start`](https://docs.docker.com/engine/reference/commandline/start) starts a container.
-* [`docker stop`](https://docs.docker.com/engine/reference/commandline/stop) stops a running container.
-* [`docker restart`](https://docs.docker.com/engine/reference/commandline/restart) stops and re-starts a container.
-
-#### Info
-
-* [`docker ps`](https://docs.docker.com/engine/reference/commandline/ps) shows running containers.
-* [`docker logs`](https://docs.docker.com/engine/reference/commandline/logs) gets logs from container.
-* [`docker inspect`](https://docs.docker.com/engine/reference/commandline/inspect) looks at all the info on a container.
-* [`docker top`](https://docs.docker.com/engine/reference/commandline/top) shows running processes in container.
+Here are some basic docker commands that will help you during the hands-on session.
 
 #### Lifecycle
 
-* [`docker images`](https://docs.docker.com/engine/reference/commandline/images) shows all images.
-* [`docker build`](https://docs.docker.com/engine/reference/commandline/build) creates image from Dockerfile.
-* [`docker run`](https://docs.docker.com/engine/reference/commandline/run) creates and starts a container in one operation.
-* [`docker rm`](https://docs.docker.com/engine/reference/commandline/rm) deletes a container.
+* [`docker images`](https://docs.docker.com/engine/reference/commandline/images){:target="_blank"} shows all images.
+```console
+docker images
+```
+* [`docker build`](https://docs.docker.com/reference/cli/docker/build-legacy/){:target="_blank"} creates image from Dockerfile.
+```console
+docker build -t <image-name>:<tag> .
+```
+* [`docker run`](https://docs.docker.com/engine/reference/commandline/run){:target="_blank"} creates and starts a container in one operation.
+```console
+docker run -p <host-port>:<container-port> <image-name>:<tag>
+```
+
+#### Info
+
+* [`docker ps`](https://docs.docker.com/engine/reference/commandline/ps){:target="_blank"} shows running containers.
+```console
+docker ps
+```
+* [`docker logs`](https://docs.docker.com/engine/reference/commandline/logs){:target="_blank"} gets logs from a running container.
+```console
+docker logs <container-name>
+```
+* [`docker inspect`](https://docs.docker.com/engine/reference/commandline/inspect){:target="_blank"} looks at all the info on a container.
+```console
+docker inspect <container-name>
+```
+* [`docker top`](https://docs.docker.com/engine/reference/commandline/top){:target="_blank"} shows running processes in container.
+```console
+docker top <container-name> 
+```
+
+#### Starting and Stopping
+
+* [`docker start`](https://docs.docker.com/engine/reference/commandline/start){:target="_blank"} starts a container.
+```console
+docker start <container-name>
+```
+* [`docker stop`](https://docs.docker.com/engine/reference/commandline/stop){:target="_blank"} stops a running container.
+```console
+docker stop <container-name>
+```
+* [`docker restart`](https://docs.docker.com/engine/reference/commandline/restart){:target="_blank"} stops and re-starts a container.
+```console
+docker restart <container-name>
+```
+
+
+## Create an account on Dockerhub and Sign In
+
+As part of this workshop, you will create a Docker Image and push to it Docker's Image Regsitry called Dockerhub. To do this, you need to create a docker account, which you can do by going to their <a href="https://hub.docker.com/" target="_blank">website</a> and creating an account. Once this is done, you can go to the terminal on your computer and run the following command:
+
+```console
+docker login
+```
 
 ## Running the hands-on workshop tutorial as a Docker Container
 

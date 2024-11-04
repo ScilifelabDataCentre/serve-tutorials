@@ -25,6 +25,7 @@ or go to [menti.com](https://menti.com/) and use code 4560 7682
 
 ## Who you are
 
+
 <div style='position: relative; padding-bottom: 56.25%; padding-top: 35px; height: 0; overflow: hidden;'><iframe sandbox='allow-scripts allow-same-origin allow-presentation' allowfullscreen='true' allowtransparency='true' frameborder='0' height='315' src='https://www.mentimeter.com/app/presentation/n/alkw2z5dj2ur7ersxdiid42g73qo5b7k/embed' style='position: absolute; top: 0; left: 0; width: 100%; height: 70%;' width='420'></iframe></div>
 
 or go to menti.com and use code 4560 7682
@@ -55,7 +56,7 @@ code {
     font-weight: 580;
 }
 .code{
-    color: #064247;
+    color: #4e9098;
     font-weight: 580;
 }
 .container{
@@ -115,7 +116,7 @@ code {
     <li style="font-weight: bold;">Before Containers:
         <ul>
             <li style="font-weight: normal;">Install, uninstall, reinstall</li>
-            <li style="font-weight: normal;">Slow, unreliable, expensive</li>
+            <li style="font-weight: normal;">Slow, unreliable</li>
         </ul>
     </li>
     <li style="font-weight: bold;">Using Containers:
@@ -135,9 +136,7 @@ code {
 <!-- .element: style="width: 100%;" -->
 </div>
 </div>
-A container is a standard unit of software that packages up code and
-all its dependencies so the application runs reliably from one computing
-environment to another.
+A container is a <span style="font-weight: bold;">standard unit of software</span> that packages up <span style="font-weight: bold;">code and its dependencies</span> so that the application runs reliably on <span style="font-weight: bold;">different computing environments</span>.
 
 ---
 
@@ -149,18 +148,17 @@ environment to another.
     <li style="font-weight: bold;">Portability:
         <ul>
             <li style="font-weight: normal;">Consistent behavior across different environments</li>
-            <li style="font-weight: normal;">Eliminates “it works on my machine” issues</li>
+            <li style="font-weight: normal;">Eliminate “it works on my machine” issues</li>
         </ul>
     </li>
     <li style="font-weight: bold;">Scalability:
         <ul>
-            <li style="font-weight: normal;">Uses fewer resources than traditional VMs</li>
-            <li style="font-weight: normal;">Faster startup times and better resource utilization</li>
+            <li style="font-weight: normal;">Work very well with cloud orchestration tools</li>
         </ul>
     </li>
     <li style="font-weight: bold;">Efficiency:
         <ul>
-            <li style="font-weight: normal;">Uses fewer resources than traditional VMs</li>
+            <li style="font-weight: normal;">Use fewer resources than traditional VMs</li>
             <li style="font-weight: normal;">Faster startup times and better resource utilization</li>
         </ul>
     </li>
@@ -174,7 +172,7 @@ environment to another.
     <li style="font-weight: bold;">Isolation:
         <ul>
             <li style="font-weight: normal;">Independent running environments</li>
-            <li style="font-weight: normal;">Prevents conflicts between apps and dependencies</li>
+            <li style="font-weight: normal;">Prevent conflicts between different apps</li>
         </ul>
     </li>
     <li style="font-weight: bold;">Productivity:
@@ -228,7 +226,7 @@ environment to another.
 <div class="col" style="margin-top: 4%;">
 <ul>
 <li>Application packaged as an isolated environment</li>
-<li>packaged with all dependencies and configs</li>
+<li>Packaged with all dependencies and configs</li>
 <li>Start service as Docker container</li>
 <li>Same command for all OS and services</li>
 <li>Standardizes process of running services on local enironment</li>
@@ -251,7 +249,7 @@ environment to another.
 <div class="col">
 <ul style="margin-top: 5%;">
 <li>Containerisation toolkit</li>
-<li>build, deploy and manage applications</li>
+<li>Build, deploy and manage applications</li>
 <li>Docker Engine and CLI is open source</li>
 <li>Docker Desktop</li>
 <ul>
@@ -272,9 +270,9 @@ environment to another.
 <div class="col" style="margin-top: 3%;">
 
 <ul>
-    <li><span style="font-weight: bold;">Docker Images:</span> Blueprints of the application</li>
+    <li><span style="font-weight: bold;">Docker Images:</span> Blueprints of the application and dependencies</li>
     <li><span style="font-weight: bold;">Docker Containers:</span> Instances of a Docker Image</li>
-    <li ><span style="font-weight: bold;">Docker Daemon:</span> Background service running on the host that listens to API calls (via the Docker client), manages images and building, running and distributing containers</li>
+    <li ><span style="font-weight: bold;">Docker Daemon:</span> Background service running on the host that listens to API calls (via the Docker client), manages images and builds, runs and distributes containers</li>
     <li><span style="font-weight: bold;">Docker Client:</span> The command line tool that allows the user to interact with the daemon.</li>
     <li><span style="font-weight: bold;">Docker Hub:</span> A registry of Docker Images</li>
     <li><span style="font-weight: bold;">Docker Host:</span> The host machine that the docker daemon runs on</li>
@@ -343,10 +341,10 @@ environment to another.
 <div class="col">
 <ul style="font-size: 35px;margin-top: 15%;">
 <li><span style="font-weight: bold;">FROM</span> -- set base image</li>
-<li><span style="font-weight: bold;">RUN</span> -- execute command in container</li>
+<li><span style="font-weight: bold;">RUN</span> -- execute command in the image</li>
 <li><span style="font-weight: bold;">ENV</span> -- set environment variable</li>
 <li><span style="font-weight: bold;">WORKDIR</span> -- set working directory</li>
-<li><span style="font-weight: bold;">COPY</span> -- copy files into the container</li>
+<li><span style="font-weight: bold;">COPY</span> -- copy files into the image</li>
 <li><span style="font-weight: bold;">CMD</span> -- specifies the command that will always be executed when a container starts</li>
 </ul>
 </div>
