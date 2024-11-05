@@ -244,7 +244,7 @@ In this section we will download code for a shiny application, add a Dockerfile 
 In your terminal, run the follow command
 
 ```bash
-git clone https://github.com/ScilifelabDataCentre/shiny-adhd-medication-sweden.git -b container workshop
+git clone https://github.com/ScilifelabDataCentre/shiny-adhd-medication-sweden.git -b container-workshop
 ```
 
 then, run the command
