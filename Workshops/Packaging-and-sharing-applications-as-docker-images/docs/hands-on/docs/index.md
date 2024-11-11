@@ -5,7 +5,7 @@ hide:
 # Packaging and sharing data science applications as docker container images: Hands-on
 
 !!! info
-        If you have already installed Docker desktop and have tried basic docker commands, you can start at Step 1.
+    If you have already installed Docker desktop and have tried basic docker commands, you can start at Step 1.
 
 This workshop will introduce Docker containers and how you can use them to package applications. By the end of this workshop, we hope you will know how to use Docker on your local machine, package applications with their dependencies, upload the packaged apps to Dockerhub as images.
 Then, we will show an example of a shiny application, prepare it for deployment by packaging it as a docker container and make it available on the web with a URL using Scilifelab Serve. The target audience of this tutorial are researchers who build applications and tools from different frameworks and want to know about packaging them.
@@ -163,7 +163,10 @@ Ensure that Docker Desktop is running. Open Terminal and navigate to the folder 
 cd path/to/your/folder
 ```
 
-Run the Docker command to build your image as shown below. Note that the dot at the end of the command is important. Please note that building the image may take a while.
+Run the Docker command to build your image as shown below. Building the image may take a while.
+
+!!! warning  "Note"
+    The dot **(.)** at the end of the command is important. This sets the build context to the current directory. This means that the build expects to find the Dockerfile in the directory where the command is invoked
 
 ```bash
 docker build -t <some-name>:<some-tag> .
@@ -185,10 +188,12 @@ If everything went well, you should now be able to navigate to `http://localhost
 
 ??? "Click to see exact commands"
     Run the following command to build the docker container
+    !!! warning  "Note"
+        The dot **(.)** at the end of the command is important. This sets the build context to the current directory. This means that the build expects to find the Dockerfile in the directory where the command is invoked
     ```bash
     docker build -t flask-web-app .
     ```
-    !!! info "Pro tip"
+    !!! tip "Pro tip"
         It is a good idea to use your Dockerhub username name when building and tagging images as this makes it possible to push images to an image registry such as Dockerhub.
         Using versioning is very helpful as well.
         As an example, the command above could be written as:
@@ -203,7 +208,7 @@ If everything went well, you should now be able to navigate to `http://localhost
 
     Once it is running you should see that it is available under <a href="http://localhost:5000" target="_blank">http://localhost:5000</a> (or see what Flask tells you in the terminal window, it should say "Running on URL: ..."). Navigate to this link in your browser and try out the app.
 
-    !!! info "Pro tip"
+    !!! tip "Pro tip"
         It is often useful to run the container in detached mode so that it can run in the background.
         As an example, the command above could be written as:
         ```bash
@@ -218,6 +223,9 @@ Register on [DockerHub](https://hub.docker.com/) and sign in with your account o
 
 
 Next, re-build your image as described above, this time including your DockerHub username in the image name, as shown below. 
+
+!!! warning  "Note"
+    The dot **(.)** at the end of the command is important. This sets the build context to the current directory. This means that the build expects to find the Dockerfile in the directory where the command is invoked
 
 ```bash
 docker build -t <your-dockerhub-username>/<some-name>:<some-tag> .
@@ -235,7 +243,7 @@ Keep in mind the you might need to login to you DockerHub user in case you haven
 docker login
 ```
 
-This should publish your image on `https://hub.docker.com/r/<your-dockerhub-username>/<some-name>:<some-tag>`. For example, our example app image for the flask web app is available at `scilifelabdatacentre/workshop-flask-web-app:v1.0.0`.
+This should publish your image on `https://hub.docker.com/r/<your-dockerhub-username>/<some-name>`. For example, our example app image for the flask web app is available at `scilifelabdatacentre/workshop-flask-web-app`.
 
 ## Step 2. Packaging a shiny application as a Docker Container Image to deploy on Scilifelab Serve
 
@@ -268,7 +276,7 @@ Here is the file structure for the app:
 Docker images are built from sets of instructions given in a so-called Dockerfile. Create a file called Dockerfile (the name of the file should be exactly 'Dockerfile' and it should not have any file extension) using any text editor you have and insert the code below or simply download this example. Place this file in the parent folder of the folder `app`, so inside the `shiny-adhd-medication-sweden` folder.
 
 ```bash
-FROM rocker/shiny::4.2.0
+FROM rocker/shiny:4.2.0
 
 RUN apt-get update && \
     apt-get upgrade -y && \
@@ -314,6 +322,10 @@ cd path/to/your/folder
 ```
 
 Run the Docker command to build your image as shown below. Replace <your-image-name> with your own image name. Note that the dot at the end of the command is important. Please note that building the image may take a while.
+
+!!! warning  "Note"
+    The dot **(.)** at the end of the command is important. This sets the build context to the current directory. This means that the build expects to find the Dockerfile in the directory where the command is invoked
+
 ```bash
 docker build --platform linux/amd64 -t <your-image-name>:<your-image-tag> .
 ```
@@ -330,10 +342,12 @@ If everything went as it should, you should now be able to navigate to `http://l
 
 ??? "Click to see exact commands"
     Run the following command to build the docker container
+    !!! warning  "Note"
+        The dot **(.)** at the end of the command is important. This sets the build context to the current directory. This means that the build expects to find the Dockerfile in the directory where the command is invoked
     ```bash
     docker build --platform linux/amd64 -t adhd-shiny-app .
     ```
-    !!! info "Pro tip"
+    !!! tip "Pro tip"
         It is a good idea to use your Dockerhub username when building and tagging images as this makes it possible to push images to an image registry such as Dockerhub.
         Using versioning is very helpful as well.
         As an example, the command above could be written as:
@@ -348,7 +362,7 @@ If everything went as it should, you should now be able to navigate to `http://l
 
     Once it is running you should see that it is available under <a href="http://localhost:3838" target="_blank">http://localhost:3838</a> (or see what the container tells you in the terminal window, it should say "Starting listener on: ..."). Navigate to this link in your browser and try out the app.
 
-    !!! info "Pro tip"
+    !!! tip "Pro tip"
         It is often useful to run the container in detached mode so that it can run in the background.
         As an example, the command above could be written as:
         ```bash
@@ -369,7 +383,7 @@ Keep in mind the you might need to login to you DockerHub user in case you haven
 docker login
 ```
 
-This should publish your image on `https://hub.docker.com/r/<your-dockerhub-username>/<some-name>:<some-tag>`. For example, our example app image for the flask web app is available at `scilifelabdatacentre/workshop-flask-web-app:v1.0.0`. Please note, if you create an image to publish on Scilifelab Serve, your image should stay available even after your app is published on Serve because it will be fetched with regular intervals.
+This should publish your image on `https://hub.docker.com/r/<your-dockerhub-username>/<some-name>`. For example, our example app image for the flask web app is available at `scilifelabdatacentre/workshop-flask-web-app`. Please note, if you create an image to publish on Scilifelab Serve, your image should stay available even after your app is published on Serve because it will be fetched with regular intervals.
 
 ## Step 3. Hosting your application on SciLifeLab Serve
 

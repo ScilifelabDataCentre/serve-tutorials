@@ -16,9 +16,8 @@ or go to [menti.com](https://menti.com/) and use code 4560 7682
 
 - SciLifeLab -> SciLifeLab Data Centre -> SciLifeLab Serve team
 - Today:
-    - Johan Alfredéen
+    - Arnold Kochari
     - Hamza Imran Saeed
-    - Nikita Churikov
 - serve@scilifelab.se
 
 ---
@@ -140,67 +139,6 @@ A container is a <span style="font-weight: bold;">standard unit of software</spa
 
 ---
 
-<div class="container">
-
-<div class="col">
-
-<ul>
-    <li style="font-weight: bold;">Portability:
-        <ul>
-            <li style="font-weight: normal;">Consistent behavior across different environments</li>
-            <li style="font-weight: normal;">Eliminate “it works on my machine” issues</li>
-        </ul>
-    </li>
-    <li style="font-weight: bold;">Scalability:
-        <ul>
-            <li style="font-weight: normal;">Work very well with cloud orchestration tools</li>
-        </ul>
-    </li>
-    <li style="font-weight: bold;">Efficiency:
-        <ul>
-            <li style="font-weight: normal;">Use fewer resources than traditional VMs</li>
-            <li style="font-weight: normal;">Faster startup times and better resource utilization</li>
-        </ul>
-    </li>
-</ul>
-<!-- .element: style="width: 100%;" -->
-
-</div>
-<div class="col">
-
-<ul>
-    <li style="font-weight: bold;">Isolation:
-        <ul>
-            <li style="font-weight: normal;">Independent running environments</li>
-            <li style="font-weight: normal;">Prevent conflicts between different apps</li>
-        </ul>
-    </li>
-    <li style="font-weight: bold;">Productivity:
-        <ul>
-            <li style="font-weight: normal;">Quick deployment of a wide range of applications and services</li>
-        </ul>
-    </li>
-    <li style="font-weight: bold;">Community:
-        <ul>
-            <li style="font-weight: normal;">Access to a vast repository of pre-built images on container resgitries</li>
-        </ul>
-    </li>
-</ul>
-<!-- .element: style="width: 100%;" -->
-
-</div>
-</div>
-
-<div class="container">
-<div class="col" >
-
-<img src="assets/images/docker-advantages.png" style="width: 45%;">
-
-</div>
-</div>
-
----
-
 ### Collaborative process before containers
 <div class="container">
 <div class="col">
@@ -227,7 +165,7 @@ A container is a <span style="font-weight: bold;">standard unit of software</spa
 <ul>
 <li>Application packaged as an isolated environment</li>
 <li>Packaged with all dependencies and configs</li>
-<li>Start service as Docker container</li>
+<li>Start service as a container</li>
 <li>Same command for all OS and services</li>
 <li>Standardizes process of running services on local enironment</li>
 <li>Run different versions of same app</li>
@@ -434,6 +372,67 @@ Demo
 ### Time for hands-on work
 
 The hands-on guide is available at [docker-workshop.serve.scilifelab.se](https://docker-workshop.serve.scilifelab.se)
+
+---
+
+
+<div class="container">
+
+<div class="col">
+
+<ul>
+    <li style="font-weight: bold;">Portability:
+        <ul>
+            <li style="font-weight: normal;">Consistent behavior across different environments</li>
+            <li style="font-weight: normal;">Eliminate “it works on my machine” issues</li>
+        </ul>
+    </li>
+    <li style="font-weight: bold;">Scalability:
+        <ul>
+            <li style="font-weight: normal;">Integrate well with cloud orchestration tools</li>
+        </ul>
+    </li>
+    <li style="font-weight: bold;">Efficiency:
+        <ul>
+            <li style="font-weight: normal;">Faster startup times and better resource utilization</li>
+        </ul>
+    </li>
+</ul>
+<!-- .element: style="width: 100%;" -->
+
+</div>
+<div class="col">
+
+<ul>
+    <li style="font-weight: bold;">Isolation:
+        <ul>
+            <li style="font-weight: normal;">Independent running environments</li>
+            <li style="font-weight: normal;">Prevent conflicts between different apps</li>
+        </ul>
+    </li>
+    <li style="font-weight: bold;">Productivity:
+        <ul>
+            <li style="font-weight: normal;">Improve software development and deployment cycles</li>
+        </ul>
+    </li>
+    <li style="font-weight: bold;">Community:
+        <ul>
+            <li style="font-weight: normal;">Access to a vast repository of pre-built images on container resgitries</li>
+        </ul>
+    </li>
+</ul>
+<!-- .element: style="width: 100%;" -->
+
+</div>
+</div>
+
+<div class="container">
+<div class="col" >
+
+<img src="assets/images/docker-advantages.png" style="width: 45%;">
+
+</div>
+</div>
 
 ---
 
