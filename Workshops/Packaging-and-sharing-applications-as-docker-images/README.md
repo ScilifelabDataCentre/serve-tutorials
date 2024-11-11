@@ -51,49 +51,49 @@ Here are some basic docker commands that will help you during the hands-on sessi
 
 #### Lifecycle
 
-* [`docker images`](https://docs.docker.com/engine/reference/commandline/images){:target="_blank"} shows all images.
+* [`docker images`](https://docs.docker.com/engine/reference/commandline/images) shows all images.
 ```console
 docker images
 ```
-* [`docker build`](https://docs.docker.com/reference/cli/docker/build-legacy/){:target="_blank"} creates image from Dockerfile.
+* [`docker build`](https://docs.docker.com/reference/cli/docker/build-legacy/) creates image from Dockerfile.
 ```console
 docker build -t <image-name>:<tag> .
 ```
-* [`docker run`](https://docs.docker.com/engine/reference/commandline/run){:target="_blank"} creates and starts a container in one operation.
+* [`docker run`](https://docs.docker.com/engine/reference/commandline/run) creates and starts a container in one operation.
 ```console
 docker run -p <host-port>:<container-port> <image-name>:<tag>
 ```
 
 #### Info
 
-* [`docker ps`](https://docs.docker.com/engine/reference/commandline/ps){:target="_blank"} shows running containers.
+* [`docker ps`](https://docs.docker.com/engine/reference/commandline/ps) shows running containers.
 ```console
 docker ps
 ```
-* [`docker logs`](https://docs.docker.com/engine/reference/commandline/logs){:target="_blank"} gets logs from a running container.
+* [`docker logs`](https://docs.docker.com/engine/reference/commandline/logs) gets logs from a running container.
 ```console
 docker logs <container-name>
 ```
-* [`docker inspect`](https://docs.docker.com/engine/reference/commandline/inspect){:target="_blank"} looks at all the info on a container.
+* [`docker inspect`](https://docs.docker.com/engine/reference/commandline/inspect) looks at all the info on a container.
 ```console
 docker inspect <container-name>
 ```
-* [`docker top`](https://docs.docker.com/engine/reference/commandline/top){:target="_blank"} shows running processes in container.
+* [`docker top`](https://docs.docker.com/engine/reference/commandline/top) shows running processes in container.
 ```console
 docker top <container-name> 
 ```
 
 #### Starting and Stopping
 
-* [`docker start`](https://docs.docker.com/engine/reference/commandline/start){:target="_blank"} starts a container.
+* [`docker start`](https://docs.docker.com/engine/reference/commandline/start) starts a container.
 ```console
 docker start <container-name>
 ```
-* [`docker stop`](https://docs.docker.com/engine/reference/commandline/stop){:target="_blank"} stops a running container.
+* [`docker stop`](https://docs.docker.com/engine/reference/commandline/stop) stops a running container.
 ```console
 docker stop <container-name>
 ```
-* [`docker restart`](https://docs.docker.com/engine/reference/commandline/restart){:target="_blank"} stops and re-starts a container.
+* [`docker restart`](https://docs.docker.com/engine/reference/commandline/restart) stops and re-starts a container.
 ```console
 docker restart <container-name>
 ```
