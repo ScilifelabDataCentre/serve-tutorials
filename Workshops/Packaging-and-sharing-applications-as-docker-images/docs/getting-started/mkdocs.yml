@@ -1,0 +1,10 @@
+site_name: Packaging and sharing data science applications as docker container images
+theme:
+  name: material
+  features:
+    - content.code.copy
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - attr_list
