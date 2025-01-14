@@ -10,7 +10,7 @@ Before you can start building a user interface for your app, you need to have a 
 
 ## Step 1. Building a user interface
 
-There are multiple frameworks that simplify the process of building apps with graphical user interfaces for machine learning model. For example, [Gradio](https://github.com/gradio-app/gradio) and [Streamlit](https://github.com/streamlit/streamlit) are such open source frameworks with a good community around them. In this tutorial we make use of Gradio. Here we will only cover basic functionality of Gradio which should suffice for most of the needs of researchers in life sciences. We want to note that Gradio (as well as Streamlit) offers niche functionality and flexibility for specific use cases so be sure to check [the official documentation](https://www.gradio.app/docs/) once you learn the basics here.
+There are multiple frameworks that simplify the process of building apps with graphical user interfaces for machine learning models. For example, [Gradio](https://github.com/gradio-app/gradio) and [Streamlit](https://github.com/streamlit/streamlit) are such open source frameworks with a good community around them. In this tutorial we make use of Gradio. Here we will only cover basic functionality of Gradio which should suffice for most of the needs of researchers in life sciences. We want to note that Gradio (as well as Streamlit) offers niche functionality and flexibility for specific use cases so be sure to check [the official documentation](https://www.gradio.app/docs/) once you learn the basics here.
 
 In this tutorial we use examples from the official [Gradio documentation](https://www.gradio.app/guides/quickstart) as well as custom examples that we created ourselves.
 
@@ -28,11 +28,11 @@ pip install --upgrade pip
 pip install gradio
 ```
 
-If all is successful, you are now ready to start looking at the examples the `example_apps/` folder and trying out different things in the templates that we prepared.
+If all is successful, you are now ready to start looking at the examples in the `example_apps/` folder and trying out different things in the templates that we prepared.
 
 ### Simplest application with Gradio
 
-We start with the basic case where the user provides custom input in a text field and receive output in text format. This example is in the `example_apps/hello_app.py` file. Let's first run it and see what it gives us. To run this and all the subsequent apps in this tutorial you can enter the following in the terminal:
+We start with the basic case where the user provides custom input in a text field and receives output in text format. This example is in the `example_apps/hello_app.py` file. Let's first run it and see what it gives us. To run this and all the subsequent apps in this tutorial you can enter the following in the terminal:
 
 ```bash
 gradio example_apps/hello_app.py
@@ -79,7 +79,7 @@ def sepia(input_img):
     sepia_img /= sepia_img.max()
     return sepia_img
 
-demo = gr.Interface(fn=sepia, inputs=gr.Image(), outputs="image")
+demo = gr.Interface(fn=sepia, inputs=gr.Image(label="Your image"), outputs=gr.Image(label="Sepia filtered image"), live=True)
 
 demo.launch(server_name="0.0.0.0", server_port=7860)
 ```
@@ -89,7 +89,7 @@ Gradio supports [a large number of other input and output types](https://www.gra
 In order to change the label displayed to the user in the input or output fields, you can simply add a `label` argument to the `inputs` and `outputs`, as shown below.
 
 ```python
-interface = gr.Interface(fn=sepia, inputs=gr.Image(lable="Your image"), outputs=gr.Image("Sepia filtered image"))
+interface = gr.Interface(fn=sepia, inputs=gr.Image(label="Your image"), outputs=gr.Image("Sepia filtered image"))
 ```
 
 ### Multiple inputs and multiple outputs
@@ -140,7 +140,7 @@ A REST API endpoint is also created automatically though it is not described in 
 
 #### Inference without clicking the 'submit' button
 
-If you don't want your users to have to click on "Submit" to get a prediction result, you can simply pass variable `live=True` in your interface definition, as shown below. We don't recommend doing this for all apps, however, because for example if your users are typing text you will be unnecessarily loading the servers while the text is being typed (since your function execution will be triggered with every typed letter) rather than running an inference once at the end. Performance of your server might become an issue if your app becomes popular so you should keep that in consideration (see more info also below).
+If you don't want your users to have to click on "Submit" to get a prediction result, you can simply pass variable `live=True` in your interface definition, as shown below. We don't recommend doing this for all apps, however, because if for example your users are typing text then you will be unnecessarily loading the servers while the text is being typed (since your function execution will be triggered with every typed letter) rather than running an inference once at the end. Performance of your server might become an issue if your app becomes popular so you should keep that in consideration (see more info also below).
 
 ```python
 demo = gr.Interface(fn=greet, inputs="text", outputs="text", live=True)
@@ -162,7 +162,7 @@ We do not cover customization of your app further here because there are many po
 
 ### Performance
 
-In case your app becomes popular and you have many users coming to make predictions at the same time we want to make sure we can handle the load. One of the most useful aspects of using Gradio is provides some tools to help with performance out of the box. Specifically, it provides a queueing system that is included by default in all Gradio apps. You can also customize it by adding `app.queue()` with your own parameters before you launch your app, see [the documentation on the Gradio queueing system for more details](https://www.gradio.app/guides/setting-up-a-demo-for-maximum-performance).
+In case your app becomes popular and many users are making predictions at the same time, then the app should handle the load. One of the most useful aspects of using Gradio is that it provides some tools to help with performance out of the box. Specifically, it provides a queueing system that is included by default in all Gradio apps. You can also customize it by adding `app.queue()` with your own parameters before you launch your app, see [the documentation on the Gradio queueing system for more details](https://www.gradio.app/guides/setting-up-a-demo-for-maximum-performance).
 
 ```python
 demo.queue()  # <-- In case you want to customize your queue parameters, you can do it here
@@ -181,19 +181,9 @@ There are multiple ways to host your application on a web server. Below, we demo
 
 You will need to have [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed on your computer to be able to build an image.
 
-### Create start script
-
-One additional component you need is a script that will be launching your application. In our example, the start script is simple. Create a file `start-script.sh` and put it in the same directory as your app.
-
-```bash
-#!/bin/bash
-
-python main.py
-```
-
 ### Create a Dockerfile
 
-The other component you need is a Dockerfile. Dockerfile if a file containing instructions for how your Docker image should be built. See [the official documentation]((https://docs.docker.com/engine/reference/builder/)) if you are curious to learn more but for the purpose of hosting your app it is sufficient to simply copy and if needed adjust the template below. Note that this file should be called simply `Dockerfile`, without any file extension.
+Now you are ready to create a Dockerfile. Dockerfile if a file containing instructions for how your Docker image should be built. See [the official documentation]((https://docs.docker.com/engine/reference/builder/)) if you are curious to learn more, but for the purpose of hosting your app it is sufficient to simply copy and if needed adjust the template below. Note that this file should be called simply `Dockerfile`, without any file extension.
 
 ```dockerfile
 # Select base image (can be ubuntu, python, shiny etc)
@@ -219,18 +209,18 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 COPY requirements.txt $HOME/requirements.txt
 COPY main.py $HOME/main.py
 # copy any other files that are needed for your app with the directory structure as your files expect
-COPY start-script.sh $HOME/start-script.sh
 COPY data/ $HOME/app/data
 
 RUN pip install --no-cache-dir -r requirements.txt \
-    && chmod +x start-script.sh \
     && chown -R $USER:$USER $HOME \
     && rm -rf /var/lib/apt/lists/*
 
 USER $USER
-EXPOSE 7860
 
-ENTRYPOINT ["./start-script.sh"]
+EXPOSE 7860
+ENV GRADIO_SERVER_NAME="0.0.0.0"
+
+CMD ["python", "main.py"]
 
 ```
 
@@ -245,7 +235,6 @@ At this point, you should have the following file structure in your app director
 ├── data   
     └── ... (model and any other static files required)
 ├── ... (any other files your app requires)
-├── start-script.sh
 └── Dockerfile
 ```
 ### Adding models to the data folder
@@ -360,14 +349,15 @@ You need to be logged in to create a project. To create a project, click on the 
 
 ### Create an app
 
-In order to host an app that we just built click the Create button on the Custom app card. Then enter the following information in the form:
+In order to host an app that we just built click the Create button on the **Gradio App** card. Then enter the following information in the form:
 
 * **Name:** Name of the app that will be displayed on the Public apps page.
 * **Description:** Provide a brief description of the app, will also be displayed on the Public apps page.
 * **Subdomain:** This is the subdomain that the deployed app will be available at (e.g., a subdomain of r46b61563 would mean that the app would be available at r46b61563.serve.scilifelab.se). If no subdomain name is entered, a random name will be generated by default. By clicking on New you can specify the custom subdomain name of your choice (provided that it is not already taken). This subdomain will then appear in the Subdomain options and the subdomain will appear in the format 'name-you-chose.serve.scilifelab.se'.
-* **Permissions:** The permissions for the app. There are 3 levels of permissions you can choose from:
+* **Permissions:** The permissions for the app. There are four levels of permissions you can choose from:
   - **Private:** The app can only be accessed by the user that created the app (sign in required). Please note that we only allow the permissions to be set to Private temporarily, while you are developing the app. Eventually each app should be published publicly.
   - **Project:** All members of the project where the app is located will be able to access the app (sign in required). Please note that we only allow the permissions to be set to Project temporarily, while you are developing the app. Eventually each app should be published publicly.
+  - **Link:** Anyone with the URL can access the app but this URL will not be publicly listed anywhere by us (this option is best in case you want to share the app with certain people but not with everyone yet).
   - **Public:** Anyone with the URL can access the app and the app will be displayed under Public apps page.
 * **App Port:** The port that the your app runs on (in case of our template it will be `7860`).
 * **DockerHub Image:** Name of the image on DockerHub or full URL to the image on a different repository.
