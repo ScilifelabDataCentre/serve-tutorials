@@ -24,16 +24,16 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY main.py $HOME/app/main.py
 # copy any other files that are needed for your app with the directory structure as your files expect
-COPY start-script.sh $HOME/app/start-script.sh
 COPY data/ $HOME/app/data
 
-RUN chmod +x start-script.sh \
-    && chown -R $USER:$USER $HOME \
+RUN chown -R $USER:$USER $HOME \
     && rm -rf /var/lib/apt/lists/*
 
 RUN python3 -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 
 USER $USER
-EXPOSE 7860
 
-ENTRYPOINT ["./start-script.sh"]
+EXPOSE 7860
+ENV GRADIO_SERVER_NAME="0.0.0.0"
+
+CMD ["python", "main.py"]

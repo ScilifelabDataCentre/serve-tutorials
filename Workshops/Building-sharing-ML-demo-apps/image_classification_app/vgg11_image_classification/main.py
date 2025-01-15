@@ -20,8 +20,6 @@ def predict(inp):
     confidences = {labels[i]: float(prediction[i]) for i in range(1000)}
   return confidences
 
-def greet(name):
-   return "Hello " + name + "!"
 
 interface = gr.Interface(fn=predict,
              inputs=gr.Image(type="pil"),
