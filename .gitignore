@@ -17,8 +17,14 @@ ENV/
 env.bak/
 venv.bak/
 
+# pyenv
+.python-version
+
 # apptainer images
 *.sif
+
+# PyTorch state dict files
+*.pth
 
 # keep .gitkeep files
 !/**/.gitkeep

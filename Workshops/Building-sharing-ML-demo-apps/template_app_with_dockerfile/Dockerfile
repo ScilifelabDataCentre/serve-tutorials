@@ -21,11 +21,9 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 COPY requirements.txt $HOME/app/requirements.txt
 COPY main.py $HOME/app/main.py
 # copy any other files that are needed for your app with the directory structure as your files expect
-COPY start-script.sh $HOME/app/start-script.sh
 #COPY data/ $HOME/app/data #uncomment if you are uploading data
 
 RUN pip install --no-cache-dir -r requirements.txt \
-    && chmod +x start-script.sh \
     && chown -R $USER:$USER $HOME \
     && rm -rf /var/lib/apt/lists/*
 
@@ -33,5 +31,6 @@ RUN python3 -m pip install torch torchvision torchaudio --index-url https://down
 
 USER $USER
 EXPOSE 7680
+ENV GRADIO_SERVER_NAME="0.0.0.0"
 
-ENTRYPOINT ["./start-script.sh"]
+CMD ["python", "main.py"]

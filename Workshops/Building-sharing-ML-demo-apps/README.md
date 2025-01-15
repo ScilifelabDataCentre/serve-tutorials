@@ -270,7 +270,7 @@ curl -O -J https://nextcloud.dc.scilifelab.se/s/6znJ2FPZPyLKaGa/download
 
 #### VGG 11 Image Classification Model
 
-This model has been obtained from and older versions of the [Pytorch Model Zoo](https://jlin27.github.io/serve-1/model_zoo.html). The models here are packaged as .mar archives to work conveniently with [TorchServe](https://pytorch.org/serve/). We have unpacked the archives and added the `.pth` files (which can be used to load the model) to Nextcloud and can be downloaded as follows.
+This model has been obtained from an older version of the [Pytorch Model Zoo](https://jlin27.github.io/serve-1/model_zoo.html). The models here are packaged as .mar archives to work conveniently with [TorchServe](https://pytorch.org/serve/). We have unpacked the archives and added the `.pth` files (which can be used to load the model) to Nextcloud and can be downloaded as follows.
 
 To download the model to the data folder go into the data directory
 ```bash
