@@ -1,0 +1,135 @@
+.inline-input {
+     display: inline-block;
+     vertical-align: middle;
+     font-size: 1em;
+    /* Match font size with surrounding text */
+     padding: 0 5px;
+    /* Some padding for better appearance */
+     height: 1.5em;
+    /* Adjust height to match line height */
+     border: 1px solid #ccc;
+     border-radius: 4px;
+     margin: 0;
+    /* Remove default margin */
+     line-height: 1.5em;
+    /* Adjust line height to match surrounding text */
+}
+ .black-square-on-the-right {
+     width: 100px;
+     height: 100px;
+     background-color: black;
+     opacity: 0.5;
+     position: absolute;
+     top: 50%;
+     right: 0;
+     transform: translateY(-50%);
+}
+ .reset {
+     all: initial;
+     font-family: inherit;
+     font-size: inherit;
+     line-height: inherit;
+}
+ .container{
+     display: flex;
+}
+ .col{
+     flex: 1;
+}
+ .top-right-text {
+     position: absolute;
+     top: 10px;
+     right: 10px;
+     font-size: 16px;
+}
+ .btn {
+     background-color: DodgerBlue;
+    /* Blue background */
+     border: none;
+    /* Remove borders */
+     color: white;
+    /* White text */
+     padding: 12px 16px;
+    /* Some padding */
+     font-size: 16px;
+    /* Set a font size */
+     cursor: pointer;
+    /* Mouse pointer on hover */
+}
+/* Darker background on mouse-over */
+ .btn:hover {
+     background-color: RoyalBlue;
+}
+ #copyField {
+     padding: 10px;
+     border: 1px solid #ccc;
+     width: 200px;
+     cursor: pointer;
+}
+ .overflow-y-scroll {
+     overflow-y: scroll;
+}
+ .h-60 {
+     height: 60px;
+}
+ .h-200 {
+     height: 200px;
+}
+ .h-400 {
+     height: 400px;
+}
+.fs-20 {
+     font-size: 20px;
+}
+.fs-30 {
+     font-size: 30px;
+}
+ .info-icon {
+     font-size: 20px;
+     cursor: pointer;
+     position: relative;
+     display: inline-block;
+}
+ .info-icon:hover .tooltip {
+     display: block;
+}
+ .tooltip {
+     display: none;
+     position: absolute;
+     bottom: 100%;
+     left: 50%;
+     transform: translateX(-50%);
+     padding: 10px;
+     border: 1px solid #ccc;
+     background-color: #f9f9f9;
+     width: 300px;
+     font-size: 14px;
+     z-index: 10;
+     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+ .tooltip::after {
+     content: '';
+     position: absolute;
+     top: 100%;
+     left: 50%;
+     transform: translateX(-50%);
+     border-width: 5px;
+     border-style: solid;
+     border-color: #f9f9f9 transparent transparent transparent;
+}
+ .code-snippet {
+     font-family: 'Courier New', monospace;
+     background-color: #f0f0f0;
+     padding: 10px;
+     border-radius: 5px;
+     overflow: auto;
+}
+ .inline-code {
+     background-color: #eee;
+     border-radius: 3px;
+     font-family: courier, monospace;
+     padding: 0 3px;
+}
+.strikediag {
+  background: linear-gradient(to left top, transparent 47.75%, currentColor 49.5%, currentColor 50.5%, transparent 52.25%);
+} 
