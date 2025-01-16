@@ -10,7 +10,7 @@ or go to [menti.com](https://menti.com/) and use code 1967 8095
 
 ---
 
-## Building and sharing machine learning demo applications within life sciences: a practical tutorial
+## Building and sharing machine learning demo applications: a practical tutorial
 
 ---
 
