@@ -16,6 +16,7 @@ or go to [menti.com](https://menti.com/) and use code 1967 8095
 
 ## Who we are
 
+- Today's event is co-organised with KTH Library 🎉
 - SciLifeLab -> SciLifeLab Data Centre -> SciLifeLab Serve team
 - Today:
     - Arnold Kochari
@@ -37,9 +38,35 @@ or go to menti.com and use code 1967 8095
 
 <!-- TODO: Update link -->
 
-<section data-background-iframe="https://www.mentimeter.com/app/presentation/alhxr8rtvrksuu9ni6egtmkde8zzx7iu/embed" data-background-interactive>
+<section data-background-iframe="https://www.mentimeter.com/app/presentation/alpptrbomxo6upjcheatsf14qtn913ni/embed" data-background-interactive>
 </section>
 
+---
+## Today's plan
+
+- Intro
+- Part 1. Creating a web application from an ML model 
+- Break 
+- Part 2. Packaging your application as a Docker image
+- Part 3. Hosting your application on SciLifeLab Serve
+
+---
+
+## Intro
+
+---
+
+## Part 1: Using Gradio to build a web application
+
+---
+
+### Gradio
+
+- Open source framework
+- Create web apps with Python code only
+- Tailored to ML researchers
+- Active community; tutorials online
+- Alternatives: Streamlit, Dash, FastAPI, Flask, etc.
 
 ---
 
@@ -48,22 +75,7 @@ Find the written tutorial for today here:
 [bit.ly/ml-apps-tutorial](http://bit.ly/ml-apps-tutorial)
 
 ---
-## Today's plan
 
-<!-- TODO: This slide could be made less intimidating -->
-
-- Intro. Sharing ML models as a researcher (5 minutes)
-- Part 1. Building a user interface for your model (35 + 20 minutes)
-- Break (10 minutes)
-- Part 2. Packaging your application as a Docker image (demo, 15 minutes)
-- Part 3. Hosting your application on SciLifeLab Serve (demo, 15 minutes)
-- More hands-on + Q&A (remaining time)
-
----
-
-## Part 1: Using Gradio to build a user interface
-
----
 
 ### Preparation
 
@@ -83,7 +95,7 @@ pip install gradio
 To run this app:
 
 ```bash
-gradio example_apps/hello_app.py
+python example_apps/hello_app.py
 ```
 
 Navigate to http://0.0.0.0:7860
@@ -108,7 +120,7 @@ demo.launch(server_name="0.0.0.0", server_port=7860)
 Image input and output:
 
 ```bash
-gradio example_apps/sepia_app.py
+python example_apps/sepia_app.py
 ```
 
 ```python [14]
@@ -159,7 +171,7 @@ Gradio supports:
 ### Multiple inputs and multiple outputs
 
 ```bash
-gradio example_apps/hello2_app.py
+python example_apps/hello2_app.py
 ```
 
 ```python [3,7,11-12]
@@ -187,7 +199,7 @@ demo.launch(server_name="0.0.0.0", server_port=7860)
 Providing examples
 
 ```bash
-gradio example_apps/hello3_app.py
+python example_apps/hello3_app.py
 ```
 
 ```python [11,13]
@@ -213,43 +225,19 @@ demo.launch(server_name="0.0.0.0", server_port=7860)
 
 Custom input and output components
 
-https://www.gradio.app/docs/components
+https://www.gradio.app/custom-components/gallery
 
-----
-
-Progress bar
-
-```bash
-gradio example_apps/progress_app.py
-```
-
-```python [4-9]
-import gradio as gr
-import time
-
-def my_function(x, progress=gr.Progress()):
-    progress(0, desc="Starting...")
-    time.sleep(1)
-    for i in progress.tqdm(range(100)):
-        time.sleep(0.1)
-    return x
-
-demo = gr.Interface(fn=my_function, inputs=gr.Textbox(), outputs=gr.Textbox())
-
-demo.queue().launch(server_name="0.0.0.0", server_port=7860)
-```
 ----
 
 Access through API
 
+- REST API endpoint
 - Custom Python and JavaScript clients for Gradio
 - Can be disabled:
 
 ```python
 demo.launch(server_name="0.0.0.0", server_port=7860, show_api=False)
 ```
-
-- REST API endpoint `/api/predict`
 
 ----
 
@@ -266,7 +254,7 @@ demo = gr.Interface(fn=greet, inputs="text", outputs="text", live=True)
 Title, description, reference:
 
 ```bash
-gradio example_apps/hello4_app.py
+python example_apps/hello4_app.py
 ```
 
 ```python [17-20]
@@ -313,10 +301,6 @@ Gradio Blocks: https://www.gradio.app/docs/blocks
 
 Built-in queueing system:
 
-```python
-demo.queue().launch(server_name="0.0.0.0", server_port=7860)
-```
-
 - Max number of requests in queue
 - Max number of threads
 - Improved hardware
@@ -325,10 +309,10 @@ demo.queue().launch(server_name="0.0.0.0", server_port=7860)
 
 ## Time for hands-on work
 
-- **Option 1:** build a Gradio app for our model/function
-    - The example app/model is in the `hands_on_app/folder`
+- **Option 1:** build a Gradio app for our model
+    - The example app is in the `hands_on_app` folder
     - Install the packages from `hands_on_app/requirements.txt`
-    - Download and copy the data to `data/flower_model_vgg19.pth`
+    - Download and copy the data to `hands_on_app/data/flower_model_vgg19.pth`
     - Add a Gradio app to `hands_on_app/main.py`
     - Make your app fancy!
 - **Option 2:** build a Gradio app for your own model/function
@@ -336,6 +320,14 @@ demo.queue().launch(server_name="0.0.0.0", server_port=7860)
 ---
 
 ## Part 2: Packaging your application as a Docker Container Image
+
+---
+
+### Prerequisites for sharing your app
+
+- To send your application or to make it available online you first need to package it 
+- Docker is a powerful and popular way to do it
+- If you don't have docker, you can install it from [docs.docker.com/get-docker](https://docs.docker.com/get-docker/).
 
 ---
 
@@ -358,22 +350,17 @@ demo.queue().launch(server_name="0.0.0.0", server_port=7860)
 
 ---
 
-### Prerequisites for deployment
-
-- To host your app on SciLifeLab Serve, you first need to package it as a Docker image.
-- If you don't have docker, you can install it from [docs.docker.com/get-docker](https://docs.docker.com/get-docker/).
-
----
 ### Image classification example app
 - The model we will use in this example is a [Flowers Classification Model PyToch model](https://github.com/ScilifelabDataCentre/serve-tutorials/tree/main/Webinars/2023-Using-containers-on-Berzelius/flowers-classification) based on the [102 Category Flower Dataset](https://www.robots.ox.ac.uk/~vgg/data/flowers/102/);
-- You can follow the instructions mentioned in the [README](https://github.com/ScilifelabDataCentre/serve-tutorials/tree/main/Workshops/Building-sharing-ML-demo-apps) file in the GitHub repository to train the model your self but keep in mind it takes quite a while (~ 4 hours) with limited CPUs. 
+- You can follow the instructions mentioned in the [README](https://github.com/ScilifelabDataCentre/serve-tutorials/tree/main/Workshops/Building-sharing-ML-demo-apps) file in the GitHub repository to train the model yourself but keep in mind it takes quite a while (~ 4 hours) with limited CPUs. 
 
 <!-- TODO: Link can add qr code to menti for the link to GitHub. -->
 
 ---
 
 ### Structure
-The code for the app and the Dockerfile used to build the app is available in the `image_classification_app/` folder inside the [serve-tutorials](https://github.com/ScilifelabDataCentre/serve-tutorials/tree/building-sharing-ML-demo-apps/Workshops/Building-sharing-ML-demo-apps) repository.
+
+All files required for our app are available in the folder `image_classification_app/flower_classification`
 
 
 The directory has the following structure:
@@ -385,7 +372,6 @@ The directory has the following structure:
 ├── data   
     └── ... (model and any other static files required)
 ├── ... (any other files your app requires)
-├── start-script.sh
 └── Dockerfile
 ```
 
@@ -413,27 +399,25 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     build-essential \
     software-properties-common
 
-# Copy code and start script (this will place the files in home/username/)
+# Copy all files that are needed for your app with the directory structure that your app expects
 COPY requirements.txt $HOME/requirements.txt
 COPY main.py $HOME/main.py
-# copy any other files that are needed for your app with the directory structure as your files expect
-COPY start-script.sh $HOME/start-script.sh
 COPY data/ $HOME/app/data
 
 RUN pip install --no-cache-dir -r requirements.txt \
-    && chmod +x start-script.sh \
     && chown -R $USER:$USER $HOME \
     && rm -rf /var/lib/apt/lists/*
 
 USER $USER
+
 EXPOSE 7860
+ENV GRADIO_SERVER_NAME="0.0.0.0"
 
-ENTRYPOINT ["./start-script.sh"]
-
+CMD ["python", "main.py"]
 ```
 ---
 
-### Main.py
+### main.py
 
 The main file for the Gradio app
 
@@ -462,18 +446,6 @@ interface = gr.Interface(fn=predict,
              outputs=gr.Label(num_top_classes=3))
 
 interface.launch(server_name="0.0.0.0", server_port=7860)
-```
-
----
-
-### Start script
-
-Deployment on Serve requires a script that will be launching your application. Create a file *start-script.sh* and put it in the same directory as your app.
-
-```bash
-#!/bin/bash
-
-python main.py
 ```
 
 ---

@@ -124,10 +124,6 @@ Now that we looked at the basics let's take a look at some of the ways in which 
 
 You might want to provide example inputs for your app so that the users can try it out quickly or know how to prepare their input. This can be done by simply adding an [`examples`](https://www.gradio.app/main/docs/gradio/examples) argument to your interface definition. You can see an example of this in `example_apps/hello3_app.py`.
 
-#### Progress bar
-
-Gradio provides a [custom progress tracker](https://www.gradio.app/main/docs/gradio/progress) that can be added to your function to show how far the processing has gone. This is demonstrated in the example `example_apps/progress_app.py`.
-
 #### Access through API
 
 By default the apps created and published with Gradio also provide information on how it can be accessed using an API through custom Python and JavaScript clients. At the bottom of the app there is a link "Use via API" which gives instructions how the app can be accessed using these clients. This can be disabled by setting `show_api` to `False` in the app launch command, as shown below.
@@ -135,8 +131,6 @@ By default the apps created and published with Gradio also provide information o
 ```python
 demo.launch(server_name="0.0.0.0", server_port=7860, show_api=False)
 ```
-
-A REST API endpoint is also created automatically though it is not described in the user interface in the latest version of Gradio; the REST API endpoint is `/api/predict`.
 
 #### Inference without clicking the 'submit' button
 
