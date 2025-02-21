@@ -16,11 +16,20 @@ In this tutorial we use examples from the official [Gradio documentation](https:
 
 ### Preparation
 
-In order to follow this tutorial, make sure that you are running Python 3.10 or later.
+First, you need to download the files from this tutorial to your computer. If you have `git`, you can simply `git clone` this repository. Otherwise [press this link to download a .ZIP archive](https://github.com/ScilifelabDataCentre/serve-tutorials/archive/refs/heads/main.zip) and unzip it manually.
+
+```bash
+git clone https://github.com/ScilifelabDataCentre/serve-tutorials
+```
+
+In order to follow this tutorial, make sure that you are running Python 3.10 or later. Run this command in your Terminal to find out.
 
 ```bash
 python --version
-git clone https://github.com/ScilifelabDataCentre/serve-tutorials
+```
+Finally, in your Terminal, navigate to the folder of this particular tutorial and create a Python virtual environment where you can install gradio.
+
+```bash
 cd serve-tutorials/Workshops/Building-sharing-ML-demo-apps/
 python -m venv .venv
 source .venv/bin/activate
