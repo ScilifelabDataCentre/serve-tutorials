@@ -1,0 +1,17 @@
+site_name: Packaging and sharing data science applications as docker container images
+theme:
+  name: material
+  features:
+    - content.code.select
+    - content.code.copy
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - attr_list

@@ -1,12 +1,83 @@
-# Building and sharing machine learning demo applications within life sciences: a practical tutorial
+---
+hide:
+  - navigation
+---
+# Building and sharing AI applications within ecology and biodiversity
 
 During the tutorial we will start from a trained model and demonstrate step by step how you can create a graphical user interface for your application, prepare it for deployment, and make it available on the web with a URL. The target audience of this tutorial are researchers working with machine learning models that do not have web development background but still want to share demos of their models as web applications. We will demonstrate the use of specific tools which make this process easy.
 
 Note that the setup described here will cover the needs of a large majority of researchers when they want to share their ML model, allowing to give the app users instant predictions and good performance overall. In the minority of cases performance might be an issue when using this approach - perhaps your model is really large and needs a lot of time or resources to make predictions or you care about fast inference down to milliseconds. In these latter cases there are more specialized ways to build or serve applications, those cases are not covered here.
 
-## Step 0. Creating a prediction function with your model
+## Step 0. Setup (Skip if you followed setup instructions)
 
-Before you can start building a user interface for your app, you need to have a function that takes input, uses your trained model to make a prediction, and gives output. Exactly what kind of processing happens inside that function does not matter for the user interface that we will be building, it will only care about the input(s) and output(s). We do not cover this part in the tutorial since it will be different for different ML frameworks.
+### Downloading Docker or Docker Desktop
+
+Docker Desktop is the all-in-one package to build images and run containers.
+
+#### Steps to Install Docker Desktop
+
+1. **Download Docker Desktop Installer**  
+Visit the Docker Desktop <a href="https://www.docker.com/products/docker-desktop/" target="_blank">download page</a> and download the installer for your operating system.
+
+2. **Run the Installer**  
+
+3. **Follow the Installation Wizard**  
+Follow the on-screen instructions to complete the installation.
+
+4. **Start Docker Desktop**  
+Once the installation is complete, Docker Desktop will start automatically.You can also start it manually.
+
+5. **Verify Installation**  
+Open a terminal (Command Prompt, PowerShell, or any other terminal) and run the following command to verify the installation:
+ ```sh
+ docker --version
+ ```
+You should see the Docker version information displayed.
+
+6. **Run a Test Container**  
+To ensure Docker is working correctly, run a test container:
+ ```sh
+ docker run hello-world
+ ```
+This command downloads a test image and runs it in a container. If successful, you will see a message indicating that Docker is installed correctly.
+
+---
+
+By following these steps, you should have Docker Desktop installed and running on your system. If you have any questions or run into issues, feel free to ask!
+
+#### Create an account on Dockerhub and Sign In
+
+As part of this workshop, you will create a Docker Image and push to it Docker's Image Regsitry called Dockerhub. To do this, you need to create a docker account, which you can do by going to their <a href="https://hub.docker.com/" target="_blank">website</a> and creating an account. Once this is done, you can go to the terminal on your computer and run the following command:
+
+```console
+docker login
+```
+
+### Workshop Tools Setup
+
+In order to follow this workshop, make sure that you are running Python 3.10 or later. Run this command in your Terminal to find out.
+
+```console
+python --version
+```
+
+Then, you need to download the files for this workshop to your computer. If you have git, you can simply git clone this repository.
+
+```console
+git clone https://github.com/ScilifelabDataCentre/serve-tutorials
+```
+
+Otherwise [press this link to download a .ZIP archive](https://github.com/ScilifelabDataCentre/serve-tutorials/archive/refs/heads/main.zip) and unzip it manually.
+
+Finally, in your Terminal, navigate to the folder of this particular tutorial and create a Python virtual environment where you can install gradio.
+
+```console
+cd serve-tutorials/Workshops/Building-sharing-ML-demo-apps/
+python -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip
+pip install gradio
+```
 
 ## Step 1. Building a user interface
 
@@ -186,7 +257,7 @@ You will need to have [Docker Desktop](https://www.docker.com/products/docker-de
 
 ### Create a Dockerfile
 
-Now you are ready to create a Dockerfile. Dockerfile if a file containing instructions for how your Docker image should be built. See [the official documentation]((https://docs.docker.com/engine/reference/builder/)) if you are curious to learn more, but for the purpose of hosting your app it is sufficient to simply copy and if needed adjust the template below. Note that this file should be called simply `Dockerfile`, without any file extension.
+Now you are ready to create a Dockerfile. Dockerfile is a file containing instructions for how your Docker image should be built. See [the official documentation]((https://docs.docker.com/engine/reference/builder/)) if you are curious to learn more, but for the purpose of hosting your app it is sufficient to simply copy and if needed adjust the template below. Note that this file should be called simply `Dockerfile`, without any file extension.
 
 ```dockerfile
 # Select base image (can be ubuntu, python, shiny etc)
@@ -257,32 +328,6 @@ cd flower_classification/data/
 then run the following command to download the model
 ```bash
 curl -O -J https://nextcloud.dc.scilifelab.se/s/GSf2g5CAFxBPtMN/download
-```
-
-#### Resnet 18 Image Classification Model
-
-This model has been obtained from the official [Pytorch Model Zoo](https://pytorch.org/serve/model_zoo.html). The models here are packaged as .mar archives to work conveniently with [TorchServe](https://pytorch.org/serve/). We have unpacked the archives and added the `.pth` files (which can be used to load the model) to Nextcloud and can be downloaded as follows.
-
-To download the model to the data folder go into the data directory
-```bash
-cd resnet_image_classification/data/
-```
-then run the following command to download the model
-```bash
-curl -O -J https://nextcloud.dc.scilifelab.se/s/6znJ2FPZPyLKaGa/download
-```
-
-#### VGG 11 Image Classification Model
-
-This model has been obtained from an older version of the [Pytorch Model Zoo](https://jlin27.github.io/serve-1/model_zoo.html). The models here are packaged as .mar archives to work conveniently with [TorchServe](https://pytorch.org/serve/). We have unpacked the archives and added the `.pth` files (which can be used to load the model) to Nextcloud and can be downloaded as follows.
-
-To download the model to the data folder go into the data directory
-```bash
-cd vgg11_image_classification/data/
-```
-then run the following command to download the model
-```bash
-curl -O -J https://nextcloud.dc.scilifelab.se/s/8FLB6JqJsPBDcWw/download
 ```
 
 ### Build a Docker image

@@ -1,0 +1,10 @@
+site_name: Building and sharing AI applications within ecology and biodiversity
+theme:
+  name: material
+  features:
+    - content.code.copy
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - attr_list
