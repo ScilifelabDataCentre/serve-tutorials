@@ -55,8 +55,8 @@ docker login
 
 We prepared an example Shiny application that you can work with today. Please download these files, place them in a single folder called `app`, and make sure you can run the Shiny application on your computer (for example, using RStudio interface) without issues:
 
-- `app.R`: [TO-DO: ADD URL]
-- `population_by_municipality.csv`: [TO-DO: ADD URL]
+- `app.R`: [raw file](https://raw.githubusercontent.com/ScilifelabDataCentre/serve-tutorials/refs/heads/main/Workshops/Public-hosting-of-Shiny-apps/complete-example/app/app.R)
+- `population_by_municipality.csv`: [raw file](https://raw.githubusercontent.com/ScilifelabDataCentre/serve-tutorials/refs/heads/main/Workshops/Public-hosting-of-Shiny-apps/complete-example/app/calidris_observations.csv)
 
 Here is the file structure for the app so far:
 
@@ -174,9 +174,7 @@ You should now see two copies of your image with different names and tags. In Do
 docker push <your-dockerhub-username>/<your-image-name>:<your-tag>
 ```
 
-Your image should now be listed on this page: *https://hub.docker.com/r/your-dockerhub-username/your-image-name*. We also created a Docker image for our example app, and it is listed here: https://hub.docker.com/r/ 
-
-[TO-DO: ADD URL HERE].
+Your image should now be listed on this page: *https://hub.docker.com/r/your-dockerhub-username/your-image-name*. We also created a Docker image for our example app, and it is listed here: [https://hub.docker.com/r/akochari/sandpipers/](https://hub.docker.com/r/akochari/sandpipers/).
 
 !!! warning  "Note"
     Container registry is a catalogue of public and private images that can be downloaded (*pulled*). There are many big and small container registries. The most popular ones are [DockerHub](https://hub.docker.com) and [GHCR (GitHub Container Registry)](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry). Both of these are run commercial companies that offer a free tier that is sufficient for us. We will use DockerHub as our registry of choice because it is the one that is integrated with Docker Desktop.
