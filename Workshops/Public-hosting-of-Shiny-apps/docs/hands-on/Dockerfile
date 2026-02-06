@@ -13,9 +13,10 @@ RUN useradd -m -u 1000 $USER
 WORKDIR $HOME/app
 
 # Update system and install dependencies.
-#RUN apt-get update && apt-get install --no-install-recommends -y \
-#    build-essential \
-#    software-properties-common
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    build-essential \
+    python3-dev && \
+    rm -rf /var/lib/apt/lists/
 
 COPY . $HOME/app/
 RUN pip install mkdocs-material
