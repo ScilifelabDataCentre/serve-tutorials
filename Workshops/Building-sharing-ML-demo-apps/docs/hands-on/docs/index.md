@@ -53,31 +53,19 @@ As part of this workshop, you will create a Docker Image and push to it Docker's
 docker login
 ```
 
-### Workshop Tools Setup
+You should see something like
 
-In order to follow this workshop, make sure that you are running Python 3.10 or later. Run this command in your Terminal to find out.
+```console {: .optional-language-as-class .no-copy}
+Authenticating with existing credentials... [Username: your-usernname]
 
-```console
-python --version
+i Info → To login with a different account, run 'docker logout' followed by 'docker login'
+
+
+Login Succeeded
+
 ```
 
-Then, you need to download the files for this workshop to your computer. If you have git, you can simply git clone this repository.
-
-```console
-git clone https://github.com/ScilifelabDataCentre/serve-tutorials
-```
-
-Otherwise [press this link to download a .ZIP archive](https://github.com/ScilifelabDataCentre/serve-tutorials/archive/refs/heads/main.zip) and unzip it manually.
-
-Finally, in your Terminal, navigate to the folder of this particular tutorial and create a Python virtual environment where you can install gradio.
-
-```console
-cd serve-tutorials/Workshops/Building-sharing-ML-demo-apps/
-python -m venv .venv
-source .venv/bin/activate
-pip install --upgrade pip
-pip install gradio
-```
+You are now ready to start with the workshop hands-on.
 
 ## Step 1. Building a user interface
 
@@ -141,123 +129,192 @@ Finally, the launch method instructs to launch the defined app. By default your 
 
 This example demonstrates the three basic components that your app will need - the function that the app will be based on, the interface definition, and the launch command. We will now build on this simplest case to add more complex scenarios and customize the app.
 
-### Input and output types
+Lets move onto the task for the workshop
 
-We saw how Gradio can work with text input and output. In the example `example_apps/sepia_app.py` we can see how it can take an image input and provide an image output. We do this by changing the `inputs` and `outputs` parameters in the interface definition.
+### Build a Gradio app for a trained model
+
+In this step, you will build a Gradio web application around a **pre-trained flower classification model**.
+
+#### Flowers Classification Model
+
+Information about how this model was trained can be found [here](https://github.com/ScilifelabDataCentre/serve-tutorials/tree/main/Webinars/2023-Using-containers-on-Berzelius/flowers-classification). You can follow the instructions to train the model your self but keep in mind it takes quite a while (~ 4 hours) with limited CPUs. For information about the dataset used, [see](https://www.robots.ox.ac.uk/~vgg/data/flowers/102/).
+
+The goal is to take an existing PyTorch model, wrap it in a Gradio interface, and customize the app to make it user-friendly and visually appealing.
+
+An example application structure is provided in the `hands_on_app/` folder. You will extend this example by adding your own Gradio app code.
+
+---
+
+### 1. Explore the provided folder structure
+
+Navigate to the `hands_on_app/` directory using the following command
+
+```bash
+cd hands_on_app
+```
+
+You should see a structure (you can check this with ```tree``` or ```ls``` command ) similar to this:
+
+```
+hands_on_app/
+├── requirements.txt
+├── main.py
+├── data/
+└── ...
+```
+
+- `requirements.txt` lists the Python packages required to run the app.
+- `main.py` is where you will write your Gradio application.
+- `data/` will contain the trained model and label files used by the app.
+
+---
+
+### 2. Install required Python packages
+
+Before running or modifying the app, install the required dependencies.
+
+From inside the  `hands_on_app` folder, run:
+
+```
+pip install -r requirements.txt
+```
+
+This will install all the dependencies for you.
+
+---
+
+### 3. Download and add the trained model
+
+The app expects a trained PyTorch model to be available locally.
+
+
+To do this, you need to download the flower classification model (`flower_model_vgg19.pth`) to the `data` directory.
+
+The app is configured to use the model from the `data` directory. So you need to go into the directory using
+
+```bash
+cd data
+```
+
+and then run the following command to download the model
+
+```bash
+curl -O -J https://nextcloud.dc.scilifelab.se/s/GSf2g5CAFxBPtMN/download
+```
+You can also manually download the model by [clicking here](https://nextcloud.dc.scilifelab.se/s/GSf2g5CAFxBPtMN/download) and then manually moving the model into the data folder.
+
+---
+
+### 4. Implement the Gradio app in `main.py`
+
+Open `main.py`. This file looks as follows:
 
 ```python
-import numpy as np
 import gradio as gr
+import torch
+from PIL import Image
+from torchvision import transforms
+import torchvision.models as models
 
-def sepia(input_img):
-    sepia_filter = np.array([
-        [0.393, 0.769, 0.189], 
-        [0.349, 0.686, 0.168], 
-        [0.272, 0.534, 0.131]
-    ])
-    sepia_img = input_img.dot(sepia_filter.T)
-    sepia_img /= sepia_img.max()
-    return sepia_img
+# Before you start, download and place the trained model to the data folder, it should be available at 'data/flower_model_vgg19.pth'
+# https://nextcloud.dc.scilifelab.se/s/GSf2g5CAFxBPtMN/download
 
-demo = gr.Interface(fn=sepia, inputs=gr.Image(label="Your image"), outputs=gr.Image(label="Sepia filtered image"), live=True)
+model = torch.load('data/flower_model_vgg19.pth')
+model.eval()
+# Download human-readable labels for ImageNet.
+with open('data/flower_dataset_labels.txt', 'r') as f:
+    labels=f.readlines()
 
-demo.launch(server_name="0.0.0.0", server_port=7860)
+def predict(inp):
+  inp = transforms.ToTensor()(inp).unsqueeze(0)
+  with torch.no_grad():
+    prediction = torch.nn.functional.softmax(model(inp)[0], dim=0)
+    confidences = {labels[i]: float(prediction[i]) for i in range(102)}
+  return confidences
+
 ```
 
-Gradio supports [a large number of other input and output types](https://www.gradio.app/docs/gradio/introduction), called *components*. For example, text, textbox, number, image, audio, video, slider, dropdown, radio buttons, files, dataframes, and so on. Different types of inputs and outputs can of course be combined - for example, a user can upload an image and receive a classification score as an output, we give an example of this below.
+The file does the following at the moment
 
-In order to change the label displayed to the user in the input or output fields, you can simply add a `label` argument to the `inputs` and `outputs`, as shown below.
+- Loads the trained PyTorch model  
+- Preprocesses user-uploaded images  
+- Runs inference using the model
+
+At a minimum, your app should include:
+
+- A **prediction function** that takes an image as input and returns model predictions (this is already implemented)
+- A **Gradio interface definition** (`gr.Interface`)
+- A **launch command** to start the app
+
+You now need to add the interface definition and the launch command.
+
+To implement the interface definition add the following line to your code
 
 ```python
-interface = gr.Interface(fn=sepia, inputs=gr.Image(label="Your image"), outputs=gr.Image("Sepia filtered image"))
+interface = gr.Interface(fn=predict, inputs=gr.Image(type="pil"), outputs=gr.Label(num_top_classes=3))
 ```
 
-### Multiple inputs and multiple outputs
-
-It is also possible to allow users to provide multiple inputs and receive multiple outputs. In the example `example_apps/hello2_app.py` the user provides a text input, a checkbox input, as well as a number input and receives text and number output.
+Finally, add the launch command to your code
 
 ```python
-import gradio as gr
+interface.launch(server_name="0.0.0.0", server_port=7860)
+``` 
 
-def greet(name, is_morning, temperature_F):
-    salutation = "Good morning" if is_morning else "Good evening"
-    greeting = f"{salutation} {name}. It is {temperature_F} degrees today"
-    celsius = (temperature_F - 32) * 5 / 9
-    return greeting, round(celsius, 2)
 
-demo = gr.Interface(
-    fn=greet,
-    inputs=["text", "checkbox", gr.Slider(0, 100)],
-    outputs=["text", "number"],
-)
+Once implemented, you should be able to start your app by running:
 
-demo.launch(server_name="0.0.0.0", server_port=7860)
+```
+python main.py
 ```
 
-Note that the number and the order of input and output parameters in the function `greet` and in the Gradio interface definition match.
+If everything works correctly, Gradio will print a message similar to:
 
-### Additional features
-
-Now that we looked at the basics let's take a look at some of the ways in which you can make your app more user-friendly. Gradio comes with many features, we will only highlight a few.
-
-#### Providing examples
-
-You might want to provide example inputs for your app so that the users can try it out quickly or know how to prepare their input. This can be done by simply adding an [`examples`](https://www.gradio.app/main/docs/gradio/examples) argument to your interface definition. You can see an example of this in `example_apps/hello3_app.py`.
-
-#### Access through API
-
-By default the apps created and published with Gradio also provide information on how it can be accessed using an API through custom Python and JavaScript clients. At the bottom of the app there is a link "Use via API" which gives instructions how the app can be accessed using these clients. This can be disabled by setting `show_api` to `False` in the app launch command, as shown below.
-
-```python
-demo.launch(server_name="0.0.0.0", server_port=7860, show_api=False)
+```
+Running on local URL: http://localhost:7860
 ```
 
-#### Inference without clicking the 'submit' button
+Open this URL in your browser and try uploading an image to test your app.
 
-If you don't want your users to have to click on "Submit" to get a prediction result, you can simply pass variable `live=True` in your interface definition, as shown below. We don't recommend doing this for all apps, however, because if for example your users are typing text then you will be unnecessarily loading the servers while the text is being typed (since your function execution will be triggered with every typed letter) rather than running an inference once at the end. Performance of your server might become an issue if your app becomes popular so you should keep that in consideration (see more info also below).
+### What you should have at the end
 
-```python
-demo = gr.Interface(fn=greet, inputs="text", outputs="text", live=True)
-```
+By the end of this step, you should have:
 
-### Customization of the look of your app
+- A working Gradio app that wraps a trained image classification model
+- A clear understanding of how model inference is connected to a web interface
+- An app that is ready to be packaged and deployed in the next steps of the workshop
 
-You might want to add a title, description, etc. for your app that should be displayed alongside the input and output. These can be specified as parameters of the interface. Some of the options are: title, description, article, thumbnail, CSS (see [the Interface documentation](https://www.gradio.app/docs/gradio/interface) for all parameters). In the example `example_apps/hello4_app.py` we added some of these parameters.
+---
 
-There are multiple ways to change the visuals of a Gradio app.  One way to customize the look is to use [Gradio themes](https://www.gradio.app/guides/theming-guide). You can use one of the pre built themes (e.g. Glass, Monochrome, Soft) with your app or [create your own theme](https://www.gradio.app/guides/theming-guide). The theme can be set by simply specifying the `theme` variable in the interface definition as shown below.
+### (Optional) Customize your application
 
-```python
-demo = gr.Interface(fn=greet, inputs="text", outputs="text", theme=gr.themes.Soft())
-```
+If you have already completed the steps to create the image classification app here are some additional things you can look at to add to the app and customize it:
 
-If you want to be even more flexible, Gradio offers [Blocks](https://www.gradio.app/docs/blocks). With blocks you can change the layout of the different components of your app, when the function is triggered, group multiple demos into tabs, etc.
+- Improve the **layout**
+- Add a **title and description** to explain what the model does
+- Show the **top-N predictions** instead of three
+- Display **confidence scores**
+- Add example images users can try
+- Customize colors, labels, and text to improve usability
 
-We do not cover customization of your app further here because there are many possibilities. Please refer to the official documentation of Gradio for more info.
+This is your chance to experiment and be creative — there is no single “correct” solution.
 
-### Performance
+In the following section, we will package this application as a Docker image and deploy it.
 
-In case your app becomes popular and many users are making predictions at the same time, then the app should handle the load. One of the most useful aspects of using Gradio is that it provides some tools to help with performance out of the box. Specifically, it provides a queueing system that is included by default in all Gradio apps. You can also customize it by adding `app.queue()` with your own parameters before you launch your app, see [the documentation on the Gradio queueing system for more details](https://www.gradio.app/guides/setting-up-a-demo-for-maximum-performance).
+---
 
-```python
-demo.queue()  # <-- In case you want to customize your queue parameters, you can do it here
-demo.launch(server_name="0.0.0.0", server_port=7860)
-```
 
-With queueing enabled each prediction request from the users will be put in a queue. When a worker becomes free, the first available request is passed into the worker for inference. When the inference is complete, the queue sends the prediction back to the particular Gradio user who called that prediction. It is also possible to set the maximum number of requests that are allowed to join the queue.
 
-Another parameter that can be used to improve performance is the hardware on which your app is running (i.e. where your app is hosted).
+## Step 2. Packaging your application as a docker image and hosting it on SciLifeLab Serve
 
-This is an advanced topic so we refer to [Gradio documentation for more information](https://www.gradio.app/guides/setting-up-a-demo-for-maximum-performance). If you are hosting your Gradio application on SciLifeLab Serve, get in touch with us and we can help you find the best Gradio parameters and hardware to improve performance.
-
-## Step 2. Packaging your application as a Docker image
-
-There are multiple ways to host your application on a web server. Below, we demonstrate how to host on SciLifeLab Serve, a dedicated machine learning model and app hosting platform for life science researchers in Sweden that is free. To host your app on SciLifeLab Serve, you first need to package it as a Docker image. This is a simple process even if you have not done this before so do not worry. You can simply start with the template we provide, all necessary files are in the folder `image_classification_app/`.
+There are multiple ways to host your application on a web server. Below, we demonstrate how to host on SciLifeLab Serve, a dedicated machine learning model and app hosting platform for life science researchers in Sweden that is free. To host your app on SciLifeLab Serve, you first need to package it as a Docker image. This is a simple process even if you have not done this before so do not worry. You can simply follow the steps below.
 
 You will need to have [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed on your computer to be able to build an image.
 
 ### Create a Dockerfile
 
-Now you are ready to create a Dockerfile. Dockerfile is a file containing instructions for how your Docker image should be built. See [the official documentation]((https://docs.docker.com/engine/reference/builder/)) if you are curious to learn more, but for the purpose of hosting your app it is sufficient to simply copy and if needed adjust the template below. Note that this file should be called simply `Dockerfile`, without any file extension.
+Now you are ready to create a Dockerfile. Dockerfile is a file containing instructions for how your Docker image should be built. See [the official documentation]((https://docs.docker.com/engine/reference/builder/)) if you are curious to learn more, but for the purpose of hosting your app it is sufficient to simply copy and if needed adjust the template below. 
+
+First, create a file called simply `Dockerfile`, without any file extension. Then copy the following content into the file
 
 ```dockerfile
 # Select base image (can be ubuntu, python, shiny etc)
@@ -272,7 +329,7 @@ ENV HOME=/home/$USER
 RUN useradd -m -u 1000 $USER
 
 # Set working directory (this is where the code should go)
-WORKDIR $HOME
+WORKDIR $HOME/app
 
 # Update system and install dependencies.
 RUN apt-get update && apt-get install --no-install-recommends -y \
@@ -281,8 +338,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     rm -rf /var/lib/apt/lists/*
 
 # Copy code and start script (this will place the files in home/username/)
-COPY requirements.txt $HOME/requirements.txt
-COPY main.py $HOME/main.py
+COPY requirements.txt $HOME/app/requirements.txt
+COPY main.py $HOME/app/main.py
 # copy any other files that are needed for your app with the directory structure as your files expect
 COPY data/ $HOME/app/data
 
@@ -312,27 +369,10 @@ At this point, you should have the following file structure in your app director
 ├── ... (any other files your app requires)
 └── Dockerfile
 ```
-### Adding models to the data folder
-
-The models being used in these examples are publicly available and are listed below. You can chose which model you want to test and run follow the instructions to to download it.
-
-#### Flowers Classification Model
-
-For information about how this model was trained can be found [here](https://github.com/ScilifelabDataCentre/serve-tutorials/tree/main/Webinars/2023-Using-containers-on-Berzelius/flowers-classification). You can follow the instructions to train the model your self but keep in mind it takes quite a while (~ 4 hours) with limited CPUs. For information about the dataset used, [see](https://www.robots.ox.ac.uk/~vgg/data/flowers/102/).
-
-The app is configured to use the model from the data folder. To download the model to the data folder go into the directory
-
-```bash
-cd flower_classification/data/
-```
-then run the following command to download the model
-```bash
-curl -O -J https://nextcloud.dc.scilifelab.se/s/GSf2g5CAFxBPtMN/download
-```
 
 ### Build a Docker image
 
-Ensure that Docker Desktop is running. Open Terminal (or Windows Terminal) and navigate to the folder where your app files and the Dockerfile are located.
+Ensure that Docker Desktop is running. Open Terminal (or Windows Terminal) and navigate to the directory where your app files and the Dockerfile are located (if you have followed the tutorial, you should already be in the correct directory).
 
 ```bash
 cd path/to/your/folder
@@ -341,9 +381,9 @@ cd path/to/your/folder
 Run the Docker command to build your image as shown below. Note that the dot at the end of the command is important. Please note that building the image may take a while.
 
 ```bash
-docker build -t <some-name>:<some-tag> .
+docker build --platform linux/amd64 -t <some-name>:<some-tag> .
 ```
-Replace `<some-name>:<some-tag>` with the name of the app and some tag to identify this particular version. For instance `my-web-app:v2`. 
+Replace `<some-name>:<some-tag>` with the name of the app and some tag to identify this particular version. For instance `my-gradio-app:v1.0`. 
 Once the process is complete, run the following command in the Terminal. You should see your image in the list.
 
 ```bash
@@ -362,7 +402,7 @@ If everything went well, you should now be able to navigate to `http://localhost
 
 You have now built and tested an image for your app on your computer. In order to be able to host this image on SciLifeLab Serve it needs to be published in a so-called image registry. Below, we show how to publish your image on [DockerHub](https://hub.docker.com) as an example but you can choose any public image registry (for example, on GitHub).
 
-Register on [DockerHub](https://hub.docker.com/) and sign in with your account on Docker Desktop app.
+Register on [DockerHub](https://hub.docker.com/) (if you haven't done so already) and sign in with your account on Docker Desktop app.
 
 Next, re-build your image as described above, this time including your DockerHub username in the image name, as shown below. 
 
@@ -382,11 +422,15 @@ Keep in mind the you might need to login to you DockerHub user in case you haven
 docker login --username=<your-dockerhub-username>
 ```
 
-This should publish your image on `https://hub.docker.com/r/&lt;your-dockerhub-username&gt;/&lt;some-name&gt;:&lt;some-tag&gt;`. For example, our example app image for the flower image classification app is available on `hamzaisaeed/gradio-workshop:flower_classification`. Please note that your image should stay available even after your app is published on Serve because it will be fetched with regular intervals.
+This should publish your image on `https://hub.docker.com/r/<your-dockerhub-username>/<some-name>`. For example, our example app image for the flower image classification app is available on `ghcr.io/scilifelabdatacentre/gradio-flower-classification:20260206-185820`. Please note that your image should stay available even after your app is published on Serve because it will be fetched with regular intervals.
 
-## Step 3. Hosting your application on SciLifeLab Serve
+!!!warning "Note"
 
-### Create a user account on SciLifeLab Serve
+    Image push to the dockerhub repository might take quite a bit of time due to a multitude of factors. If this is the case for you you are welcome to move on to the next part and use the image ```ghcr.io/scilifelabdatacentre/gradio-flower-classification:20260206-185820``` to complete the next part of the tutorial.
+
+## Hosting your application on SciLifeLab Serve
+
+### Create a user account
 
 If you do not already have a user account on SciLifeLab Serve, [create an account](https://serve.scilifelab.se/signup/).
 
@@ -400,21 +444,22 @@ You need to be logged in to create a project. To create a project, click on the 
 
 In order to host an app that we just built click the Create button on the **Gradio App** card. Then enter the following information in the form:
 
+* **Subdomain:** This is the subdomain that the deployed app will be available at (e.g., a subdomain of r46b61563 would mean that the app would be available at r46b61563.serve.scilifelab.se). If no subdomain name is entered, a random name will be generated by default. By clicking on New you can specify the custom subdomain name of your choice (provided that it is not already taken). This subdomain will then appear in the Subdomain options and the subdomain will appear in the format `name-you-chose.serve.scilifelab.se`.
+* **Port:** The port that the your app runs on (in case of our template it will be `7860`).
+* **Image:** Name of the image on DockerHub or full URL to the image on a different repository (this will be either `<your-dockerhub-username>/<some-name>:<some-tag>` if you are able to push the image or `ghcr.io/scilifelabdatacentre/gradio-flower-classification:20260206-185820` if you want to use an already built image).
 * **Name:** Name of the app that will be displayed on the Public apps page.
 * **Description:** Provide a brief description of the app, will also be displayed on the Public apps page.
-* **Subdomain:** This is the subdomain that the deployed app will be available at (e.g., a subdomain of r46b61563 would mean that the app would be available at r46b61563.serve.scilifelab.se). If no subdomain name is entered, a random name will be generated by default. By clicking on New you can specify the custom subdomain name of your choice (provided that it is not already taken). This subdomain will then appear in the Subdomain options and the subdomain will appear in the format 'name-you-chose.serve.scilifelab.se'.
 * **Permissions:** The permissions for the app. There are four levels of permissions you can choose from:
   - **Private:** The app can only be accessed by the user that created the app (sign in required). Please note that we only allow the permissions to be set to Private temporarily, while you are developing the app. Eventually each app should be published publicly.
   - **Project:** All members of the project where the app is located will be able to access the app (sign in required). Please note that we only allow the permissions to be set to Project temporarily, while you are developing the app. Eventually each app should be published publicly.
   - **Link:** Anyone with the URL can access the app but this URL will not be publicly listed anywhere by us (this option is best in case you want to share the app with certain people but not with everyone yet).
   - **Public:** Anyone with the URL can access the app and the app will be displayed under Public apps page.
-* **App Port:** The port that the your app runs on (in case of our template it will be `7860`).
-* **DockerHub Image:** Name of the image on DockerHub or full URL to the image on a different repository.
+* **Source Code URL:** The link to source code for the application (you can put `https://github.com/ScilifelabDataCentre/gradio-flower-classification`)
 
 You can leave the other fields as default.
 
 ## Congratulations!
 
-Congratulations, you just built and started hosting your first machine learning demo application!
+Congratulations, you just built and started hosting your machine learning demo application!
 
 Feel free to get in touch with the SciLifeLab Serve team with questions: serve@scilifelab.se.

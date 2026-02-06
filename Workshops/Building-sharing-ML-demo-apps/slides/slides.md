@@ -2,11 +2,11 @@
 
 While people are coming in: How are you doing?
 
-<img data-src="menti_qr.png" height="420" />
+<img data-src="assets/images/menti_qr.png" height="420" />
 
 <!-- TODO: Update link -->
 
-or go to [menti.com](https://menti.com/) and use code 1967 8095
+or go to [menti.com](https://menti.com/) and use code 5536 6348
 
 ---
 
@@ -18,27 +18,13 @@ or go to [menti.com](https://menti.com/) and use code 1967 8095
 
 - SciLifeLab -> SciLifeLab Data Centre -> SciLifeLab Serve team
 - Today:
-    - Hamza Imran Saeed
     - Mahbub Ul Alam
+    - Hamza Imran Saeed
 - serve@scilifelab.se
 
 ---
 
-## Who you are
-
-<img data-src="menti_qr.png" height="420" />
-
-<!-- TODO: Update link -->
-
-or go to menti.com and use code 1967 8095
-
----
-
-<!-- TODO: Update link -->
-
-<section data-background-iframe="https://www.mentimeter.com/app/presentation/alpptrbomxo6upjcheatsf14qtn913ni/embed" data-background-interactive>
-</section>
-
+<div style='position: relative; padding-bottom: 56.25%; padding-top: 35px; height: 0; overflow: hidden;'><iframe sandbox='allow-scripts allow-same-origin allow-presentation' allowfullscreen='true' allowtransparency='true' frameborder='0' height='315' src='https://www.mentimeter.com/app/presentation/aln14wtiajbx32kfwp6udrhqnnuot9bo/embed' style='position: absolute; top: 0; left: 0; width: 100%; height: 100%;' width='420'></iframe></div>
 
 ---
 
@@ -58,12 +44,12 @@ or go to menti.com and use code 1967 8095
 A trained ML model can be turned into a web application and made available on a URL.
 
 ---
+
 ## Today's plan
 
 - Part 1. Building a user interface for an ML model
 - Break 
-- Part 2. Packaging your application as a Docker image
-- Part 3. Hosting your application on SciLifeLab Serve
+- Part 2. Packaging and Hosting your application
 
 ---
 
@@ -142,12 +128,6 @@ code {
 - Tailored to ML researchers
 - Active community; tutorials online
 - Alternatives: Streamlit, Dash, FastAPI, Flask, etc.
-
----
-
-Find the written tutorial for today here:
-
-[https://sbdi-hands-on.serve.scilifelab.se/](https://sbdi-hands-on.serve.scilifelab.se/)
 
 ---
 
@@ -243,7 +223,7 @@ demo = gr.Interface(fn=sepia,
 ### Multiple inputs and multiple outputs
 
 ```bash
-python example_apps/hello2_app.py
+python example_apps/multiple_inputs_app.py
 ```
 
 ```python [3,7,11-12]
@@ -271,7 +251,7 @@ demo.launch(server_name="0.0.0.0", server_port=7860)
 Providing examples
 
 ```bash
-python example_apps/hello3_app.py
+python example_apps/examples_app.py
 ```
 
 ```python [11,13]
@@ -326,7 +306,7 @@ demo = gr.Interface(fn=greet, inputs="text", outputs="text", live=True)
 Title, description, reference:
 
 ```bash
-python example_apps/hello4_app.py
+python example_apps/metadata_app.py
 ```
 
 ```python [17-20]
@@ -381,6 +361,8 @@ Built-in queueing system:
 
 ## Time for hands-on work
 
+Tutorial: [https://sbdi-workshop.serve.scilifelab.se/](https://sbdi-workshop.serve.scilifelab.se/)
+
 - **Option 1:** build a Gradio app for our model
     - The example app is in the `hands_on_app` folder
     - Install the packages from `hands_on_app/requirements.txt`
@@ -388,6 +370,7 @@ Built-in queueing system:
     - Add a Gradio app to `hands_on_app/main.py`
     - Make your app fancy!
 - **Option 2:** build a Gradio app for your own model/function
+
 
 ---
 
@@ -533,10 +516,6 @@ python main.py
 
 ---
 
-## Part 3: Publishing your app on SciLifeLab Serve
-
----
-
 ### SciLifeLab Serve
 
 - https://serve.scilifelab.se/;
@@ -562,5 +541,3 @@ Options:
 Please fill out the evaluation form you will receive by email.
 
 ---
-
-
