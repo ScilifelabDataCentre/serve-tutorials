@@ -19,7 +19,7 @@ or go to [menti.com](https://menti.com/) and use code 1967 8095
 - SciLifeLab -> SciLifeLab Data Centre -> SciLifeLab Serve team
 - Today:
     - Hamza Imran Saeed
-    - Jana Awada
+    - Mahbub Ul Alam
 - serve@scilifelab.se
 
 ---
@@ -39,10 +39,28 @@ or go to menti.com and use code 1967 8095
 <section data-background-iframe="https://www.mentimeter.com/app/presentation/alpptrbomxo6upjcheatsf14qtn913ni/embed" data-background-interactive>
 </section>
 
+
+---
+
+### Making models available for inference
+
+- Many models in biodiversity and ecology community.
+- Some are useful for generating predictions on new input/new data.
+- <b>Why make a model available for inference?</b>
+  - Evaluation/verification of a model by the colleagues/community
+  - Can be used as part of analysis workflows
+  - Useful for general public or government agencies
+  - Demo in an early commercialisation effort
+
+---
+<span style="color:red">How can one make a model available for inference?</span>
+
+A trained ML model can be turned into a web application and made available on a URL.
+
 ---
 ## Today's plan
 
-- Part 1. Building a user interface for a ML model
+- Part 1. Building a user interface for an ML model
 - Break 
 - Part 2. Packaging your application as a Docker image
 - Part 3. Hosting your application on SciLifeLab Serve
