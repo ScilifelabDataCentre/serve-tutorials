@@ -4,7 +4,6 @@ While people are coming in: How are you doing?
 
 <img data-src="assets/images/menti_qr.png" height="420" />
 
-<!-- TODO: Update link -->
 
 or go to [menti.com](https://menti.com/) and use code 5536 6348
 
@@ -18,8 +17,8 @@ or go to [menti.com](https://menti.com/) and use code 5536 6348
 
 - SciLifeLab -> SciLifeLab Data Centre -> SciLifeLab Serve team
 - Today:
-    - Mahbub Ul Alam
     - Hamza Imran Saeed
+    - Jana Awada
 - serve@scilifelab.se
 
 ---
@@ -127,7 +126,6 @@ code {
 - Create web apps with Python code only
 - Tailored to ML researchers
 - Active community; tutorials online
-- Alternatives: Streamlit, Dash, FastAPI, Flask, etc.
 
 ---
 
@@ -164,7 +162,7 @@ Image input and output:
 python example_apps/sepia_app.py
 ```
 
-```python [14]
+```python [4-14]
 import numpy as np
 import gradio as gr
 
@@ -281,26 +279,6 @@ https://www.gradio.app/custom-components/gallery
 
 ----
 
-Access through API
-
-- REST API endpoint
-- Custom Python and JavaScript clients for Gradio
-- Can be disabled:
-
-```python
-demo.launch(server_name="0.0.0.0", server_port=7860, show_api=False)
-```
-
-----
-
-Inference without clicking the 'submit' button
-
-```python
-demo = gr.Interface(fn=greet, inputs="text", outputs="text", live=True)
-```
-
----
-
 ### Customization of the look of your app
 
 Title, description, reference:
@@ -344,10 +322,6 @@ demo = gr.Interface(fn=greet, inputs="text", outputs="text", theme=gr.themes.Sof
 https://www.gradio.app/guides/theming-guide
 
 ----
-
-Gradio Blocks: https://www.gradio.app/docs/blocks
-
----
 
 ### Performance
 
@@ -404,20 +378,12 @@ Tutorial: [https://sbdi-workshop.serve.scilifelab.se/](https://sbdi-workshop.ser
 
 ---
 
-### Image classification example app
-- The model we will use in this example is a [Flowers Classification Model PyToch model](https://github.com/ScilifelabDataCentre/serve-tutorials/tree/main/Webinars/2023-Using-containers-on-Berzelius/flowers-classification) based on the [102 Category Flower Dataset](https://www.robots.ox.ac.uk/~vgg/data/flowers/102/);
-- You can follow the instructions mentioned in the [README](https://github.com/ScilifelabDataCentre/serve-tutorials/tree/main/Workshops/Building-sharing-ML-demo-apps) file in the GitHub repository to train the model yourself but keep in mind it takes quite a while (~ 4 hours) with limited CPUs. 
-
-<!-- TODO: Link can add qr code to menti for the link to GitHub. -->
-
----
-
 ### Structure
 
-All files required for our app are available in the folder `image_classification_app/flower_classification`
+You can continue working in `hands-on-app` directory.
 
 
-The directory has the following structure:
+The directory has the following structure as you have seen in the hands-on session:
 
 ```bash
 ..
@@ -446,7 +412,7 @@ ENV HOME=/home/$USER
 RUN useradd -m -u 1000 $USER
 
 # Set working directory (this is where the code should go)
-WORKDIR $HOME
+WORKDIR $HOME/app
 
 # Update system and install dependencies.
 RUN apt-get update && apt-get install --no-install-recommends -y \
@@ -454,9 +420,10 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     python3-dev && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy all files that are needed for your app with the directory structure that your app expects
-COPY requirements.txt $HOME/requirements.txt
-COPY main.py $HOME/main.py
+# Copy code and start script (this will place the files in home/username/)
+COPY requirements.txt $HOME/app/requirements.txt
+COPY main.py $HOME/app/main.py
+# copy any other files that are needed for your app with the directory structure as your files expect
 COPY data/ $HOME/app/data
 
 RUN pip install --no-cache-dir -r requirements.txt \
@@ -472,47 +439,13 @@ CMD ["python", "main.py"]
 ```
 ---
 
-### main.py
+### Docker basic commands
 
-The main file for the Gradio app
+- **`docker images`** : Lists all Docker images on the local machine
+- **`docker pull {name}:{tag}`**: Pull image from a registry
+- **`docker run {name}:{tag}`**: Download image from a registry and run container
+- **`docker build -t {name}:{tag} .`**: Builds a Docker image from a Dockerfile in the current directory
 
-```python
-import gradio as gr
-import torch
-from PIL import Image
-from torchvision import transforms
-import torchvision.models as models
-
-model = torch.load('data/flower_model_vgg19.pth')
-model.eval()
-# Download human-readable labels for ImageNet.
-with open('data/flower_dataset_labels.txt', 'r') as f:
-    labels=f.readlines()
-
-def predict(inp):
-  inp = transforms.ToTensor()(inp).unsqueeze(0)
-  with torch.no_grad():
-    prediction = torch.nn.functional.softmax(model(inp)[0], dim=0)
-    confidences = {labels[i]: float(prediction[i]) for i in range(102)}
-  return confidences
-
-interface = gr.Interface(fn=predict,
-             inputs=gr.Image(type="pil"),
-             outputs=gr.Label(num_top_classes=3))
-
-interface.launch(server_name="0.0.0.0", server_port=7860)
-```
-
----
-### Start script
-
-Deployment on Serve requires a script that will be launching your application. Create a file *start-script.sh* and put it in the same directory as your app.
-
-```bash
-#!/bin/bash
-
-python main.py
-```
 
 ---
 
