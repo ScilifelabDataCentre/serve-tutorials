@@ -2,61 +2,121 @@
 
 While people are coming in: How are you doing?
 
-<img data-src="menti_qr.png" height="420" />
+<img data-src="assets/images/menti_qr.png" height="420" />
 
-<!-- TODO: Update link -->
 
-or go to [menti.com](https://menti.com/) and use code 1967 8095
+or go to [menti.com](https://menti.com/) and use code 5536 6348
 
 ---
 
-## Building and sharing machine learning demo applications: a practical tutorial
+## Building and sharing AI applications within ecology and biodiversity
 
 ---
 
 ## Who we are
 
-- Today's event is co-organised with KTH Library 🎉
 - SciLifeLab -> SciLifeLab Data Centre -> SciLifeLab Serve team
 - Today:
-    - Arnold Kochari
-    - Johan Alfredéen
-    - Mahbub Ul Alam
+    - Hamza Imran Saeed
+    - Jana Awada
 - serve@scilifelab.se
 
 ---
 
-## Who you are
-
-<img data-src="menti_qr.png" height="420" />
-
-<!-- TODO: Update link -->
-
-or go to menti.com and use code 1967 8095
+<div style='position: relative; padding-bottom: 56.25%; padding-top: 35px; height: 0; overflow: hidden;'><iframe sandbox='allow-scripts allow-same-origin allow-presentation' allowfullscreen='true' allowtransparency='true' frameborder='0' height='315' src='https://www.mentimeter.com/app/presentation/aln14wtiajbx32kfwp6udrhqnnuot9bo/embed' style='position: absolute; top: 0; left: 0; width: 100%; height: 100%;' width='420'></iframe></div>
 
 ---
 
-<!-- TODO: Update link -->
+### Making models available for inference
 
-<section data-background-iframe="https://www.mentimeter.com/app/presentation/alpptrbomxo6upjcheatsf14qtn913ni/embed" data-background-interactive>
-</section>
+- Many models in biodiversity and ecology community.
+- Some are useful for generating predictions on new input/new data.
+- <b>Why make a model available for inference?</b>
+  - Evaluation/verification of a model by the colleagues/community
+  - Can be used as part of analysis workflows
+  - Useful for general public or government agencies
+  - Demo in an early commercialisation effort
 
 ---
+<span style="color:red">How can one make a model available for inference?</span>
+
+A trained ML model can be turned into a web application and made available on a URL.
+
+---
+
 ## Today's plan
 
-- Intro
-- Part 1. Creating a web application from an ML model 
+- Part 1. Building a user interface for an ML model
 - Break 
-- Part 2. Packaging your application as a Docker image
-- Part 3. Hosting your application on SciLifeLab Serve
+- Part 2. Packaging and Hosting your application
 
 ---
 
-## Intro
+## Part 1: Building a user interface for a model
 
 ---
+<style>
 
-## Part 1: Using Gradio to build a web application
+code {
+    color: #b93d59f2;
+    font-weight: 580;
+}
+.code{
+    color: #4e9098;
+    font-weight: 580;
+}
+.container{
+    display: flex;
+}
+.col{
+    flex: 1;
+    font-size: 30px;
+}
+.rounded {
+    border-radius: 4px;
+} 
+</style>
+
+### Web Frameworks for building user interfaces
+
+  <table style="width:100%; border-collapse: separate; border-spacing: 24px;">
+    <tr>
+      <!-- Gradio -->
+      <td style="vertical-align: top; border: 1px solid rgba(255,255,255,0.18); border-radius: 12px; padding: 16px;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+          <img src="assets/images/gradio-logo.svg"
+               alt="Gradio logo" style="height:40px;">
+          <strong>Gradio</strong>
+        </div>
+        <p><strong>Best for:</strong> Quick ML demos</p>
+        <p><strong>Pros:</strong> Very low code</p>
+        <p><strong>Cons:</strong> Limited UI control</p>
+      </td>
+      <!-- Streamlit -->
+      <td style="vertical-align: top; border: 1px solid rgba(255,255,255,0.18); border-radius: 12px; padding: 16px;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+          <img src="assets/images/streamlit-logo.svg"
+               alt="Streamlit logo" style="height:40px;">
+          <strong>Streamlit</strong>
+        </div>
+        <p><strong>Best for:</strong> Data apps &amp; dashboards</p>
+        <p><strong>Pros:</strong> Pythonic &amp; flexible</p>
+        <p><strong>Cons:</strong> More code than Gradio</p>
+      </td>
+      <!-- Dash -->
+      <td style="vertical-align: top; border: 1px solid rgba(255,255,255,0.18); border-radius: 12px; padding: 16px;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+          <img src="assets/images/dashapp-logo.svg"
+               alt="Plotly logo" style="height:40px;">
+          <strong>Dash (Plotly)</strong>
+        </div>
+        <p><strong>Best for:</strong> Complex dashboards</p>
+        <p><strong>Pros:</strong> Powerful &amp; scalable</p>
+        <p><strong>Cons:</strong> Steeper learning curve</p>
+      </td>
+    </tr>
+  </table>
+
 
 ---
 
@@ -66,27 +126,6 @@ or go to menti.com and use code 1967 8095
 - Create web apps with Python code only
 - Tailored to ML researchers
 - Active community; tutorials online
-- Alternatives: Streamlit, Dash, FastAPI, Flask, etc.
-
----
-
-Find the written tutorial for today here:
-
-[bit.ly/ml-apps-tutorial](http://bit.ly/ml-apps-tutorial)
-
----
-
-
-### Preparation
-
-```bash
-python --version
-git clone https://github.com/ScilifelabDataCentre/serve-tutorials
-cd serve-tutorials/Workshops/Building-sharing-ML-demo-apps/
-python -m venv .venv
-source .venv/bin/activate
-pip install gradio
-```
 
 ---
 
@@ -123,7 +162,7 @@ Image input and output:
 python example_apps/sepia_app.py
 ```
 
-```python [14]
+```python [4-14]
 import numpy as np
 import gradio as gr
 
@@ -155,23 +194,34 @@ demo = gr.Interface(fn=sepia,
 
 ----
 
-Gradio supports:
-- textbox
-- number
-- image
-- audio
-- video 
-- slider
-- dropdown 
-- files
-- dataframes
-- etc.
+### Gradio supports
+
+<div class="container">
+    <div class="col" style="font-size: 2.5rem!important;">
+    <ul style="list-style-type: disc;">
+      <li>Textbox</li>
+      <li>Number</li>
+      <li>Image</li>
+      <li>Audio</li>
+      <li>Video</li>
+    </ul>
+    </div>
+    <div class="col" style="font-size: 2.5rem!important;">
+    <ul style="list-style-type: disc;">
+      <li>Slider</li>
+      <li>Dropdown</li>
+      <li>Files</li>
+      <li>Dataframes</li>
+      <li>…and more</li>
+    </ul>
+    </div>
+</div>
 
 ---
 ### Multiple inputs and multiple outputs
 
 ```bash
-python example_apps/hello2_app.py
+python example_apps/multiple_inputs_app.py
 ```
 
 ```python [3,7,11-12]
@@ -199,7 +249,7 @@ demo.launch(server_name="0.0.0.0", server_port=7860)
 Providing examples
 
 ```bash
-python example_apps/hello3_app.py
+python example_apps/examples_app.py
 ```
 
 ```python [11,13]
@@ -229,32 +279,12 @@ https://www.gradio.app/custom-components/gallery
 
 ----
 
-Access through API
-
-- REST API endpoint
-- Custom Python and JavaScript clients for Gradio
-- Can be disabled:
-
-```python
-demo.launch(server_name="0.0.0.0", server_port=7860, show_api=False)
-```
-
-----
-
-Inference without clicking the 'submit' button
-
-```python
-demo = gr.Interface(fn=greet, inputs="text", outputs="text", live=True)
-```
-
----
-
 ### Customization of the look of your app
 
 Title, description, reference:
 
 ```bash
-python example_apps/hello4_app.py
+python example_apps/metadata_app.py
 ```
 
 ```python [17-20]
@@ -293,10 +323,6 @@ https://www.gradio.app/guides/theming-guide
 
 ----
 
-Gradio Blocks: https://www.gradio.app/docs/blocks
-
----
-
 ### Performance
 
 Built-in queueing system:
@@ -309,6 +335,8 @@ Built-in queueing system:
 
 ## Time for hands-on work
 
+Tutorial: [https://sbdi-workshop.serve.scilifelab.se/](https://sbdi-workshop.serve.scilifelab.se/)
+
 - **Option 1:** build a Gradio app for our model
     - The example app is in the `hands_on_app` folder
     - Install the packages from `hands_on_app/requirements.txt`
@@ -317,9 +345,10 @@ Built-in queueing system:
     - Make your app fancy!
 - **Option 2:** build a Gradio app for your own model/function
 
+
 ---
 
-## Part 2: Packaging your application as a Docker Container Image
+## Part 2: Packaging your application and hosting it on Scilifelab Serve
 
 ---
 
@@ -345,25 +374,16 @@ Built-in queueing system:
 ### With Containers
 - Standardized, self contained packaged software;
 - Platform-agnostic (Linux, Mac, Windows);
-- Many different container engines are available. Docker is the most popular and widely used;
-- Other engines: Podman, Apptainer, Enroot, many more...   
-
----
-
-### Image classification example app
-- The model we will use in this example is a [Flowers Classification Model PyToch model](https://github.com/ScilifelabDataCentre/serve-tutorials/tree/main/Webinars/2023-Using-containers-on-Berzelius/flowers-classification) based on the [102 Category Flower Dataset](https://www.robots.ox.ac.uk/~vgg/data/flowers/102/);
-- You can follow the instructions mentioned in the [README](https://github.com/ScilifelabDataCentre/serve-tutorials/tree/main/Workshops/Building-sharing-ML-demo-apps) file in the GitHub repository to train the model yourself but keep in mind it takes quite a while (~ 4 hours) with limited CPUs. 
-
-<!-- TODO: Link can add qr code to menti for the link to GitHub. -->
+- Many different container engines are available. Docker is the most popular and widely used;   
 
 ---
 
 ### Structure
 
-All files required for our app are available in the folder `image_classification_app/flower_classification`
+You can continue working in `hands-on-app` directory.
 
 
-The directory has the following structure:
+The directory has the following structure as you have seen in the hands-on session:
 
 ```bash
 ..
@@ -392,16 +412,18 @@ ENV HOME=/home/$USER
 RUN useradd -m -u 1000 $USER
 
 # Set working directory (this is where the code should go)
-WORKDIR $HOME
+WORKDIR $HOME/app
 
 # Update system and install dependencies.
 RUN apt-get update && apt-get install --no-install-recommends -y \
     build-essential \
-    software-properties-common
+    python3-dev && \
+    rm -rf /var/lib/apt/lists/*
 
-# Copy all files that are needed for your app with the directory structure that your app expects
-COPY requirements.txt $HOME/requirements.txt
-COPY main.py $HOME/main.py
+# Copy code and start script (this will place the files in home/username/)
+COPY requirements.txt $HOME/app/requirements.txt
+COPY main.py $HOME/app/main.py
+# copy any other files that are needed for your app with the directory structure as your files expect
 COPY data/ $HOME/app/data
 
 RUN pip install --no-cache-dir -r requirements.txt \
@@ -417,44 +439,13 @@ CMD ["python", "main.py"]
 ```
 ---
 
-### main.py
+### Docker basic commands
 
-The main file for the Gradio app
+- **`docker images`** : Lists all Docker images on the local machine
+- **`docker pull {name}:{tag}`**: Pull image from a registry
+- **`docker run {name}:{tag}`**: Download image from a registry and run container
+- **`docker build -t {name}:{tag} .`**: Builds a Docker image from a Dockerfile in the current directory
 
-```python
-import gradio as gr
-import torch
-from PIL import Image
-from torchvision import transforms
-import torchvision.models as models
-
-model = torch.load('data/flower_model_vgg19.pth')
-model.eval()
-# Download human-readable labels for ImageNet.
-with open('data/flower_dataset_labels.txt', 'r') as f:
-    labels=f.readlines()
-
-def predict(inp):
-  inp = transforms.ToTensor()(inp).unsqueeze(0)
-  with torch.no_grad():
-    prediction = torch.nn.functional.softmax(model(inp)[0], dim=0)
-    confidences = {labels[i]: float(prediction[i]) for i in range(102)}
-  return confidences
-
-interface = gr.Interface(fn=predict,
-             inputs=gr.Image(type="pil"),
-             outputs=gr.Label(num_top_classes=3))
-
-interface.launch(server_name="0.0.0.0", server_port=7860)
-```
-
----
-
-Demo
-
----
-
-## Part 3: Publishing your app on SciLifeLab Serve
 
 ---
 
@@ -464,10 +455,6 @@ Demo
 - Platform for hosting applications and machine learning models;
 - Free to use for life science researchers affiliated with a Swedish research institution and their international collaborators;
 - Each app receives 2 vCPU, 4GB RAM by default; more can be requested with demonstrated need.
-
----
-
-Demo
 
 ---
 
@@ -487,99 +474,3 @@ Options:
 Please fill out the evaluation form you will receive by email.
 
 ---
-
-## Syntax highlighting
-
-```python
-def hello_world():
-    print("Hello world!")
-```
-
-Press down
-
-----
-
-## Highlight lines
-
-```python [1|3-6]
-n = 0
-while n < 10:
-  if n % 2 == 0:
-    print(f"{n} is even")
-  else:
-    print(f"{n} is odd")
-  n += 1
-```
-
----
-
-# Slide with two columns
-
-<div class="container">
-    <div class="col">
-        <p>Column 1</p>
-    </div>
-    <div class="col">
-        <p>Column 2</p>
-    </div>
-</div>
-
----
-# How to make stuff appear on by one
-
-Use "fragmet" class
-
-```html
-<p class="fragment">This will appear first</p>
-<p class="fragment">This will appear second</p>
-```
-
-<p class="fragment">This will appear first</p>
-<p class="fragment">This will appear second</p>
-
----
-
-# Using pyscript
-
-<button id="my_button">Click me!</button>
-<div id="output-py"></div>
-<py-script>
-from pyscript import when, display
-@when("click", "#my_button")
-def click_handler(event):
-    display("I've been clicked!", target="output-py")
-</py-script>
-
-----
-
-## Adding a hover button that would show code snippet
-<py-script>
-from pyscript import when, display
-@when("click", "#my_button-1")
-def click_handler_1(event):
-    display("I've been clicked!", target="output-py-1")
-</py-script>
-<div>
-    <button id="my_button-1">Click me!</button>
-    <div class="info-icon">
-        <!-- if you have fontawesome installed -->
-        <!-- <i class="fa-solid fa-code fa-lg"></i> -->
-        Hover over me
-        <div style="width: 600px" class="tooltip">
-            <div class="code-snippet">
-                <pre style="all: initial; font-size: 20px">
-                <code>
-<py-script>
-from pyscript import when, display
-@when("click", "#my_button-1")
-def click_handler_1(event):
-    display("I've been clicked!", target="output-py-1")
-</py-script>
-                </code>
-            </div>
-        </div>
-    </div>
-</div>
-<div id="output-py-1"></div>
-
-

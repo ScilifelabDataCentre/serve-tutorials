@@ -206,7 +206,8 @@ WORKDIR $HOME
 # Update system and install dependencies.
 RUN apt-get update && apt-get install --no-install-recommends -y \
     build-essential \
-    software-properties-common
+    python3-dev && \
+    rm -rf /var/lib/apt/lists/*
 
 # Copy code and start script (this will place the files in home/username/)
 COPY requirements.txt $HOME/requirements.txt

@@ -1,7 +1,7 @@
-gradio==5.1
-httpx==0.24.1
+gradio==6.5.1
+httpx
 
---index-url https://download.pytorch.org/whl/cpu
+--extra-index-url https://download.pytorch.org/whl/cpu
 torch
 torchvision
 torchaudio

@@ -2,7 +2,7 @@
 
 While people are coming in: How are you doing?
 
-<div style='position: relative; padding-bottom: 56.25%; padding-top: 35px; height: 0; overflow: hidden;'><iframe sandbox='allow-scripts allow-same-origin allow-presentation' allowfullscreen='true' allowtransparency='true' frameborder='0' height='315' src='https://www.mentimeter.com/app/presentation/n/alkw2z5dj2ur7ersxdiid42g73qo5b7k/embed' style='position: absolute; top: 0; left: 0; width: 100%; height: 70%;' width='420'></iframe></div>
+<div style='position: relative; padding-bottom: 56.25%; padding-top: 35px; height: 0; overflow: hidden;'><iframe sandbox='allow-scripts allow-same-origin allow-presentation' allowfullscreen='true' allowtransparency='true' frameborder='0' height='315' src='https://www.mentimeter.com/app/presentation/n/alk2mb4j55u8sjrbsdmxca5j8hyoztsj/embed' style='position: absolute; top: 0; left: 0; width: 100%; height: 70%;' width='420'></iframe></div>
 
 or go to [menti.com](https://menti.com/) and use code 4560 7682
 
@@ -25,7 +25,7 @@ or go to [menti.com](https://menti.com/) and use code 4560 7682
 ## Who you are
 
 
-<div style='position: relative; padding-bottom: 56.25%; padding-top: 35px; height: 0; overflow: hidden;'><iframe sandbox='allow-scripts allow-same-origin allow-presentation' allowfullscreen='true' allowtransparency='true' frameborder='0' height='315' src='https://www.mentimeter.com/app/presentation/n/alkw2z5dj2ur7ersxdiid42g73qo5b7k/embed' style='position: absolute; top: 0; left: 0; width: 100%; height: 70%;' width='420'></iframe></div>
+<div style='position: relative; padding-bottom: 56.25%; padding-top: 35px; height: 0; overflow: hidden;'><iframe sandbox='allow-scripts allow-same-origin allow-presentation' allowfullscreen='true' allowtransparency='true' frameborder='0' height='315' src='https://www.mentimeter.com/app/presentation/n/alk2mb4j55u8sjrbsdmxca5j8hyoztsj/embed' style='position: absolute; top: 0; left: 0; width: 100%; height: 70%;' width='420'></iframe></div>
 
 or go to menti.com and use code 4560 7682
 
@@ -167,7 +167,7 @@ A container is a <span style="font-weight: bold;">standard unit of software</spa
 <li>Packaged with all dependencies and configs</li>
 <li>Start service as a container</li>
 <li>Same command for all OS and services</li>
-<li>Standardizes process of running services on local enironment</li>
+<li>Standardizes process of running services on local environment</li>
 <li>Run different versions of same app</li>
 </ul>
 </div>
@@ -211,9 +211,9 @@ A container is a <span style="font-weight: bold;">standard unit of software</spa
     <li><span style="font-weight: bold;">Docker Images:</span> Blueprints of the application and dependencies</li>
     <li><span style="font-weight: bold;">Docker Containers:</span> Instances of a Docker Image</li>
     <li ><span style="font-weight: bold;">Docker Daemon:</span> Background service running on the host that listens to API calls (via the Docker client), manages images and builds, runs and distributes containers</li>
-    <li><span style="font-weight: bold;">Docker Client:</span> The command line tool that allows the user to interact with the daemon.</li>
-    <li><span style="font-weight: bold;">Docker Hub:</span> A registry of Docker Images</li>
     <li><span style="font-weight: bold;">Docker Host:</span> The host machine that the docker daemon runs on</li>
+    <li><span style="font-weight: bold;">Docker Client:</span> The command line tool that allows the user to interact with the daemon.</li>
+    <li><span style="font-weight: bold;">Docker Registry:</span> A registry of Docker Images</li>
 </ul>
 <!-- .element: style="width: 100%;" -->
 
@@ -330,9 +330,9 @@ A container is a <span style="font-weight: bold;">standard unit of software</spa
 <ul style="font-size: 35px;margin-top: 15%;">
 <li>The largest public registry for Docker Images</li>
 <li>Hosted by Docker Inc</li>
-<li>Enable sharing and distribution of images</li>
 <li><span style="font-weight: bold;">Public and Private Repositories:</span> Store images with varying access levels</li>
 <li><span style="font-weight: bold;">Official Images</span>: Curated and maintained, ensuring high quality and security</li>
+<li>Verified Publishers</li>
 </ul>
 </div>
 <div class="col" >
@@ -347,7 +347,7 @@ A container is a <span style="font-weight: bold;">standard unit of software</spa
 `{image-repository}/{image-name}:`<code class="code">{tag}</code>
 
 - **Purpose**: Labels assigned to images to differentiate versions.
-  - Example: `ubuntu:`<code class="code">22.04</code>, `scilifelabdatacentre/workshop-flask-web-app:`<code class="code">v1.0.0</code>
+  - Example: `scilifelabdatacentre/workshop-flask-web-app:`<code class="code">v1.0.0</code>
 - **Use Specific Tags**: Avoid using <code class="code">latest</code> tag for production.
   - Example: `docker pull ubuntu:`<code class="code">22.04</code> instead of `docker pull ubuntu:`<code class="code">latest</code>
 - **Importance**: Helps manage dependencies, rollbacks, and updates effectively.
